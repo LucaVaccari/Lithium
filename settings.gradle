@@ -1,0 +1,3 @@
+rootProject.name = "Lithium"
+
+include 'utils', 'client', 'server'
