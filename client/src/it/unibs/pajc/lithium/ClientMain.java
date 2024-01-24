@@ -15,7 +15,7 @@ public class ClientMain extends Application {
         var root = FXMLFileLoader.loadFXML("/FXMLs/test.fxml", this);
         Scene scene = new Scene(root);
         stage.setScene(scene);
-
+        
         stage.setOnCloseRequest(e -> System.exit(0));
         stage.sizeToScene();
         stage.setResizable(true);
