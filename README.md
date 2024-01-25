@@ -1,6 +1,6 @@
 # LIThium
 
-A simple unencrypted music streaming service made in Java.
+A simple unencrypted music streaming service made in Java for a university assignment.
 
 ## Technical details
 
@@ -14,6 +14,7 @@ The project uses the following technologies:
 ### Client
 
 The client uses JavaFX for its GUI, made of a login screen, a search tab, a library tab and a settings tab.
+From the search tab the user can select albums/artists/playlists and see a special page for each.
 
 The user login data is cached, with the option to log out to use a different account.
 
@@ -26,6 +27,9 @@ The settings tab will allow managing user settings (change user info, password o
 
 Every information is fetched via the HTTP protocol, using JSON for potential message bodies.
 The actual streaming protocol is HLS and is already implemented by JavaFX's Media class.
+
+The current view is periodically updated to reflect changes in the database (like the number of followers of a playlist
+or an arist or the number of saves of a track in the favourites).
 
 ### HTTP Server
 
@@ -40,5 +44,7 @@ The database stores information about music, artists and users, as well as refer
 on the server.
 
 It's SQLite database, since it's for a small university project.
+
+A special tool is used to manage the content of the database and sync it with the audio/image files on the server.
 
 <!-- TODO: insert database schema -->

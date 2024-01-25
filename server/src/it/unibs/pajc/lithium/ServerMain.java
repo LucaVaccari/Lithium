@@ -35,6 +35,7 @@ public class ServerMain {
                 if (get) httpExchange.getResponseBody().write(response);
                 httpExchange.getResponseBody().close();
             });
+
             server.start();
             System.out.println("Server started");
         } catch (IOException e) {

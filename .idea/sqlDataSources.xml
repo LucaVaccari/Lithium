@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="95e5cd5c-c138-447a-a995-8606ddb83fc4" name="lithium.sqlite Mapping">
+      <data-sources db="f6fba75e-4cdd-41a4-93ce-5095e7e34165" ddl="821bbde3-1374-492c-9520-f4e8ec985692" />
+      <scope>
+        <node negative="1">
+          <node kind="database" negative="1" />
+          <node kind="schema" qname="main" />
+        </node>
+      </scope>
+    </mapping>
+  </component>
+  <component name="SqlDataSourceStorage">
+    <option name="dataSources">
+      <list>
+        <State>
+          <option name="id" value="821bbde3-1374-492c-9520-f4e8ec985692" />
+          <option name="name" value="lithium.sqlite (DDL)" />
+          <option name="dbmsName" value="SQLITE" />
+          <option name="parent" value="f6fba75e-4cdd-41a4-93ce-5095e7e34165" />
+          <option name="urls">
+            <array>
+              <option value="file://$PROJECT_DIR$/database" />
+            </array>
+          </option>
+          <option name="outLayout" value="File per object by schema.groovy" />
+        </State>
+      </list>
+    </option>
+  </component>
+</project>
