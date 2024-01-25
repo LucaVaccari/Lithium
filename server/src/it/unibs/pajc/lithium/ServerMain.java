@@ -9,6 +9,7 @@ import java.nio.file.Path;
 
 public class ServerMain {
     public static void main(String[] args) {
+        // TEST
         try {
             var server = HttpServer.create(new InetSocketAddress(8080), 0);
             server.createContext("/test", httpExchange -> {
@@ -39,5 +40,6 @@ public class ServerMain {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        // END TEST
     }
 }
