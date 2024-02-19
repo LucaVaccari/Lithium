@@ -2,18 +2,20 @@ package it.unibs.pajc.lithium;
 
 import com.sun.net.httpserver.HttpServer;
 import it.unibs.pajc.lithium.db.SQLiteInterface;
+import it.unibs.pajc.lithium.db.om.Album;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 public class ServerMain {
     public static void main(String[] args) {
         // DB TEST
         try (SQLiteInterface dbInterface = new SQLiteInterface()) {
             dbInterface.connect("jdbc:sqlite:..\\database\\lithium.sqlite");
-            System.out.println(dbInterface.testQuery());
+            System.out.println(Arrays.toString(dbInterface.getObjects(Album.class)));
         } catch (Exception ignored) {
         }
         // END DB TEST

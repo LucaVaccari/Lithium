@@ -1,13 +1,22 @@
-# LIThium
+# Lithium
 
 A simple unencrypted music streaming service made in Java for a university assignment.
+
+## Functionalities
+
+### Listening parties
+
+Any user can see what their friends are listening to and can join the 'party' to listen to the same song in sync.
+
+During a listening party an ephemeral chat is available for communication between the members of the party.
+The chat is erased at the end of the party.
 
 ## Technical details
 
 The project uses the following technologies:
 
 - JavaFX for client GUI
-- HTTP for general communication
+- HTTP and websockets for general communication
 - HTTP live-streaming (HLS) for audio streaming
 - SQLite for storing server data (not the actual audio files)
 
@@ -25,18 +34,22 @@ The library tab allows the user to see followed artists, playlists and albums an
 The settings tab will allow managing user settings (change user info, password or delete account), audio settings
 (equalization), server settings (server URL and port).
 
-Every information is fetched via the HTTP protocol, using JSON for potential message bodies.
+An active client connects to the websocket, which allows for realtime updates, listening parties and live chat.
+Information is fetched via the HTTP protocol, using JSON for potential message bodies.
 The actual streaming protocol is HLS and is already implemented by JavaFX's Media class.
 
 The current view is periodically updated to reflect changes in the database (like the number of followers of a playlist
 or an arist or the number of saves of a track in the favourites).
 
-### HTTP Server
+### Server
+
+The server is made of two components: the HTTP Server and the websocket.
 
 The HTTP server acts as a medium between the client and the database and has direct access to the audio and image files
 required by the client application.
-
 A config file should specify the database and the file folder locations.
+
+The websocket keeps track of active users (what they're listening to), managing listening parties and live chats.
 
 ### Database
 
@@ -45,6 +58,6 @@ on the server.
 
 It's SQLite database, since it's for a small university project.
 
-A special tool is used to manage the content of the database and sync it with the audio/image files on the server.
+A special tool is used to query the database and sync it with the audio/image files on the server.
 
 <!-- TODO: insert database schema -->

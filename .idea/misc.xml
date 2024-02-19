@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="EntryPointsManager">
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="it.unibs.pajc.db.Column" />
+    </list>
+    <writeAnnotations>
+      <writeAnnotation name="it.unibs.pajc.db.Column" />
+      <writeAnnotation name="it.unibs.pajc.db.DbColumn" />
+    </writeAnnotations>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$" />
