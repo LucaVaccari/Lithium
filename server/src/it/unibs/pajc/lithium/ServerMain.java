@@ -1,6 +1,7 @@
 package it.unibs.pajc.lithium;
 
 import com.sun.net.httpserver.HttpServer;
+import it.unibs.pajc.lithium.db.SQLiteInterface;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -9,7 +10,14 @@ import java.nio.file.Path;
 
 public class ServerMain {
     public static void main(String[] args) {
-        // TEST
+        // DB TEST
+        try (SQLiteInterface dbInterface = new SQLiteInterface()) {
+            dbInterface.connect("jdbc:sqlite:..\\database\\lithium.sqlite");
+            System.out.println(dbInterface.testQuery());
+        } catch (Exception ignored) {
+        }
+        // END DB TEST
+        // HTTP TEST
         try {
             var server = HttpServer.create(new InetSocketAddress(8080), 0);
             server.createContext("/test", httpExchange -> {
