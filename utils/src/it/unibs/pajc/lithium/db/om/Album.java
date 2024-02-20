@@ -22,6 +22,9 @@ public class Album {
     @Column(name = "cover_img_path")
     private String imgPath;
 
+    private Artist[] artists;
+    private Genre[] genres;
+
     public String getTitle() {
         return title;
     }

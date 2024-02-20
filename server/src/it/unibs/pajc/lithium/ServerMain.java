@@ -1,7 +1,7 @@
 package it.unibs.pajc.lithium;
 
 import com.sun.net.httpserver.HttpServer;
-import it.unibs.pajc.lithium.db.SQLiteInterface;
+import it.unibs.pajc.db.SQLiteInterface;
 import it.unibs.pajc.lithium.db.om.Album;
 
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.util.Arrays;
 public class ServerMain {
     public static void main(String[] args) {
         // DB TEST
-        try (SQLiteInterface dbInterface = new SQLiteInterface()) {
+        try (var dbInterface = new SQLiteInterface()) {
             dbInterface.connect("jdbc:sqlite:..\\database\\lithium.sqlite");
             System.out.println(Arrays.toString(dbInterface.getObjects(Album.class)));
         } catch (Exception ignored) {
@@ -38,8 +38,7 @@ public class ServerMain {
                 System.out.println(uri);
                 String fileName = uri.replace("/audio", "");
                 httpExchange.getResponseHeaders().set("content-type", "audio/aac");
-                byte[] response = Files.readAllBytes(
-                        Path.of("C:/Users/asus/Desktop/SuckYourLollipop/" + fileName));
+                byte[] response = Files.readAllBytes(Path.of("C:/Users/asus/Desktop/SuckYourLollipop/" + fileName));
                 boolean get = httpExchange.getRequestMethod().equals("GET");
                 httpExchange.sendResponseHeaders(200, get ? response.length : -1);
                 if (get) httpExchange.getResponseBody().write(response);

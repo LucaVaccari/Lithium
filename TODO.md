@@ -8,6 +8,7 @@
     - [ ] Library tab
     - [ ] Search tab
     - [ ] Settings tab
+- [ ] Server interaction
 
 ## Server
 
@@ -15,14 +16,16 @@
     - [ ] server info (port)
     - [ ] db info (db url, root directory for files)
 - [ ] server database integration
+    - [x] write object mappers
+    - [ ] implement CRUD methods
+- [ ] interface for managing the db
 - [ ] define and implement HTTP contexts
     - [ ] client authentication
     - [ ] search queries
     - [ ] streaming request
 
-
 ## Database
 
-- [ ] define db structure
-- [ ] write sql file for db creation
+- [x] define db structure
+- [x] write sql file for db creation
 - [ ] write queries for filling the db with test samples
