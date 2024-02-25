@@ -5,6 +5,8 @@ import it.unibs.pajc.db.Column;
 import it.unibs.pajc.db.Table;
 import it.unibs.pajc.db.Id;
 
+import java.sql.Date;
+
 /**
  * Model for the table 'album' on the db.
  */
@@ -25,6 +27,18 @@ public class Album {
     private Artist[] artists;
     private Genre[] genres;
 
+    public Album() {
+    }
+
+    public Album(String title, String version, String releaseDate, String imgPath, Artist[] artists, Genre[] genres) {
+        this.title = title;
+        this.version = version;
+        this.releaseDate = releaseDate;
+        this.imgPath = imgPath;
+        this.artists = artists;
+        this.genres = genres;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -41,12 +55,12 @@ public class Album {
         this.version = version;
     }
 
-    public String getReleaseDate() {
-        return releaseDate;
+    public Date getReleaseDate() {
+        return Date.valueOf(releaseDate);
     }
 
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate.toString();
     }
 
     public String getImgPath() {

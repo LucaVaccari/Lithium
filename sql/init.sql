@@ -14,57 +14,51 @@ drop table if exists user_saved_playlist;
 
 CREATE TABLE "album"
 (
-    "album_id"           INTEGER NOT NULL UNIQUE,
-    "album_title"        TEXT    NOT NULL,
+    "album_id"           INTEGER PRIMARY KEY,
+    "album_title"        TEXT  NOT NULL,
     "album_version"      TEXT,
     "album_release_date" TEXT,
-    "cover_img_path"     TEXT,
-    PRIMARY KEY ("album_id" AUTOINCREMENT)
+    "cover_img_path"     TEXT
 );
 
 CREATE TABLE "track"
 (
-    "track_id"      INTEGER NOT NULL UNIQUE,
+    "track_id"      INTEGER PRIMARY KEY,
     "track_title"   TEXT    NOT NULL,
     "track_version" TEXT,
     "track_number"  INTEGER NOT NULL,
     "duration"      INTEGER,
     "audio_path"    TEXT    NOT NULL,
-    "album_id"      INTEGER NOT NULL,
-    PRIMARY KEY ("track_id" AUTOINCREMENT)
+    "album_id"      INTEGER NOT NULL
 );
 
 CREATE TABLE "artist"
 (
-    "artist_id"   INTEGER NOT NULL UNIQUE,
-    "artist_name" TEXT    NOT NULL,
-    PRIMARY KEY ("artist_id" AUTOINCREMENT)
+    "artist_id"   INTEGER PRIMARY KEY,
+    "artist_name" TEXT  NOT NULL
 );
 
 CREATE TABLE "genre"
 (
-    "genre_id"          INTEGER NOT NULL UNIQUE,
-    "genre_name"        TEXT    NOT NULL,
-    "genre_description" TEXT,
-    PRIMARY KEY ("genre_id" AUTOINCREMENT)
+    "genre_id"          INTEGER PRIMARY KEY,
+    "genre_name"        TEXT  NOT NULL,
+    "genre_description" TEXT
 );
 
 CREATE TABLE "user"
 (
-    "user_id"          INTEGER NOT NULL UNIQUE,
-    "username"         TEXT    NOT NULL,
-    "pwd_hash"         TEXT    NOT NULL,
-    "profile_pic_path" TEXT,
-    PRIMARY KEY ("user_id" AUTOINCREMENT)
+    "user_id"          INTEGER PRIMARY KEY,
+    "username"         TEXT  NOT NULL,
+    "pwd_hash"         TEXT  NOT NULL,
+    "profile_pic_path" TEXT
 );
 
 CREATE TABLE "playlist"
 (
-    "playlist_id"          INTEGER NOT NULL UNIQUE,
+    "playlist_id"          INTEGER PRIMARY KEY,
     "playlist_title"       TEXT    NOT NULL,
     "playlist_description" TEXT,
-    "user_id"              INTEGER NOT NULL,
-    PRIMARY KEY ("playlist_id" AUTOINCREMENT)
+    "user_id"              INTEGER NOT NULL
 );
 
 CREATE TABLE "track_by_artist"

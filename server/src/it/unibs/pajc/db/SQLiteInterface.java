@@ -1,10 +1,8 @@
 package it.unibs.pajc.db;
 
-import it.unibs.pajc.db.Column;
-import it.unibs.pajc.db.Table;
-
 import java.io.Closeable;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -31,13 +29,80 @@ public class SQLiteInterface implements Closeable {
         }
     }
 
-    // CREATE
-    // TODO: create
-    public <T> void createObject(T object) {
-        // TODO: implement
+    @Override
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    // READ
+    // region CREATE
+    // TODO: create
+
+    public <T> void createObjects(T[] objects, Class<T> objType) {
+        if (!objType.isAnnotationPresent(Table.class))
+            throw new IllegalArgumentException("The argument class must have the @Table annotation");
+        try {
+            var statement = connection.createStatement();
+
+            // BUILD QUERY
+            Field[] declaredFields = objType.getDeclaredFields();
+            var sqlBuilder = new StringBuilder();
+            sqlBuilder.ensureCapacity(14 + 10 * objects.length * (1 + declaredFields.length));
+            var tableName = objType.getAnnotation(Table.class).name();
+            sqlBuilder.append("INSERT INTO ").append(tableName).append("(");
+
+            var previousValueInserted = false;
+            for (var column : declaredFields) {
+                if (!column.isAnnotationPresent(Column.class) || column.isAnnotationPresent(Id.class)) {
+                    previousValueInserted = false;
+                    continue;
+                }
+                if (previousValueInserted) sqlBuilder.append(", ");
+                sqlBuilder.append(column.getAnnotation(Column.class).name());
+                previousValueInserted = true;
+            }
+
+            sqlBuilder.append(") VALUES");
+            for (int i = 0; i < objects.length; i++) {
+                if (i > 0) sqlBuilder.append(", ");
+                sqlBuilder.append("(");
+                previousValueInserted = false;
+                for (var column : declaredFields) {
+                    column.setAccessible(true);
+                    if (!column.isAnnotationPresent(Column.class) || column.isAnnotationPresent(Id.class)) {
+                        previousValueInserted = false;
+                        continue;
+                    }
+                    if (previousValueInserted) sqlBuilder.append(", ");
+                    Object valueToInsert = column.get(objects[i]);
+                    if (valueToInsert != null) sqlBuilder.append("'").append(valueToInsert).append("'");
+                    else sqlBuilder.append("NULL");
+                    previousValueInserted = true;
+                }
+                sqlBuilder.append(")");
+            }
+
+            System.out.println(sqlBuilder);
+            statement.executeUpdate(sqlBuilder.toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> void createObject(T object, Class<T> objType) {
+        var array = (T[]) Array.newInstance(objType, 1);
+        array[0] = object;
+        createObjects(array, objType);
+    }
+
+    // endregion
+
+    //region READ
 
     /**
      * Performs a query on the db using the annotated fields of the specified class.
@@ -107,18 +172,10 @@ public class SQLiteInterface implements Closeable {
     public <T> T[] getObjects(Class<T> objType) throws IllegalArgumentException {
         return getObjects(objType, "");
     }
-
+    //endregion
     // UPDATE
     // TODO: update
     // DELETE
-    // TODO: delete
 
-    @Override
-    public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    // TODO: delete
 }

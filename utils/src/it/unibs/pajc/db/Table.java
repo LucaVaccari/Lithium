@@ -5,7 +5,7 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Marks a class as the model of a database table.
- * Use the attribute {@link #name() name} for specifying the name of the table.
+ * The attribute {@link #name() name} specifies the name of the table.
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Table {

@@ -39,8 +39,8 @@ from user_saved_playlist
 where true;
 
 insert into album(album_id, album_title, album_release_date)
-VALUES (1, 'Fragile', date(2022, 7, 20)),
-       (2, 'Eternative', date(2023, 11, 22));
+VALUES ('1', 'Fragile', '2022-07-20'),
+       (2, 'Eternative', '2023-11-22');
 
 insert into artist(artist_id, artist_name)
 VALUES (1, 'Lit Silver'),

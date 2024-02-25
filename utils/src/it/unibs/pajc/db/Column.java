@@ -5,7 +5,7 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Marks a field as the model of a database column.
- * Use the attribute {@link #name() name} for specifying the name of the column.
+ * The attribute {@link #name() name} specifies the name of the column.
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Column {
