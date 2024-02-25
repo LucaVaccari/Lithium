@@ -12,7 +12,7 @@ public class ClientMain extends Application {
 
     @Override
     public void start(Stage stage) {
-        var root = FXMLFileLoader.loadFXML("/FXMLs/test.fxml", this);
+        var root = FXMLFileLoader.loadFXML("/FXMLs/mainScene.fxml", this);
         Scene scene = new Scene(root);
         stage.setScene(scene);
         

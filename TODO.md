@@ -5,10 +5,16 @@
 - [ ] Client interface
     - [ ] Login screen
     - [ ] Music play view
+        - [ ] Currently playing track
+        - [ ] Queue
     - [ ] Library tab
     - [ ] Search tab
     - [ ] Settings tab
+        - [ ] Change theme
+        - [ ] Equalizer
+        - [ ] Log out
 - [ ] Server interaction
+- [ ] Theme (AtlantaFX)
 
 ## Server
 
