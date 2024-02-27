@@ -2,7 +2,6 @@ package it.unibs.pajc.lithium;
 
 import com.sun.net.httpserver.HttpServer;
 import it.unibs.pajc.lithium.db.DbConnector;
-import it.unibs.pajc.lithium.db.om.Album;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
