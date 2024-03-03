@@ -2,6 +2,7 @@ package it.unibs.pajc.lithium.db;
 
 import it.unibs.pajc.db.SQLiteInterface;
 import it.unibs.pajc.lithium.db.om.Album;
+import it.unibs.pajc.lithium.db.om.User;
 
 import java.io.Closeable;
 
@@ -28,16 +29,36 @@ public class DbConnector implements Closeable {
         dbInf.connect(dbUrl);
     }
 
-    // Albums, artists, genres, playlists, tracks, users
-    // region CREATE
+    //region CREATE
+    public void registerUser(String name, String pswHash) {
+        User user = new User(name, pswHash);
+        dbInf.createObject(user, User.class);
+    }
+
     public void createAlbum(Album album) {
         dbInf.createObject(album, Album.class);
 
         // TODO insert artist and genre list
     }
 
-    // endregion
-    // READ
+    //endregion
+    //region READ
+    public User getUserByName(String name) {
+        String queryFilter = "where username = '%s'".formatted(name);
+        User[] users = dbInf.getObjects(User.class, queryFilter);
+        if (users.length == 1) return users[0];
+        else if (users.length == 0) return null;
+        else throw new RuntimeException("There's more than one user with the same name");
+    }
+
+    public boolean authenticateUser(String name, String pswHash) {
+        String queryFilter = "where username = '%s' and pwd_hash = '%s'".formatted(name, pswHash);
+        User[] users = dbInf.getObjects(User.class, queryFilter);
+        if (users.length == 1) return true;
+        else if (users.length == 0) return false;
+        else throw new RuntimeException("There's more than one user with the same name");
+    }
+
     public Album[] getAllAlbums() {
         return dbInf.getObjects(Album.class);
 
@@ -45,7 +66,7 @@ public class DbConnector implements Closeable {
     }
 
     public Album getAlbumById(int id) {
-        String queryFilter = "where album_id = " + id;
+        String queryFilter = "where album_id = '%d'".formatted(id);
         Album[] albums = dbInf.getObjects(Album.class, queryFilter);
         if (albums.length == 1) return albums[0];
         else if (albums.length == 0) return null;
@@ -53,8 +74,9 @@ public class DbConnector implements Closeable {
 
         // TODO: get artists and genres
     }
-    // UPDATE
-    // TODO: update
-    // DELETE
-    // TODO: delete
+    //endregion
+    //region UPDATE
+    //endregion
+    //region DELETE
+    //endregion
 }

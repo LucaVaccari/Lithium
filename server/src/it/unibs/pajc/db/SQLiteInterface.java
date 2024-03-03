@@ -9,7 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Establishes a connection with the SQLie db and provides methods for interacting with it (independent of the rest of the program)
+ * Establishes a connection with the SQLie db and provides methods for interacting with it (independent of the rest
+ * of the program)
  */
 public class SQLiteInterface implements Closeable {
     private Connection connection;
@@ -32,6 +33,7 @@ public class SQLiteInterface implements Closeable {
     @Override
     public void close() {
         try {
+            System.out.println("Connection to db interrupted");
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -109,7 +111,8 @@ public class SQLiteInterface implements Closeable {
      *
      * @param objType       The class which fields will be used in the SQL query
      * @param optionalQuery An optional part of the query appended to "select * from [table] ". Useful for where or join
-     * @param fields        The list of column names from which to retrieve data from the db. If empty all the columns will be retrieved
+     * @param fields        The list of column names from which to retrieve data from the db. If empty all the
+     *                      columns will be retrieved
      * @param <T>           The type of the object to retrieve
      * @return An array of retrieved objects
      * @throws IllegalArgumentException Thrown when objClass does not have the {@link Table} annotation

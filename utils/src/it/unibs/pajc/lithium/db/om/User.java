@@ -22,6 +22,14 @@ public class User {
     private Album[] savedAlbums;
     private Playlist[] savedPlaylists;
 
+    public User() {
+    }
+
+    public User(String username, String pwdHash) {
+        this.username = username;
+        this.pwdHash = pwdHash;
+    }
+
     public Integer getId() {
         return id;
     }

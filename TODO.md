@@ -10,6 +10,7 @@
     - [ ] Library tab
     - [ ] Search tab
     - [ ] Settings tab
+        - [ ] server address
         - [ ] Change theme
         - [ ] Equalizer
         - [ ] Log out
