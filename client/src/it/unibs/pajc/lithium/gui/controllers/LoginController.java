@@ -1,9 +1,12 @@
 package it.unibs.pajc.lithium.gui.controllers;
 
 import com.google.common.hash.Hashing;
+import it.unibs.pajc.lithium.ClientMain;
 import it.unibs.pajc.lithium.HttpHandler;
+import it.unibs.pajc.lithium.gui.FXMLFileLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -50,18 +53,60 @@ public class LoginController {
                         confirmPswTxtField.getText().isEmpty() && state == State.Register;
         submitBtn.setDisable(disable);
 
-        if (state == State.Register) {
-            boolean pswMatch = pswTxtField.getText().equals(confirmPswTxtField.getText());
-            messagesLabel.setText(pswMatch ? "" : "The passwords don't match");
-            submitBtn.setDisable(!pswMatch);
+        checkFieldsValidity();
+    }
+
+    private boolean checkFieldsValidity() {
+        submitBtn.setDisable(false);
+        String username = usernameTxtField.getText();
+        String password = pswTxtField.getText();
+
+        if (username.contains(" ")) {
+            messagesLabel.setText("The username must not contain empty spaces");
+            submitBtn.setDisable(true);
         }
+
+        if (!username.matches("^[a-zA-Z0-9_]+")) {
+            messagesLabel.setText("The username must contains only digits, letters and _");
+            submitBtn.setDisable(true);
+        }
+
+        switch (state) {
+            case Start -> {
+            }
+            case Register -> {
+                if (password.equals(confirmPswTxtField.getText())) {
+                    messagesLabel.setText("The passwords don't match");
+                    submitBtn.setDisable(true);
+                }
+
+                if (password.contains(" ")) {
+                    messagesLabel.setText("The password must not contain empty spaces");
+                    submitBtn.setDisable(true);
+                }
+
+                if (password.isEmpty())
+                    submitBtn.setDisable(true);
+            }
+            case Login -> {
+                if (password.contains(" ")) {
+                    messagesLabel.setText("The password must not contain empty spaces");
+                    submitBtn.setDisable(true);
+                }
+
+                if (password.isEmpty())
+                    submitBtn.setDisable(true);
+            }
+        }
+        if (username.isEmpty()) submitBtn.setDisable(true);
+
+        return !submitBtn.isDisabled();
     }
 
     public void onSubmitBtn(ActionEvent ignoredEvent) {
-        // TODO: show psw prompt, login or register based on other inputs
+        if (!checkFieldsValidity()) return;
         String username = usernameTxtField.getText();
         if (state == State.Start) {
-            if (username.isEmpty()) return;
             boolean userExists = Boolean.parseBoolean(HttpHandler.get("/user/exists", new HashMap<>() {{
                 put("username", username);
             }}));
@@ -72,19 +117,20 @@ public class LoginController {
             state = userExists ? State.Login : State.Register;
             onTxtFieldChanged(null);
         } else {
-            if (pswTxtField.getText().isEmpty()) return;
-            // todo validate password
-            String pswHash = Hashing.sha256().hashString(pswTxtField.getText(), StandardCharsets.UTF_8).toString();
+            String password = pswTxtField.getText();
+            String pswHash = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
             if (state == State.Register) {
                 HttpHandler.post("/user/register", username + "," + pswHash);
                 state = State.Login;
                 confirmPswContainer.setVisible(false);
                 submitBtn.setText("Login");
+                messagesLabel.setText("Successfully registered!");
             } else if (state == State.Login) {
                 boolean auth = Boolean.parseBoolean(HttpHandler.post("/user/auth", username + "," + pswHash));
                 if (auth) {
                     messagesLabel.setText("Login successful");
-                    // todo load main scene
+                    var root = FXMLFileLoader.loadFXML("/FXMLs/mainScene.fxml", this);
+                    ClientMain.setScene(new Scene(root));
                 } else {
                     messagesLabel.setText("Wrong password. Try again");
                     pswTxtField.setText("");

@@ -30,7 +30,11 @@ public class DbConnector implements Closeable {
     }
 
     //region CREATE
-    public void registerUser(String name, String pswHash) {
+    public void registerUser(String name, String pswHash) throws IllegalArgumentException {
+        if (getUserByName(name) != null)
+            throw new IllegalArgumentException(
+                    "The user %s already exists, you cannot register it again".formatted(name));
+
         User user = new User(name, pswHash);
         dbInf.createObject(user, User.class);
     }

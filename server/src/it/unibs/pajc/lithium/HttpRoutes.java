@@ -31,7 +31,13 @@ public class HttpRoutes {
             res.body("The body must be formatted in the following way: <username>,<psw>");
             return false;
         }
-        getDbConnector().registerUser(strings[0], strings[1]);
+        try {
+            getDbConnector().registerUser(strings[0], strings[1]);
+        } catch (IllegalArgumentException e) {
+            res.status(400);
+            res.body(e.getMessage());
+            return false;
+        }
         return "Done";
     }
     //endregion
