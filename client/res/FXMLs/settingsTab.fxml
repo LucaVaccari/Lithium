@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<fx:root xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml"
+         prefHeight="400.0" prefWidth="600.0" type="AnchorPane">
+    <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="15.0"
+          AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0"/>
+</fx:root>

@@ -3,7 +3,7 @@
 ## Client
 
 - [ ] Client interface
-    - [ ] Login screen
+    - [x] Login screen
     - [ ] Music play view
         - [ ] Currently playing track
         - [ ] Queue
@@ -14,22 +14,27 @@
         - [ ] Change theme
         - [ ] Equalizer
         - [ ] Log out
+    - [ ] detail views
+      - [ ] album details
+      - [ ] artist details
+      - [ ] playlist details
 - [ ] Server interaction
 - [ ] Theme (AtlantaFX)
+- [ ] Client config file
 
 ## Server
 
-- [ ] server config file (server.properties)
-    - [ ] server info (port)
-    - [ ] db info (db url, root directory for files)
-- [ ] server database integration
-    - [x] write object mappers
-    - [ ] implement CRUD methods
-- [ ] interface for managing the db
-- [ ] define and implement HTTP contexts
-    - [ ] client authentication
-    - [ ] search queries
-    - [ ] streaming request
+- [ ] Server config file (server.properties)
+    - [ ] Server info (port)
+    - [ ] Db info (db url, root directory for files)
+- [ ] Server database integration
+    - [x] Write object mappers
+    - [ ] Implement CRUD methods
+- [x] Interface for managing the db
+- [ ] Define and implement HTTP contexts
+    - [x] Client authentication
+    - [ ] Search queries
+    - [ ] Streaming request
 
 ## Database
 

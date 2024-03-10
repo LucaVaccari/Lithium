@@ -67,7 +67,7 @@ public class LoginController {
         }
 
         if (!username.matches("^[a-zA-Z0-9_]+")) {
-            messagesLabel.setText("The username must contains only digits, letters and _");
+            messagesLabel.setText("The username must contains only digits, letters or _");
             submitBtn.setDisable(true);
         }
 
