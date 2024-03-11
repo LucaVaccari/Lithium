@@ -6,6 +6,7 @@ import spark.Response;
 import java.util.Arrays;
 
 import static it.unibs.pajc.lithium.ServerMain.getDbConnector;
+import static it.unibs.pajc.lithium.ServerMain.getGson;
 
 public class HttpRoutes {
     //region context methods
@@ -39,6 +40,22 @@ public class HttpRoutes {
             return false;
         }
         return "Done";
+    }
+
+    public static String getPlaylists(Request req, Response res) {
+        try {
+            int numberOfResults = Integer.parseInt(req.queryParamOrDefault("number-of-results", "20"));
+            var playlists = getDbConnector().getAllPlaylists(numberOfResults);
+            String json = getGson().toJson(playlists);
+            System.out.println(json);
+            res.status(200);
+            res.body(json);
+            return json;
+        } catch (NumberFormatException e) {
+            res.status(400);
+            res.body("Some of the provided fields cannot be converted to integers");
+            return "ERROR";
+        }
     }
     //endregion
 }

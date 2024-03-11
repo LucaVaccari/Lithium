@@ -1,11 +1,13 @@
 package it.unibs.pajc.lithium;
 
+import com.google.gson.Gson;
 import it.unibs.pajc.lithium.db.DbConnector;
 
 import static spark.Spark.*;
 
 public class ServerMain {
     private static DbConnector dbConnector;
+    private static Gson gson;
 
     public static void main(String[] args) {
         dbConnector = new DbConnector();
@@ -17,6 +19,9 @@ public class ServerMain {
             post("/register", HttpRoutes::registerUser);
         });
 
+        get("/playlists", HttpRoutes::getPlaylists);
+
+        // TODO: show available calls
         get("/", (req, res) -> "Welcome to Lithium!");
 
 
@@ -63,5 +68,9 @@ public class ServerMain {
 
     public static DbConnector getDbConnector() {
         return dbConnector;
+    }
+
+    public static Gson getGson() {
+        return gson;
     }
 }

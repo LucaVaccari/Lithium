@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Establishes a connection with the SQLie db and provides methods for interacting with it (independent of the rest
@@ -110,6 +111,7 @@ public class SQLiteInterface implements Closeable {
      * Performs a query on the db using the annotated fields of the specified class.
      *
      * @param objType       The class which fields will be used in the SQL query
+     * @param maxSize       The max number of results that can be fetched from the db
      * @param optionalQuery An optional part of the query appended to "select * from [table] ". Useful for where or join
      * @param fields        The list of column names from which to retrieve data from the db. If empty all the
      *                      columns will be retrieved
@@ -118,7 +120,8 @@ public class SQLiteInterface implements Closeable {
      * @throws IllegalArgumentException Thrown when objClass does not have the {@link Table} annotation
      */
     @SuppressWarnings("unchecked")
-    public <T> T[] getObjects(Class<T> objType, String optionalQuery, String[] fields) throws IllegalArgumentException {
+    public <T> T[] getObjects(Class<T> objType, int maxSize, String optionalQuery, String[] fields)
+            throws IllegalArgumentException {
         if (!objType.isAnnotationPresent(Table.class))
             throw new IllegalArgumentException("The specified class must have the @Table annotation");
         try {
@@ -126,13 +129,14 @@ public class SQLiteInterface implements Closeable {
 
             String fieldList = fields.length == 0 ? "*" : String.join(", ", fields);
             String tableName = objType.getAnnotation(Table.class).name();
-            String query = "SELECT " + fieldList + " from " + tableName + " " + optionalQuery;
+            String query = "SELECT %s from %s %s".formatted(fieldList, tableName, optionalQuery);
 
             var resultSet = statement.executeQuery(query);
             var rsMetaData = resultSet.getMetaData();
             var objects = new ArrayList<T>();
-            while (resultSet.next()) {
+            while (resultSet.next() && objects.size() < maxSize) {
                 T object = objType.getDeclaredConstructor().newInstance();
+                Field id = null;
                 for (int i = 0; i < rsMetaData.getColumnCount(); i++) {
                     for (var field : objType.getDeclaredFields()) {
                         if (!field.isAnnotationPresent(Column.class)) continue;
@@ -140,7 +144,35 @@ public class SQLiteInterface implements Closeable {
                         String columnName = field.getAnnotation(Column.class).name();
                         Object result = resultSet.getObject(columnName);
                         field.set(object, result);
+
+                        if (field.isAnnotationPresent(Id.class))
+                            id = field;
                     }
+                }
+                if (id != null) {
+                    Field finalId = id;
+                    Arrays.stream(objType.getDeclaredFields())
+                            .filter(field -> field.isAnnotationPresent(ManyToMany.class)).forEach(field -> {
+                                try {
+                                    var mtmAnnotation = field.getAnnotation(ManyToMany.class);
+                                    finalId.setAccessible(true);
+                                    field.setAccessible(true);
+                                    String otherTableColumnName = mtmAnnotation.otherTableColumnName();
+                                    var mtmQuery =
+                                            "SELECT %s from %s where %s = %d".formatted(otherTableColumnName,
+                                                    mtmAnnotation.otherTableName(),
+                                                    finalId.getAnnotation(Column.class).name(),
+                                                    (int) finalId.get(object));
+                                    var mtmResultSet = statement.executeQuery(mtmQuery);
+                                    var ids = new ArrayList<Integer>();
+                                    while (mtmResultSet.next()) {
+                                        ids.add(resultSet.getInt(otherTableColumnName));
+                                    }
+                                    field.set(object, ids.toArray(new Integer[0]));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            });
                 }
                 objects.add(object);
             }
@@ -155,25 +187,27 @@ public class SQLiteInterface implements Closeable {
      * Performs a query on the db using the annotated fields of the specified class.
      *
      * @param objType       The class which fields will be used in the SQL query
+     * @param maxSize       The max number of results that can be fetched from the db
      * @param optionalQuery An optional part of the query appended to "select * from [table] ". Useful for where or join
      * @param <T>           The type of the object to retrieve
      * @return An array of retrieved objects
      * @throws IllegalArgumentException Thrown when objClass does not have the {@link Table} annotation
      */
-    public <T> T[] getObjects(Class<T> objType, String optionalQuery) throws IllegalArgumentException {
-        return getObjects(objType, optionalQuery, new String[]{});
+    public <T> T[] getObjects(Class<T> objType, int maxSize, String optionalQuery) throws IllegalArgumentException {
+        return getObjects(objType, maxSize, optionalQuery, new String[]{});
     }
 
     /**
      * Performs a query on the db using the annotated fields of the specified class.
      *
      * @param objType The class which fields will be used in the SQL query
+     * @param maxSize The max number of results that can be fetched from the db
      * @param <T>     The type of the object to retrieve
      * @return An array of retrieved objects
      * @throws IllegalArgumentException Thrown when objClass does not have the {@link Table} annotation
      */
-    public <T> T[] getObjects(Class<T> objType) throws IllegalArgumentException {
-        return getObjects(objType, "");
+    public <T> T[] getObjects(Class<T> objType, int maxSize) throws IllegalArgumentException {
+        return getObjects(objType, maxSize, "");
     }
     //endregion
     // UPDATE

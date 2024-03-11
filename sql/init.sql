@@ -15,7 +15,7 @@ drop table if exists user_saved_playlist;
 CREATE TABLE "album"
 (
     "album_id"           INTEGER PRIMARY KEY,
-    "album_title"        TEXT  NOT NULL,
+    "album_title"        TEXT NOT NULL,
     "album_version"      TEXT,
     "album_release_date" TEXT,
     "cover_img_path"     TEXT
@@ -35,21 +35,21 @@ CREATE TABLE "track"
 CREATE TABLE "artist"
 (
     "artist_id"   INTEGER PRIMARY KEY,
-    "artist_name" TEXT  NOT NULL
+    "artist_name" TEXT NOT NULL
 );
 
 CREATE TABLE "genre"
 (
     "genre_id"          INTEGER PRIMARY KEY,
-    "genre_name"        TEXT  NOT NULL,
+    "genre_name"        TEXT NOT NULL,
     "genre_description" TEXT
 );
 
 CREATE TABLE "user"
 (
     "user_id"          INTEGER PRIMARY KEY,
-    "username"         TEXT  NOT NULL,
-    "pwd_hash"         TEXT  NOT NULL,
+    "username"         TEXT NOT NULL,
+    "pwd_hash"         TEXT NOT NULL,
     "profile_pic_path" TEXT
 );
 
@@ -85,15 +85,17 @@ CREATE TABLE "album_by_artist"
     "album_id"  INTEGER NOT NULL,
     "artist_id" INTEGER NOT NULL,
     PRIMARY KEY ("album_id", "artist_id"),
-    FOREIGN KEY ("album_id") REFERENCES "album" ("album_id")
+    FOREIGN KEY ("album_id") REFERENCES "album" ("album_id"),
+    FOREIGN KEY ("artist_id") REFERENCES "artist" ("artist_id")
 );
 
 CREATE TABLE "album_genre"
 (
-    "album_id"    INTEGER NOT NULL,
-    "album_genre" INTEGER NOT NULL,
+    "album_id" INTEGER NOT NULL,
+    "genre_id" INTEGER NOT NULL,
     FOREIGN KEY ("album_id") REFERENCES "album" ("album_id"),
-    PRIMARY KEY ("album_id", "album_genre")
+    FOREIGN KEY ("genre_id") REFERENCES "genre" ("genre_id"),
+    PRIMARY KEY ("album_id", "genre_id")
 );
 
 CREATE TABLE "artist_follower"
@@ -101,6 +103,7 @@ CREATE TABLE "artist_follower"
     "artist_id" INTEGER NOT NULL,
     "user_id"   INTEGER NOT NULL,
     FOREIGN KEY ("artist_id") REFERENCES "artist" ("artist_id"),
+    FOREIGN KEY ("user_id") REFERENCES "user" ("user_id"),
     PRIMARY KEY ("artist_id", "user_id")
 );
 
@@ -109,7 +112,8 @@ CREATE TABLE "user_saved_album"
     "user_id"  INTEGER NOT NULL,
     "album_id" INTEGER NOT NULL,
     PRIMARY KEY ("user_id", "album_id"),
-    FOREIGN KEY ("user_id") REFERENCES "user" ("user_id")
+    FOREIGN KEY ("user_id") REFERENCES "user" ("user_id"),
+    FOREIGN KEY ("album_id") REFERENCES "album" ("album_id")
 );
 
 CREATE TABLE "user_saved_playlist"
@@ -118,5 +122,5 @@ CREATE TABLE "user_saved_playlist"
     "playlist_id" INTEGER NOT NULL,
     PRIMARY KEY ("user_id", "playlist_id"),
     FOREIGN KEY ("user_id") REFERENCES "user" ("user_id"),
-    FOREIGN KEY ("playlist_id") REFERENCES "playlist"
+    FOREIGN KEY ("playlist_id") REFERENCES "playlist" ("playlist_id")
 )

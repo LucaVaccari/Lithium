@@ -2,6 +2,7 @@ package it.unibs.pajc.lithium.db;
 
 import it.unibs.pajc.db.SQLiteInterface;
 import it.unibs.pajc.lithium.db.om.Album;
+import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.db.om.User;
 
 import java.io.Closeable;
@@ -49,7 +50,7 @@ public class DbConnector implements Closeable {
     //region READ
     public User getUserByName(String name) {
         String queryFilter = "where username = '%s'".formatted(name);
-        User[] users = dbInf.getObjects(User.class, queryFilter);
+        User[] users = dbInf.getObjects(User.class, 5, queryFilter);
         if (users.length == 1) return users[0];
         else if (users.length == 0) return null;
         else throw new RuntimeException("There's more than one user with the same name");
@@ -57,21 +58,23 @@ public class DbConnector implements Closeable {
 
     public boolean authenticateUser(String name, String pswHash) {
         String queryFilter = "where username = '%s' and pwd_hash = '%s'".formatted(name, pswHash);
-        User[] users = dbInf.getObjects(User.class, queryFilter);
+        User[] users = dbInf.getObjects(User.class, 5, queryFilter);
         if (users.length == 1) return true;
         else if (users.length == 0) return false;
         else throw new RuntimeException("There's more than one user with the same name");
     }
 
-    public Album[] getAllAlbums() {
-        return dbInf.getObjects(Album.class);
+    public Album[] getAllAlbums(int numberOfResults) {
+        return dbInf.getObjects(Album.class, numberOfResults);
+    }
 
-        // TODO: get artists and genres
+    public Playlist[] getAllPlaylists(int numberOfResults) {
+        return dbInf.getObjects(Playlist.class, numberOfResults);
     }
 
     public Album getAlbumById(int id) {
         String queryFilter = "where album_id = '%d'".formatted(id);
-        Album[] albums = dbInf.getObjects(Album.class, queryFilter);
+        Album[] albums = dbInf.getObjects(Album.class, 5, queryFilter);
         if (albums.length == 1) return albums[0];
         else if (albums.length == 0) return null;
         else throw new RuntimeException("There's more than one album with the same id");

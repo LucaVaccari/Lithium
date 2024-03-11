@@ -4,8 +4,10 @@ import it.unibs.pajc.db.Column;
 import it.unibs.pajc.db.Id;
 import it.unibs.pajc.db.Table;
 
+import java.io.Serializable;
+
 @Table(name = "genre")
-public class Genre {
+public class Genre implements Serializable {
     @Id
     @Column(name = "genre_id")
     private Integer id;

@@ -2,10 +2,13 @@ package it.unibs.pajc.lithium.db.om;
 
 import it.unibs.pajc.db.Column;
 import it.unibs.pajc.db.Id;
+import it.unibs.pajc.db.ManyToMany;
 import it.unibs.pajc.db.Table;
 
+import java.io.Serializable;
+
 @Table(name = "user")
-public class User {
+public class User implements Serializable {
     @Id
     @Column(name = "user_id")
     private Integer id;
@@ -19,8 +22,10 @@ public class User {
     @Column(name = "profile_pic_path")
     private String profilePicPath;
 
-    private Album[] savedAlbums;
-    private Playlist[] savedPlaylists;
+    @ManyToMany(otherTableName = "user_saved_albums", otherTableColumnName = "album_id")
+    private Integer[] savedAlbumsIds;
+    @ManyToMany(otherTableName = "user_saved_playlist", otherTableColumnName = "playlist_id")
+    private Integer[] savedPlaylistsIds;
 
     public User() {
     }

@@ -2,10 +2,13 @@ package it.unibs.pajc.lithium.db.om;
 
 import it.unibs.pajc.db.Column;
 import it.unibs.pajc.db.Id;
+import it.unibs.pajc.db.ManyToMany;
 import it.unibs.pajc.db.Table;
 
+import java.io.Serializable;
+
 @Table(name = "track")
-public class Track {
+public class Track implements Serializable {
     @Id
     @Column(name = "track_id")
     private Integer id;
@@ -25,7 +28,8 @@ public class Track {
     @Column(name = "audio_path")
     private String audioPath;
 
-    private Artist[] artists;
+    @ManyToMany(otherTableName = "track_by_artist", otherTableColumnName = "artist_id")
+    private Integer[] artistsIds;
 
     public Integer getId() {
         return id;
