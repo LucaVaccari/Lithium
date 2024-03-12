@@ -5,6 +5,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -106,6 +107,12 @@ public class SQLiteInterface implements Closeable {
     // endregion
 
     //region READ
+    private ResultSet genericGetQuery(String[] fields, String tableName, String optionalQuery) throws SQLException {
+        var statement = connection.createStatement();
+        String fieldList = fields.length == 0 ? "*" : String.join(", ", fields);
+        String query = "SELECT %s from %s %s".formatted(fieldList, tableName, optionalQuery);
+        return statement.executeQuery(query);
+    }
 
     /**
      * Performs a query on the db using the annotated fields of the specified class.
@@ -119,19 +126,13 @@ public class SQLiteInterface implements Closeable {
      * @return An array of retrieved objects
      * @throws IllegalArgumentException Thrown when objClass does not have the {@link Table} annotation
      */
-    @SuppressWarnings("unchecked")
     public <T> T[] getObjects(Class<T> objType, int maxSize, String optionalQuery, String[] fields)
             throws IllegalArgumentException {
         if (!objType.isAnnotationPresent(Table.class))
             throw new IllegalArgumentException("The specified class must have the @Table annotation");
         try {
-            var statement = connection.createStatement();
-
-            String fieldList = fields.length == 0 ? "*" : String.join(", ", fields);
             String tableName = objType.getAnnotation(Table.class).name();
-            String query = "SELECT %s from %s %s".formatted(fieldList, tableName, optionalQuery);
-
-            var resultSet = statement.executeQuery(query);
+            var resultSet = genericGetQuery(fields, tableName, optionalQuery);
             var rsMetaData = resultSet.getMetaData();
             var objects = new ArrayList<T>();
             while (resultSet.next() && objects.size() < maxSize) {
@@ -158,12 +159,10 @@ public class SQLiteInterface implements Closeable {
                                     finalId.setAccessible(true);
                                     field.setAccessible(true);
                                     String otherTableColumnName = mtmAnnotation.otherTableColumnName();
-                                    var mtmQuery =
-                                            "SELECT %s from %s where %s = %d".formatted(otherTableColumnName,
-                                                    mtmAnnotation.otherTableName(),
-                                                    finalId.getAnnotation(Column.class).name(),
-                                                    (int) finalId.get(object));
-                                    var mtmResultSet = statement.executeQuery(mtmQuery);
+                                    var mtmResultSet = genericGetQuery(new String[]{otherTableColumnName},
+                                            mtmAnnotation.otherTableName(),
+                                            "where %s = %d".formatted(finalId.getAnnotation(Column.class).name(),
+                                                    (int) finalId.get(object)));
                                     var ids = new ArrayList<Integer>();
                                     while (mtmResultSet.next()) {
                                         ids.add(resultSet.getInt(otherTableColumnName));
@@ -208,6 +207,17 @@ public class SQLiteInterface implements Closeable {
      */
     public <T> T[] getObjects(Class<T> objType, int maxSize) throws IllegalArgumentException {
         return getObjects(objType, maxSize, "");
+    }
+
+    public int getNumberOfEntries(String tableName, String optionalQuery) {
+        try {
+            var resultSet = genericGetQuery(new String[]{"COUNT(*) AS n"}, tableName, optionalQuery);
+            System.out.println(resultSet.getInt("n"));
+            return resultSet.getInt("n");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
     //endregion
     // UPDATE

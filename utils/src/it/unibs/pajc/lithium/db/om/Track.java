@@ -30,6 +30,8 @@ public class Track implements Serializable {
 
     @ManyToMany(otherTableName = "track_by_artist", otherTableColumnName = "artist_id")
     private Integer[] artistsIds;
+    
+    private int numberOfSaves;
 
     public Integer getId() {
         return id;
@@ -73,5 +75,13 @@ public class Track implements Serializable {
 
     public void setAudioPath(String audioPath) {
         this.audioPath = audioPath;
+    }
+
+    public int getNumberOfSaves() {
+        return numberOfSaves;
+    }
+
+    public void setNumberOfSaves(int numberOfSaves) {
+        this.numberOfSaves = numberOfSaves;
     }
 }

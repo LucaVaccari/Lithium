@@ -2,6 +2,7 @@ package it.unibs.pajc.lithium.db;
 
 import it.unibs.pajc.db.SQLiteInterface;
 import it.unibs.pajc.lithium.db.om.Album;
+import it.unibs.pajc.lithium.db.om.Artist;
 import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.db.om.User;
 
@@ -72,14 +73,21 @@ public class DbConnector implements Closeable {
         return dbInf.getObjects(Playlist.class, numberOfResults);
     }
 
+    public Artist[] getAllArtists(int numberOfResults) {
+        return dbInf.getObjects(Artist.class, numberOfResults);
+    }
+
     public Album getAlbumById(int id) {
         String queryFilter = "where album_id = '%d'".formatted(id);
         Album[] albums = dbInf.getObjects(Album.class, 5, queryFilter);
         if (albums.length == 1) return albums[0];
         else if (albums.length == 0) return null;
         else throw new RuntimeException("There's more than one album with the same id");
+    }
 
-        // TODO: get artists and genres
+    public int getNumberOfSavesPerTrack(int trackId) {
+        var whereQuery = "where trackId = %d".formatted(trackId);
+        return dbInf.getNumberOfEntries("track_in_playlist", whereQuery);
     }
     //endregion
     //region UPDATE

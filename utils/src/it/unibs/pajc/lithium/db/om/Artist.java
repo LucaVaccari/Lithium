@@ -15,6 +15,9 @@ public class Artist implements Serializable {
     @Column(name = "artist_name")
     private String name;
 
+    @Column(name = "artist_bio")
+    private String bio;
+
     public Integer getId() {
         return id;
     }

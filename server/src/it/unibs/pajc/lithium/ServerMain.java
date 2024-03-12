@@ -6,11 +6,10 @@ import it.unibs.pajc.lithium.db.DbConnector;
 import static spark.Spark.*;
 
 public class ServerMain {
-    private static DbConnector dbConnector;
-    private static Gson gson;
+    private static final DbConnector dbConnector = new DbConnector();
+    private static final Gson gson = new Gson();
 
     public static void main(String[] args) {
-        dbConnector = new DbConnector();
         dbConnector.connect("jdbc:sqlite:..\\database\\lithium.sqlite");
         port(8080);
         path("/user", () -> {
@@ -19,7 +18,9 @@ public class ServerMain {
             post("/register", HttpRoutes::registerUser);
         });
 
-        get("/playlists", HttpRoutes::getPlaylists);
+        get("/playlists", HttpRoutes::getPlaylistsInfo);
+        get("/artists", HttpRoutes::getArtistsInfo);
+        get("/albums", HttpRoutes::getAlbumsInfo);
 
         // TODO: show available calls
         get("/", (req, res) -> "Welcome to Lithium!");
