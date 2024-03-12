@@ -34,9 +34,10 @@ CREATE TABLE "track"
 
 CREATE TABLE "artist"
 (
-    "artist_id"   INTEGER PRIMARY KEY,
-    "artist_name" TEXT NOT NULL,
-    "artist_bio" TEXT
+    "artist_id"       INTEGER PRIMARY KEY,
+    "artist_name"     TEXT NOT NULL,
+    "artist_pic_path" TEXT,
+    "artist_bio"      TEXT
 );
 
 CREATE TABLE "genre"

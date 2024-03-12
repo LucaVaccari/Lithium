@@ -1,12 +1,12 @@
 package it.unibs.pajc.lithium.gui.controllers;
 
-import it.unibs.pajc.lithium.gui.customComponents.CustomComponent;
+import it.unibs.pajc.lithium.gui.CustomComponent;
 import javafx.fxml.FXML;
 
 public class OnlineUsersTab extends CustomComponent {
     @Override
     protected String fxmlPath() {
-        return "/FXMLs/onlineUsersTab.fxml";
+        return "/FXMLs/mainTabs/onlineUsersTab.fxml";
     }
 
     @FXML

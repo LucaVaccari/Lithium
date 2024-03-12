@@ -11,12 +11,12 @@ public class Artist implements Serializable {
     @Id
     @Column(name = "artist_id")
     private Integer id;
-
     @Column(name = "artist_name")
     private String name;
-
     @Column(name = "artist_bio")
     private String bio;
+    @Column(name = "artist_pic_path")
+    private String profilePicturePath;
 
     public Integer getId() {
         return id;

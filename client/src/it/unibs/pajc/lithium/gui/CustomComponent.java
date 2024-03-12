@@ -1,6 +1,5 @@
-package it.unibs.pajc.lithium.gui.customComponents;
+package it.unibs.pajc.lithium.gui;
 
-import it.unibs.pajc.lithium.gui.FXMLFileLoader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 

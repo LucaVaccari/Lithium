@@ -1,9 +1,6 @@
 package it.unibs.pajc.lithium;
 
-import kong.unirest.GetRequest;
-import kong.unirest.HttpRequest;
-import kong.unirest.HttpRequestWithBody;
-import kong.unirest.Unirest;
+import kong.unirest.*;
 
 import java.util.HashMap;
 
@@ -24,7 +21,7 @@ public class HttpHandler {
      * @param subURL the URI to append after the server address
      * @return The response body received
      */
-    public static String get(String subURL) {
+    public static String get(String subURL) throws UnirestException {
         GetRequest getRequest = Unirest.get(URL + subURL);
         return getRequest.asString().getBody();
     }
