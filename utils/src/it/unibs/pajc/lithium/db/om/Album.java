@@ -76,6 +76,10 @@ public class Album implements Serializable {
         this.imgPath = imgPath;
     }
 
+    public Integer[] getGenresIds() {
+        return genresIds;
+    }
+
     @Override
     public String toString() {
         return "{id=%d, title='%s', version='%s', releaseDate='%s', imgPath='%s', artists='%s'}".formatted(id, title,

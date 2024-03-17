@@ -14,7 +14,7 @@ public class Playlist implements Serializable {
     private Integer id;
 
     @Column(name = "playlist_title")
-    private String title;
+    private String name;
 
     @Column(name = "playlist_description")
     private String description;
@@ -29,12 +29,12 @@ public class Playlist implements Serializable {
         return id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {

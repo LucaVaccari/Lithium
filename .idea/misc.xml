@@ -7,6 +7,7 @@
     <writeAnnotations>
       <writeAnnotation name="it.unibs.pajc.db.Column" />
       <writeAnnotation name="it.unibs.pajc.db.DbColumn" />
+      <writeAnnotation name="javafx.fxml.FXML" />
     </writeAnnotations>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />

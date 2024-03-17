@@ -17,14 +17,15 @@
         <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
         </padding>
-        <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS"/>
+        <ImageView fx:id="coverImg" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true"
+                   HBox.hgrow="ALWAYS"/>
         <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="3.0" HBox.hgrow="ALWAYS">
-            <Label maxWidth="1.7976931348623157E308" text="Playlist name" VBox.vgrow="ALWAYS">
+            <Label fx:id="nameLbl" maxWidth="1.7976931348623157E308" text="Playlist name" VBox.vgrow="ALWAYS">
                 <font>
                     <Font size="14.0"/>
                 </font>
             </Label>
-            <Label layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" text="Author"
+            <Label fx:id="authorLbl" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" text="Author"
                    VBox.vgrow="ALWAYS"/>
             <Label maxWidth="1.7976931348623157E308" text="N. tracks"/>
         </VBox>

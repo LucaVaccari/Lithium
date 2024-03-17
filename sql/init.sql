@@ -65,64 +65,50 @@ CREATE TABLE "playlist"
 
 CREATE TABLE "track_by_artist"
 (
-    "track_id"  INTEGER NOT NULL,
-    "artist_id" INTEGER NOT NULL,
-    FOREIGN KEY ("artist_id") REFERENCES "artist" ("artist_id"),
-    FOREIGN KEY ("track_id") REFERENCES "track",
+    "track_id"  INTEGER NOT NULL references artist,
+    "artist_id" INTEGER NOT NULL references track,
     PRIMARY KEY ("track_id", "artist_id")
 );
 
 CREATE TABLE "track_in_playlist"
 (
-    "track_id"    INTEGER NOT NULL,
-    "playlist_id" INTEGER NOT NULL,
+    "track_id"    INTEGER NOT NULL references track,
+    "playlist_id" INTEGER NOT NULL references playlist,
     "added_on"    TEXT,
-    PRIMARY KEY ("track_id", "playlist_id"),
-    FOREIGN KEY ("playlist_id") REFERENCES "playlist" ("playlist_id"),
-    FOREIGN KEY ("track_id") REFERENCES "track" ("track_id")
+    PRIMARY KEY ("track_id", "playlist_id")
 );
 
 CREATE TABLE "album_by_artist"
 (
-    "album_id"  INTEGER NOT NULL,
-    "artist_id" INTEGER NOT NULL,
-    PRIMARY KEY ("album_id", "artist_id"),
-    FOREIGN KEY ("album_id") REFERENCES "album" ("album_id"),
-    FOREIGN KEY ("artist_id") REFERENCES "artist" ("artist_id")
+    "album_id"  INTEGER NOT NULL references album,
+    "artist_id" INTEGER NOT NULL references artist,
+    PRIMARY KEY ("album_id", "artist_id")
 );
 
 CREATE TABLE "album_genre"
 (
-    "album_id" INTEGER NOT NULL,
-    "genre_id" INTEGER NOT NULL,
-    FOREIGN KEY ("album_id") REFERENCES "album" ("album_id"),
-    FOREIGN KEY ("genre_id") REFERENCES "genre" ("genre_id"),
+    "album_id" INTEGER NOT NULL references album,
+    "genre_id" INTEGER NOT NULL references genre,
     PRIMARY KEY ("album_id", "genre_id")
 );
 
 CREATE TABLE "artist_follower"
 (
-    "artist_id" INTEGER NOT NULL,
-    "user_id"   INTEGER NOT NULL,
-    FOREIGN KEY ("artist_id") REFERENCES "artist" ("artist_id"),
-    FOREIGN KEY ("user_id") REFERENCES "user" ("user_id"),
+    "artist_id" INTEGER NOT NULL references artist,
+    "user_id"   INTEGER NOT NULL references user,
     PRIMARY KEY ("artist_id", "user_id")
 );
 
 CREATE TABLE "user_saved_album"
 (
-    "user_id"  INTEGER NOT NULL,
-    "album_id" INTEGER NOT NULL,
-    PRIMARY KEY ("user_id", "album_id"),
-    FOREIGN KEY ("user_id") REFERENCES "user" ("user_id"),
-    FOREIGN KEY ("album_id") REFERENCES "album" ("album_id")
+    "user_id"  INTEGER NOT NULL references user,
+    "album_id" INTEGER NOT NULL references album,
+    PRIMARY KEY ("user_id", "album_id")
 );
 
 CREATE TABLE "user_saved_playlist"
 (
-    "user_id"     INTEGER NOT NULL,
-    "playlist_id" INTEGER NOT NULL,
-    PRIMARY KEY ("user_id", "playlist_id"),
-    FOREIGN KEY ("user_id") REFERENCES "user" ("user_id"),
-    FOREIGN KEY ("playlist_id") REFERENCES "playlist" ("playlist_id")
+    "user_id"     INTEGER NOT NULL references user,
+    "playlist_id" INTEGER NOT NULL references playlist,
+    PRIMARY KEY ("user_id", "playlist_id")
 )

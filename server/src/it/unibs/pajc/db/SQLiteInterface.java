@@ -146,8 +146,7 @@ public class SQLiteInterface implements Closeable {
                         Object result = resultSet.getObject(columnName);
                         field.set(object, result);
 
-                        if (field.isAnnotationPresent(Id.class))
-                            id = field;
+                        if (field.isAnnotationPresent(Id.class)) id = field;
                     }
                 }
                 if (id != null) {
@@ -159,13 +158,15 @@ public class SQLiteInterface implements Closeable {
                                     finalId.setAccessible(true);
                                     field.setAccessible(true);
                                     String otherTableColumnName = mtmAnnotation.otherTableColumnName();
-                                    var mtmResultSet = genericGetQuery(new String[]{otherTableColumnName},
-                                            mtmAnnotation.otherTableName(),
-                                            "where %s = %d".formatted(finalId.getAnnotation(Column.class).name(),
-                                                    (int) finalId.get(object)));
+                                    String columnName = finalId.getAnnotation(Column.class).name();
+                                    int objectId = (int) finalId.get(object);
+                                    var mtmResultSet =
+                                            genericGetQuery(new String[]{otherTableColumnName},
+                                                    mtmAnnotation.otherTableName(),
+                                                    "where %s = %d".formatted(columnName, objectId));
                                     var ids = new ArrayList<Integer>();
                                     while (mtmResultSet.next()) {
-                                        ids.add(resultSet.getInt(otherTableColumnName));
+                                        ids.add(mtmResultSet.getInt(otherTableColumnName));
                                     }
                                     field.set(object, ids.toArray(new Integer[0]));
                                 } catch (Exception e) {
