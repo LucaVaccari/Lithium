@@ -19,6 +19,8 @@ public class PlaylistEntry extends CustomComponent {
     private Label nameLbl;
     @FXML
     private Label authorLbl;
+    @FXML
+    private Label nTracksLbl;
 
     private final Playlist playlist;
 
@@ -35,9 +37,12 @@ public class PlaylistEntry extends CustomComponent {
 
         nameLbl.setText(playlist.getName());
 
-        var ownerJson = HttpHandler.get("/users/%d".formatted(playlist.getOwnerId()));
+        var ownerJson = HttpHandler.get("/user/%d".formatted(playlist.getOwnerId()));
         var owner = ClientMain.getGson().fromJson(ownerJson, User.class);
         authorLbl.setText("by " + owner.getUsername());
+
+        int numberOfTracks = playlist.getTracksIds().length;
+        nTracksLbl.setText(numberOfTracks + (numberOfTracks == 1 ? " track" : " tracks"));
     }
 
     @Override

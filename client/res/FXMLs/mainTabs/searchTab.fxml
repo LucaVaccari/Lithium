@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,22 +15,23 @@
         <HBox VBox.vgrow="ALWAYS">
             <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308"
                         maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                <VBox fx:id="trackContainer" minHeight="0.0" minWidth="0.0" prefHeight="200.0"
-                      prefWidth="200.0"/>
+                <ListView fx:id="trackContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                          minHeight="0.0" minWidth="0.0"/>
             </ScrollPane>
             <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308"
                         maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                <VBox fx:id="albumContainer" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0"/>
+                <ListView fx:id="albumContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                          minHeight="0.0" minWidth="0.0"/>
             </ScrollPane>
             <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308"
                         maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                <VBox fx:id="artistContainer" minHeight="0.0" minWidth="0.0" prefHeight="200.0"
-                      prefWidth="200.0"/>
+                <ListView fx:id="artistContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                          minHeight="0.0" minWidth="0.0"/>
             </ScrollPane>
             <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308"
                         maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                <VBox fx:id="playlistContainer" minHeight="0.0" minWidth="0.0" prefHeight="200.0"
-                      prefWidth="200.0"/>
+                <ListView fx:id="playlistContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                          minHeight="0.0" minWidth="0.0"/>
             </ScrollPane>
         </HBox>
     </VBox>

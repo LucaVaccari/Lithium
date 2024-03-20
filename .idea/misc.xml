@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="EntryPointsManager">
-    <list size="1">
+    <list size="2">
       <item index="0" class="java.lang.String" itemvalue="it.unibs.pajc.db.Column" />
+      <item index="1" class="java.lang.String" itemvalue="it.unibs.pajc.db.ManyToMany" />
     </list>
     <writeAnnotations>
       <writeAnnotation name="it.unibs.pajc.db.Column" />
       <writeAnnotation name="it.unibs.pajc.db.DbColumn" />
       <writeAnnotation name="javafx.fxml.FXML" />
+      <writeAnnotation name="it.unibs.pajc.db.ManyToMany" />
     </writeAnnotations>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />

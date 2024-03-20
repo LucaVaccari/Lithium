@@ -43,23 +43,4 @@ public class User implements Serializable {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPwdHash() {
-        return pwdHash;
-    }
-
-    public void setPwdHash(String pwdHash) {
-        this.pwdHash = pwdHash;
-    }
-
-    public String getProfilePicPath() {
-        return profilePicPath;
-    }
-
-    public void setProfilePicPath(String profilePicPath) {
-        this.profilePicPath = profilePicPath;
-    }
 }

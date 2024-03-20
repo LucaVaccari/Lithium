@@ -28,9 +28,12 @@ public class Track implements Serializable {
     @Column(name = "audio_path")
     private String audioPath;
 
+    @Column(name = "album_id")
+    private Integer albumId;
+
     @ManyToMany(otherTableName = "track_by_artist", otherTableColumnName = "artist_id")
     private Integer[] artistsIds;
-    
+
     private int numberOfSaves;
 
     public Integer getId() {
@@ -41,10 +44,6 @@ public class Track implements Serializable {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getVersion() {
         return version;
     }
@@ -53,35 +52,11 @@ public class Track implements Serializable {
         this.version = version;
     }
 
-    public int getNumber() {
-        return number;
+    public Integer getAlbumId() {
+        return albumId;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public String getAudioPath() {
-        return audioPath;
-    }
-
-    public void setAudioPath(String audioPath) {
-        this.audioPath = audioPath;
-    }
-
-    public int getNumberOfSaves() {
-        return numberOfSaves;
-    }
-
-    public void setNumberOfSaves(int numberOfSaves) {
-        this.numberOfSaves = numberOfSaves;
+    public Integer[] getArtistsIds() {
+        return artistsIds;
     }
 }

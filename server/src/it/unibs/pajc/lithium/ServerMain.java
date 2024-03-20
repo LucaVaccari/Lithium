@@ -2,10 +2,7 @@ package it.unibs.pajc.lithium;
 
 import com.google.gson.Gson;
 import it.unibs.pajc.lithium.db.DbConnector;
-import it.unibs.pajc.lithium.db.om.Album;
-import it.unibs.pajc.lithium.db.om.Artist;
-import it.unibs.pajc.lithium.db.om.Playlist;
-import it.unibs.pajc.lithium.db.om.User;
+import it.unibs.pajc.lithium.db.om.*;
 
 import static spark.Spark.*;
 
@@ -18,25 +15,33 @@ public class ServerMain {
         port(8080);
         path("/user", () -> {
             get("/exists", HttpRoutes::userExists);
+            get("/:id", (req, res) -> HttpRoutes.getObjectById(req, res,
+                    id -> getDbConnector().getObjectById(id, User.class, "user_id")));
             post("/auth", HttpRoutes::authenticateUser);
             post("/register", HttpRoutes::registerUser);
         });
 
-        get("/playlists", (req, res) -> HttpRoutes.getObjects(req, res,
-                numOfResults -> getDbConnector().getObjects(numOfResults, Playlist.class)));
-        get("/artists", (req, res) -> HttpRoutes.getObjects(req, res,
-                numOfResults -> getDbConnector().getObjects(numOfResults, Artist.class)));
-        get("/albums", (req, res) -> HttpRoutes.getObjects(req, res,
-                numOfResults -> getDbConnector().getObjects(numOfResults, Album.class)));
+        path("album", () -> {
+            get("/:id", (req, res) -> HttpRoutes.getObjectById(req, res,
+                    id -> getDbConnector().getObjectById(id, Album.class, "album_id")));
+        });
+        path("artist", () -> {
+            get("/:id", (req, res) -> HttpRoutes.getObjectById(req, res,
+                    id -> getDbConnector().getObjectById(id, Artist.class, "artist_id")));
+        });
+        path("playlist", () -> {
+            get("/:id", (req, res) -> HttpRoutes.getObjectById(req, res,
+                    id -> getDbConnector().getObjectById(id, Playlist.class, "playlist_id")));
+        });
 
-        get("/playlists/:id", (req, res) -> HttpRoutes.getObjectById(req, res,
-                id -> getDbConnector().getObjectById(id, Playlist.class, "playlist_id")));
-        get("/artists/:id", (req, res) -> HttpRoutes.getObjectById(req, res,
-                id -> getDbConnector().getObjectById(id, Artist.class, "artist_id")));
-        get("/albums/:id", (req, res) -> HttpRoutes.getObjectById(req, res,
-                id -> getDbConnector().getObjectById(id, Album.class, "album_id")));
-        get("/users/:id", (req, res) -> HttpRoutes.getObjectById(req, res,
-                id -> getDbConnector().getObjectById(id, User.class, "user_id")));
+        get("/track", (req, res) -> HttpRoutes.getObjects(req, res,
+                numOfResults -> getDbConnector().getObjects(numOfResults, Track.class)));
+        get("/album", (req, res) -> HttpRoutes.getObjects(req, res,
+                numOfResults -> getDbConnector().getObjects(numOfResults, Album.class)));
+        get("/artist", (req, res) -> HttpRoutes.getObjects(req, res,
+                numOfResults -> getDbConnector().getObjects(numOfResults, Artist.class)));
+        get("/playlist", (req, res) -> HttpRoutes.getObjects(req, res,
+                numOfResults -> getDbConnector().getObjects(numOfResults, Playlist.class)));
 
         get("/img/*/*", HttpRoutes::getImg);
 

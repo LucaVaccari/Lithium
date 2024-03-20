@@ -4,6 +4,7 @@ import it.unibs.pajc.lithium.ClientMain;
 import it.unibs.pajc.lithium.HttpHandler;
 import it.unibs.pajc.lithium.db.om.Album;
 import it.unibs.pajc.lithium.db.om.Artist;
+import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -12,7 +13,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.ByteArrayInputStream;
 
-public class AlbumEntry extends CustomComponent {
+public class TrackEntry extends CustomComponent {
     @FXML
     private ImageView coverImg;
     @FXML
@@ -20,22 +21,25 @@ public class AlbumEntry extends CustomComponent {
     @FXML
     private Label artistLbl;
 
-    private final Album album;
+    private final Track track;
 
-    public AlbumEntry(Album album) {
+    public TrackEntry(Track track) {
         super();
-        this.album = album;
+        this.track = track;
         initialize();
     }
 
     private void initialize() {
+        var albumJson = HttpHandler.get("/album/" + track.getAlbumId());
+        var album = ClientMain.getGson().fromJson(albumJson, Album.class);
+
         var imgBytes = HttpHandler.getBase64Img("/" + album.getImgPath());
         Image img = new Image(new ByteArrayInputStream(imgBytes));
         coverImg.setImage(img);
 
-        titleLbl.setText(album.getTitle());
+        titleLbl.setText(track.getTitle());
 
-        var artists = new String[album.getArtistsIds().length];
+        var artists = new String[track.getArtistsIds().length];
         Integer[] artistsIds = album.getArtistsIds();
         for (int i = 0; i < artistsIds.length; i++) {
             var id = artistsIds[i];
@@ -48,6 +52,6 @@ public class AlbumEntry extends CustomComponent {
 
     @Override
     protected String fxmlPath() {
-        return "/FXMLs/listComponents/albumEntry.fxml";
+        return "/FXMLs/listComponents/trackEntry.fxml";
     }
 }

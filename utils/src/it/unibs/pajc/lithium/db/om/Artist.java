@@ -2,6 +2,7 @@ package it.unibs.pajc.lithium.db.om;
 
 import it.unibs.pajc.db.Column;
 import it.unibs.pajc.db.Id;
+import it.unibs.pajc.db.ManyToMany;
 import it.unibs.pajc.db.Table;
 
 import java.io.Serializable;
@@ -17,6 +18,8 @@ public class Artist implements Serializable {
     private String bio;
     @Column(name = "artist_pic_path")
     private String profilePicturePath;
+    @ManyToMany(otherTableName = "artist_follower", otherTableColumnName = "user_id")
+    private Integer[] followerIds;
 
     public Integer getId() {
         return id;
@@ -28,5 +31,13 @@ public class Artist implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getProfilePicturePath() {
+        return profilePicturePath;
+    }
+
+    public Integer[] getFollowerIds() {
+        return followerIds;
     }
 }

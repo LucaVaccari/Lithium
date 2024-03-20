@@ -47,4 +47,8 @@ public class Playlist implements Serializable {
     public String getImgPath() {
         return imgPath;
     }
+
+    public Integer[] getTracksIds() {
+        return tracksIds;
+    }
 }

@@ -1,10 +1,14 @@
 package it.unibs.pajc.lithium.gui.listEntries;
 
+import it.unibs.pajc.lithium.HttpHandler;
 import it.unibs.pajc.lithium.db.om.Artist;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.io.ByteArrayInputStream;
 
 public class ArtistEntry extends CustomComponent {
     @FXML
@@ -23,9 +27,13 @@ public class ArtistEntry extends CustomComponent {
     }
 
     private void initialize() {
-        // TODO proPicImg
+        var imgBytes = HttpHandler.getBase64Img("/" + artist.getProfilePicturePath());
+        Image img = new Image(new ByteArrayInputStream(imgBytes));
+        proPicImg.setImage(img);
+
         nameLbl.setText(artist.getName());
-        // TODO followersLbl
+
+        followersLbl.setText(artist.getFollowerIds().length + " followers");
     }
 
     @Override

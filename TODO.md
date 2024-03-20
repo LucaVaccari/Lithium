@@ -15,10 +15,9 @@
         - [ ] Equalizer
         - [ ] Log out
     - [ ] detail views
-      - [ ] album details
-      - [ ] artist details
-      - [ ] playlist details
-- [ ] Server interaction
+        - [ ] album details
+        - [ ] artist details
+        - [ ] playlist details
 - [ ] Theme (AtlantaFX)
 - [ ] Client config file
 
@@ -30,6 +29,10 @@
 - [ ] Server database integration
     - [x] Write object mappers
     - [ ] Implement CRUD methods
+        - [ ] Create
+        - [ ] Read
+        - [ ] Update
+        - [ ] Delete
 - [x] Interface for managing the db
 - [ ] Define and implement HTTP contexts
     - [x] Client authentication
@@ -40,4 +43,4 @@
 
 - [x] define db structure
 - [x] write sql file for db creation
-- [ ] write queries for filling the db with test samples
+- [x] write queries for filling the db with test samples
