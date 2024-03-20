@@ -22,7 +22,7 @@ public class User implements Serializable {
     @Column(name = "profile_pic_path")
     private String profilePicPath;
 
-    @ManyToMany(otherTableName = "user_saved_albums", otherTableColumnName = "album_id")
+    @ManyToMany(otherTableName = "user_saved_album", otherTableColumnName = "album_id")
     private Integer[] savedAlbumsIds;
     @ManyToMany(otherTableName = "user_saved_playlist", otherTableColumnName = "playlist_id")
     private Integer[] savedPlaylistsIds;

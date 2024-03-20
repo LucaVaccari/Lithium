@@ -2,6 +2,7 @@ package it.unibs.pajc.lithium;
 
 import kong.unirest.*;
 
+import java.util.Base64;
 import java.util.HashMap;
 
 public class HttpHandler {
@@ -22,7 +23,7 @@ public class HttpHandler {
      * @return The response body received
      */
     public static String get(String subURL) throws UnirestException {
-        GetRequest getRequest = Unirest.get(URL + subURL);
+        GetRequest getRequest = Unirest.get(buildUrl(subURL));
         return getRequest.asString().getBody();
     }
 
@@ -34,23 +35,32 @@ public class HttpHandler {
      * @return The response body received
      */
     public static String get(String subURL, HashMap<String, String> queries) {
-        GetRequest getRequest = Unirest.get(URL + subURL);
+        GetRequest getRequest = Unirest.get(buildUrl(subURL));
         addFilters(getRequest, queries);
         return getRequest.asString().getBody();
     }
 
     public static String post(String subURL, String body) {
-        HttpRequestWithBody postRequest = Unirest.post(URL + subURL);
+        HttpRequestWithBody postRequest = Unirest.post(buildUrl(subURL));
         return postRequest.body(body).asString().getBody();
     }
 
     public static String put(String subURL, String body, int id) {
-        HttpRequestWithBody putRequest = Unirest.put(URL + subURL + "/" + id);
+        HttpRequestWithBody putRequest = Unirest.put(buildUrl(subURL) + "/" + id);
         return putRequest.body(body).asString().getBody();
     }
 
     public static String delete(String subURL, int id) {
-        HttpRequestWithBody deleteRequest = Unirest.delete(URL + subURL + "/" + id);
+        HttpRequestWithBody deleteRequest = Unirest.delete(buildUrl(subURL) + "/" + id);
         return deleteRequest.asString().getBody();
+    }
+
+    public static String buildUrl(String subUrl) {
+        return URL + subUrl;
+    }
+
+    public static byte[] getBase64Img(String subUrl) {
+        var encodedImgString = get(subUrl);
+        return Base64.getDecoder().decode(encodedImgString);
     }
 }

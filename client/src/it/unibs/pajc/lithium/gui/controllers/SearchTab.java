@@ -34,8 +34,6 @@ public class SearchTab extends CustomComponent {
     private void initialize() {
         // TODO: search tab functionality
 
-        // TODO: show some defaults albums/artists/playlists
-
         try {
             String albumsJson = HttpHandler.get("/albums?number-of-results=10");
             String artistsJson = HttpHandler.get("/artists?number-of-results=10");
@@ -51,6 +49,7 @@ public class SearchTab extends CustomComponent {
             AlertUtil.showErrorAlert("HTTP error", "Error in SearchTab.java", e.getMessage());
         } catch (JsonSyntaxException e) {
             AlertUtil.showErrorAlert("JSON error", "Error in SearchTab.java", e.getMessage());
+            e.printStackTrace();
         }
     }
 }

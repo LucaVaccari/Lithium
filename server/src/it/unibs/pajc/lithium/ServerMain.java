@@ -2,6 +2,10 @@ package it.unibs.pajc.lithium;
 
 import com.google.gson.Gson;
 import it.unibs.pajc.lithium.db.DbConnector;
+import it.unibs.pajc.lithium.db.om.Album;
+import it.unibs.pajc.lithium.db.om.Artist;
+import it.unibs.pajc.lithium.db.om.Playlist;
+import it.unibs.pajc.lithium.db.om.User;
 
 import static spark.Spark.*;
 
@@ -10,7 +14,7 @@ public class ServerMain {
     private static final Gson gson = new Gson();
 
     public static void main(String[] args) {
-        dbConnector.connect("jdbc:sqlite:..\\database\\lithium.sqlite");
+        dbConnector.connect("jdbc:sqlite:database\\lithium.sqlite");
         port(8080);
         path("/user", () -> {
             get("/exists", HttpRoutes::userExists);
@@ -18,9 +22,29 @@ public class ServerMain {
             post("/register", HttpRoutes::registerUser);
         });
 
-        get("/playlists", HttpRoutes::getPlaylistsInfo);
-        get("/artists", HttpRoutes::getArtistsInfo);
-        get("/albums", HttpRoutes::getAlbumsInfo);
+        get("/playlists", (req, res) -> HttpRoutes.getObjects(req, res,
+                numOfResults -> getDbConnector().getObjects(numOfResults, Playlist.class)));
+        get("/artists", (req, res) -> HttpRoutes.getObjects(req, res,
+                numOfResults -> getDbConnector().getObjects(numOfResults, Artist.class)));
+        get("/albums", (req, res) -> HttpRoutes.getObjects(req, res,
+                numOfResults -> getDbConnector().getObjects(numOfResults, Album.class)));
+
+        get("/playlists/:id", (req, res) -> HttpRoutes.getObjectById(req, res,
+                id -> getDbConnector().getObjectById(id, Playlist.class, "playlist_id")));
+        get("/artists/:id", (req, res) -> HttpRoutes.getObjectById(req, res,
+                id -> getDbConnector().getObjectById(id, Artist.class, "artist_id")));
+        get("/albums/:id", (req, res) -> HttpRoutes.getObjectById(req, res,
+                id -> getDbConnector().getObjectById(id, Album.class, "album_id")));
+        get("/users/:id", (req, res) -> HttpRoutes.getObjectById(req, res,
+                id -> getDbConnector().getObjectById(id, User.class, "user_id")));
+
+        get("/img/*/*", HttpRoutes::getImg);
+
+        exception(Exception.class, (e, req, res) -> {
+            e.printStackTrace();
+            res.status(500);
+            res.body(e.getMessage());
+        });
 
         // TODO: show available calls
         get("/", (req, res) -> "Welcome to Lithium!");

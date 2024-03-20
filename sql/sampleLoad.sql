@@ -38,13 +38,13 @@ delete
 from user_saved_playlist
 where true;
 
-insert into album(album_id, album_title, album_release_date)
-VALUES ('1', 'Fragile', '2022-07-20'),
-       (2, 'Eternative', '2023-11-22');
+insert into album(album_id, album_title, album_release_date, cover_img_path)
+VALUES ('1', 'Fragile', '2022-07-20', 'img/album_cover/lit_silver_fragile.jpg'),
+       ('2', 'Eternative', '2023-11-22', 'img/album_cover/zefiro_eternative.jpg');
 
-insert into artist(artist_id, artist_name)
-VALUES (1, 'Lit Silver'),
-       (2, 'Zēfiro');
+insert into artist(artist_id, artist_name, artist_pic_path)
+VALUES (1, 'Lit Silver', 'img/artist_pic/lit_silver.jpg'),
+       (2, 'Zēfiro', 'img/artist_pic/zefiro.jpg');
 
 insert into album_by_artist(album_id, artist_id)
 VALUES (1, 1),
@@ -77,3 +77,17 @@ VALUES (1, 1),
        (10, 2),
        (11, 2),
        (12, 2);
+
+insert into user (user_id, username, pwd_hash)
+values (1, 'lucavaccari03', '6cd6e51ad74b5a0ad4f6689e62fcfd621573d4df579762168e04a47cf654b5e5');
+
+insert into playlist(playlist_id, playlist_title, playlist_description, user_id)
+VALUES (1, 'Lit Silver: best of', 'The best songs from Lit Silver catalogue', 1);
+
+insert into track_in_playlist(track_id, playlist_id, added_on)
+VALUES (12, 1, '2023-10-22'),
+       (4, 1, '2023-06-04'),
+       (3, 1, '2023-06-04');
+
+insert into user_saved_playlist(user_id, playlist_id)
+VALUES (1, 1)

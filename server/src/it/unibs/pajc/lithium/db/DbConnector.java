@@ -2,8 +2,6 @@ package it.unibs.pajc.lithium.db;
 
 import it.unibs.pajc.db.SQLiteInterface;
 import it.unibs.pajc.lithium.db.om.Album;
-import it.unibs.pajc.lithium.db.om.Artist;
-import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.db.om.User;
 
 import java.io.Closeable;
@@ -33,9 +31,8 @@ public class DbConnector implements Closeable {
 
     //region CREATE
     public void registerUser(String name, String pswHash) throws IllegalArgumentException {
-        if (getUserByName(name) != null)
-            throw new IllegalArgumentException(
-                    "The user %s already exists, you cannot register it again".formatted(name));
+        if (getUserByName(name) != null) throw new IllegalArgumentException(
+                "The user %s already exists, you cannot register it again".formatted(name));
 
         User user = new User(name, pswHash);
         dbInf.createObject(user, User.class);
@@ -65,24 +62,17 @@ public class DbConnector implements Closeable {
         else throw new RuntimeException("There's more than one user with the same name");
     }
 
-    public Album[] getAllAlbums(int numberOfResults) {
-        return dbInf.getObjects(Album.class, numberOfResults);
+    public <T> T[] getObjects(int numberOfResults, Class<T> objType) {
+        return dbInf.getObjects(objType, numberOfResults);
     }
 
-    public Playlist[] getAllPlaylists(int numberOfResults) {
-        return dbInf.getObjects(Playlist.class, numberOfResults);
-    }
-
-    public Artist[] getAllArtists(int numberOfResults) {
-        return dbInf.getObjects(Artist.class, numberOfResults);
-    }
-
-    public Album getAlbumById(int id) {
-        String queryFilter = "where album_id = '%d'".formatted(id);
-        Album[] albums = dbInf.getObjects(Album.class, 5, queryFilter);
-        if (albums.length == 1) return albums[0];
-        else if (albums.length == 0) return null;
-        else throw new RuntimeException("There's more than one album with the same id");
+    public <T> T getObjectById(int id, Class<T> objType, String idName) {
+        String queryFilter = "where %s = '%d'".formatted(idName, id);
+        T[] objects = dbInf.getObjects(objType, 5, queryFilter);
+        if (objects.length == 1) return objects[0];
+        else if (objects.length == 0) return null;
+        else throw new RuntimeException(
+                    "There's more than one %s with the same id".formatted(objType.getName().toLowerCase()));
     }
 
     public int getNumberOfSavesPerTrack(int trackId) {

@@ -3,14 +3,18 @@ package it.unibs.pajc.lithium;
 import spark.Request;
 import spark.Response;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.function.Function;
 
 import static it.unibs.pajc.lithium.ServerMain.getDbConnector;
 import static it.unibs.pajc.lithium.ServerMain.getGson;
 
 public class HttpRoutes {
-    //region context methods
+    //region user authentication
     public static boolean userExists(Request req, Response res) {
         String username = req.queryParams("username");
         if (!username.matches("^[a-zA-Z0-9_]+")) {
@@ -48,42 +52,39 @@ public class HttpRoutes {
             res.body("The username specified is not valid (it should contain only numbers, letters and/or _");
             return res.body();
         }
-        try {
-            getDbConnector().registerUser(strings[0], strings[1]);
-            res.status(200);
-        } catch (IllegalArgumentException e) {
-            res.status(400);
-            res.body(e.getMessage());
-            return res.body();
-        }
+        getDbConnector().registerUser(strings[0], strings[1]);
+        res.status(200);
         return "Done";
     }
 
-    public static <T> String getObjects(Request req, Response res, Function<Integer, T[]> dbFunc) {
-        try {
-            int numberOfResults = Integer.parseInt(req.queryParamOrDefault("number-of-results", "20"));
-            var objects = dbFunc.apply(numberOfResults);
-            String json = getGson().toJson(objects);
-            res.status(200);
-            res.body(json);
-            return json;
-        } catch (NumberFormatException e) {
-            res.status(400);
-            res.body("Some of the provided fields cannot be converted to integers");
-            return "ERROR";
-        }
+    // endregion
+    // region object CRUD
+
+    public static String getObjects(Request req, Response res, Function<Integer, ?> dbFunc) {
+        int numberOfResults = Integer.parseInt(req.queryParamOrDefault("number-of-results", "20"));
+        var objects = dbFunc.apply(numberOfResults);
+        String json = getGson().toJson(objects);
+        res.status(200);
+        res.body(json);
+        return json;
     }
 
-    public static String getPlaylistsInfo(Request req, Response res) {
-        return getObjects(req, res, getDbConnector()::getAllPlaylists);
+    public static String getObjectById(Request req, Response res, Function<Integer, ?> dbFunc) {
+        int id = Integer.parseInt(req.params("id"));
+        var objects = dbFunc.apply(id);
+        String json = getGson().toJson(objects);
+        res.status(200);
+        res.body(json);
+        return json;
     }
 
-    public static String getAlbumsInfo(Request req, Response res) {
-        return getObjects(req, res, getDbConnector()::getAllAlbums);
-    }
-
-    public static String getArtistsInfo(Request req, Response res) {
-        return getObjects(req, res, getDbConnector()::getAllArtists);
+    public static String getImg(Request req, Response res) throws IOException {
+        var path = String.join("/", req.splat());
+        var imgBytes = Files.readAllBytes(Path.of("database/img/" + path));
+        var imgString = Base64.getEncoder().encodeToString(imgBytes);
+        res.status(200);
+        res.body(imgString);
+        return imgString;
     }
 
     //endregion

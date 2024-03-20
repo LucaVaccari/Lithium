@@ -37,11 +37,7 @@ public class Playlist implements Serializable {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public Integer getOwnerId() {
+        return ownerId;
     }
 }

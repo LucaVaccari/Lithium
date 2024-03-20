@@ -75,7 +75,7 @@ public class LoginController {
             case Start -> {
             }
             case Register -> {
-                if (password.equals(confirmPswTxtField.getText())) {
+                if (!password.equals(confirmPswTxtField.getText())) {
                     messagesLabel.setText("The passwords don't match");
                     submitBtn.setDisable(true);
                 }
@@ -85,8 +85,7 @@ public class LoginController {
                     submitBtn.setDisable(true);
                 }
 
-                if (password.isEmpty())
-                    submitBtn.setDisable(true);
+                if (password.isEmpty()) submitBtn.setDisable(true);
             }
             case Login -> {
                 if (password.contains(" ")) {
@@ -94,8 +93,7 @@ public class LoginController {
                     submitBtn.setDisable(true);
                 }
 
-                if (password.isEmpty())
-                    submitBtn.setDisable(true);
+                if (password.isEmpty()) submitBtn.setDisable(true);
             }
         }
         if (username.isEmpty()) submitBtn.setDisable(true);

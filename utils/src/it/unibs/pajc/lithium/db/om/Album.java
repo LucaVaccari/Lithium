@@ -80,10 +80,13 @@ public class Album implements Serializable {
         return genresIds;
     }
 
+    public Integer[] getArtistsIds() {
+        return artistsIds;
+    }
+
     @Override
     public String toString() {
         return "{id=%d, title='%s', version='%s', releaseDate='%s', imgPath='%s', artists='%s'}".formatted(id, title,
-                version,
-                releaseDate, imgPath, Arrays.toString(artistsIds));
+                version, releaseDate, imgPath, Arrays.toString(artistsIds));
     }
 }

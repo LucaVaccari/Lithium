@@ -21,6 +21,7 @@ public class ClientMain extends Application {
         Scene scene = new Scene(root);
         mainStage.setScene(scene);
 
+        mainStage.setTitle("Lithium");
         mainStage.setOnCloseRequest(e -> System.exit(0));
         mainStage.sizeToScene();
         mainStage.setResizable(true);

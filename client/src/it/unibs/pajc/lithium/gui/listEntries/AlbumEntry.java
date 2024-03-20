@@ -1,10 +1,16 @@
 package it.unibs.pajc.lithium.gui.listEntries;
 
+import it.unibs.pajc.lithium.ClientMain;
+import it.unibs.pajc.lithium.HttpHandler;
 import it.unibs.pajc.lithium.db.om.Album;
+import it.unibs.pajc.lithium.db.om.Artist;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.io.ByteArrayInputStream;
 
 public class AlbumEntry extends CustomComponent {
     @FXML
@@ -23,17 +29,26 @@ public class AlbumEntry extends CustomComponent {
     }
 
     private void initialize() {
-        // TODO get cover img
+        System.out.println(album);
+        var imgBytes = HttpHandler.getBase64Img("/" + album.getImgPath());
+        Image img = new Image(new ByteArrayInputStream(imgBytes));
+        coverImg.setImage(img);
+
         titleLbl.setText(album.getTitle());
-        // TODO artistsLbl
+
+        var artists = new String[album.getArtistsIds().length];
+        Integer[] artistsIds = album.getArtistsIds();
+        for (int i = 0; i < artistsIds.length; i++) {
+            var id = artistsIds[i];
+            var json = HttpHandler.get("/artists/%d".formatted(id));
+            var artist = ClientMain.getGson().fromJson(json, Artist.class);
+            artists[i] = artist.getName();
+        }
+        artistLbl.setText(String.join(", ", artists));
     }
 
     @Override
     protected String fxmlPath() {
         return "/FXMLs/listComponents/albumEntry.fxml";
-    }
-
-    public Album getAlbum() {
-        return album;
     }
 }

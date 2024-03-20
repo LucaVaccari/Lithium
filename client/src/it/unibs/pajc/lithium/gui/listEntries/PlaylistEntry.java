@@ -1,6 +1,9 @@
 package it.unibs.pajc.lithium.gui.listEntries;
 
+import it.unibs.pajc.lithium.ClientMain;
+import it.unibs.pajc.lithium.HttpHandler;
 import it.unibs.pajc.lithium.db.om.Playlist;
+import it.unibs.pajc.lithium.db.om.User;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -25,7 +28,10 @@ public class PlaylistEntry extends CustomComponent {
     private void initialize() {
         // TODO coverImg
         nameLbl.setText(playlist.getName());
-        // TODO authorLbl
+
+        var ownerJson = HttpHandler.get("/users/%d".formatted(playlist.getOwnerId()));
+        var owner = ClientMain.getGson().fromJson(ownerJson, User.class);
+        authorLbl.setText("by " + owner.getUsername());
     }
 
     @Override
