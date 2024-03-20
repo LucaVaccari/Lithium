@@ -14,7 +14,7 @@ drop table if exists user_saved_playlist;
 
 CREATE TABLE "album"
 (
-    "album_id"           INTEGER PRIMARY KEY,
+    "album_id"           INTEGER PRIMARY KEY UNIQUE,
     "album_title"        TEXT NOT NULL,
     "album_version"      TEXT,
     "album_release_date" TEXT,
@@ -23,7 +23,7 @@ CREATE TABLE "album"
 
 CREATE TABLE "track"
 (
-    "track_id"      INTEGER PRIMARY KEY,
+    "track_id"      INTEGER PRIMARY KEY UNIQUE,
     "track_title"   TEXT    NOT NULL,
     "track_version" TEXT,
     "track_number"  INTEGER NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE "track"
 
 CREATE TABLE "artist"
 (
-    "artist_id"       INTEGER PRIMARY KEY,
+    "artist_id"       INTEGER PRIMARY KEY UNIQUE,
     "artist_name"     TEXT NOT NULL,
     "artist_pic_path" TEXT,
     "artist_bio"      TEXT
@@ -42,25 +42,26 @@ CREATE TABLE "artist"
 
 CREATE TABLE "genre"
 (
-    "genre_id"          INTEGER PRIMARY KEY,
+    "genre_id"          INTEGER PRIMARY KEY UNIQUE,
     "genre_name"        TEXT NOT NULL,
     "genre_description" TEXT
 );
 
 CREATE TABLE "user"
 (
-    "user_id"          INTEGER PRIMARY KEY,
-    "username"         TEXT NOT NULL,
+    "user_id"          INTEGER PRIMARY KEY UNIQUE,
+    "username"         TEXT NOT NULL UNIQUE,
     "pwd_hash"         TEXT NOT NULL,
     "profile_pic_path" TEXT
 );
 
 CREATE TABLE "playlist"
 (
-    "playlist_id"          INTEGER PRIMARY KEY,
+    "playlist_id"          INTEGER PRIMARY KEY UNIQUE,
     "playlist_title"       TEXT    NOT NULL,
     "playlist_description" TEXT,
-    "user_id"              INTEGER NOT NULL
+    "user_id"              INTEGER NOT NULL,
+    "cover_img_path"        TEXT
 );
 
 CREATE TABLE "track_by_artist"

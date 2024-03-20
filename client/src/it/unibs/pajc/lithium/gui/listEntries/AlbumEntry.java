@@ -29,7 +29,6 @@ public class AlbumEntry extends CustomComponent {
     }
 
     private void initialize() {
-        System.out.println(album);
         var imgBytes = HttpHandler.getBase64Img("/" + album.getImgPath());
         Image img = new Image(new ByteArrayInputStream(imgBytes));
         coverImg.setImage(img);

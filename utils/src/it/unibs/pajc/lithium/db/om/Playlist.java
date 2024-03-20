@@ -22,6 +22,9 @@ public class Playlist implements Serializable {
     @Column(name = "user_id")
     private Integer ownerId;
 
+    @Column(name = "cover_img_path")
+    private String imgPath;
+
     @ManyToMany(otherTableName = "track_in_playlist", otherTableColumnName = "track_id")
     private Integer[] tracksIds;
 
@@ -39,5 +42,9 @@ public class Playlist implements Serializable {
 
     public Integer getOwnerId() {
         return ownerId;
+    }
+
+    public String getImgPath() {
+        return imgPath;
     }
 }

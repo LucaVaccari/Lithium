@@ -24,7 +24,8 @@ public class HttpHandler {
      */
     public static String get(String subURL) throws UnirestException {
         GetRequest getRequest = Unirest.get(buildUrl(subURL));
-        return getRequest.asString().getBody();
+        var response = getRequest.asString();
+        return response.isSuccess() ? response.getBody() : null;
     }
 
     /**
@@ -37,7 +38,8 @@ public class HttpHandler {
     public static String get(String subURL, HashMap<String, String> queries) {
         GetRequest getRequest = Unirest.get(buildUrl(subURL));
         addFilters(getRequest, queries);
-        return getRequest.asString().getBody();
+        var response = getRequest.asString();
+        return response.isSuccess() ? response.getBody() : null;
     }
 
     public static String post(String subURL, String body) {
@@ -61,6 +63,6 @@ public class HttpHandler {
 
     public static byte[] getBase64Img(String subUrl) {
         var encodedImgString = get(subUrl);
-        return Base64.getDecoder().decode(encodedImgString);
+        return encodedImgString != null ? Base64.getDecoder().decode(encodedImgString) : new byte[0];
     }
 }

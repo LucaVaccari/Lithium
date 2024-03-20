@@ -7,7 +7,10 @@ import it.unibs.pajc.lithium.db.om.User;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.io.ByteArrayInputStream;
 
 public class PlaylistEntry extends CustomComponent {
     @FXML
@@ -26,7 +29,10 @@ public class PlaylistEntry extends CustomComponent {
     }
 
     private void initialize() {
-        // TODO coverImg
+        var imgBytes = HttpHandler.getBase64Img("/" + playlist.getImgPath());
+        Image img = new Image(new ByteArrayInputStream(imgBytes));
+        coverImg.setImage(img);
+
         nameLbl.setText(playlist.getName());
 
         var ownerJson = HttpHandler.get("/users/%d".formatted(playlist.getOwnerId()));

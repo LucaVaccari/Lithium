@@ -80,7 +80,12 @@ public class HttpRoutes {
 
     public static String getImg(Request req, Response res) throws IOException {
         var path = String.join("/", req.splat());
-        var imgBytes = Files.readAllBytes(Path.of("database/img/" + path));
+        Path pathObj = Path.of("database/img/" + path);
+        if (!Files.exists(pathObj)) {
+            res.status(404);
+            return null;
+        }
+        var imgBytes = Files.readAllBytes(pathObj);
         var imgString = Base64.getEncoder().encodeToString(imgBytes);
         res.status(200);
         res.body(imgString);
