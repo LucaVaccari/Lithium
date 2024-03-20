@@ -5,6 +5,8 @@ import javafx.stage.Stage;
 
 public class SceneManager {
     private static Stage mainStage;
+
+    // TODO: substitute mainScene with scene stack
     public static Scene mainScene;
 
     public static void init(Stage mainStage) {

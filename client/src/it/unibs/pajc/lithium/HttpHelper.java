@@ -17,6 +17,11 @@ public final class HttpHelper {
         return artists;
     }
 
+    public static User getPlaylistOwner(Playlist playlist) {
+        var ownerJson = HttpHandler.get("/user/%d".formatted(playlist.getOwnerId()));
+        return ClientMain.getGson().fromJson(ownerJson, User.class);
+    }
+
     private HttpHelper() {
     }
 }

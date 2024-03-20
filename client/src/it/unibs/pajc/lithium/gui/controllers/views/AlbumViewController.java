@@ -6,9 +6,11 @@ import it.unibs.pajc.lithium.db.om.Album;
 import it.unibs.pajc.lithium.db.om.Artist;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
+import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -26,6 +28,8 @@ public class AlbumViewController {
     private Label releaseDateLbl;
     @FXML
     private Label genreLbl;
+    @FXML
+    private ListView<TrackEntry> trackContainer;
     private Album album;
 
     @FXML
@@ -42,6 +46,8 @@ public class AlbumViewController {
         // todo genres
 
         coverImg.setImage(new Image(new ByteArrayInputStream(HttpHandler.getBase64Img("/" + album.getImgPath()))));
+
+        // TODO: track container
     }
 
     public void onBackBtn(ActionEvent ignored) {

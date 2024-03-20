@@ -1,9 +1,8 @@
 package it.unibs.pajc.lithium.gui.controllers.listEntries;
 
-import it.unibs.pajc.lithium.ClientMain;
 import it.unibs.pajc.HttpHandler;
+import it.unibs.pajc.lithium.HttpHelper;
 import it.unibs.pajc.lithium.db.om.Playlist;
-import it.unibs.pajc.lithium.db.om.User;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
@@ -47,8 +46,7 @@ public class PlaylistEntry extends CustomComponent {
 
         nameLbl.setText(playlist.getName());
 
-        var ownerJson = HttpHandler.get("/user/%d".formatted(playlist.getOwnerId()));
-        var owner = ClientMain.getGson().fromJson(ownerJson, User.class);
+        var owner = HttpHelper.getPlaylistOwner(playlist);
         authorLbl.setText("by " + owner.getUsername());
 
         int numberOfTracks = playlist.getTracksIds().length;

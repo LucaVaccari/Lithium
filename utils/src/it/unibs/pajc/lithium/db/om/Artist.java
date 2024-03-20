@@ -34,6 +34,10 @@ public class Artist implements Serializable {
         this.name = name;
     }
 
+    public String getBio() {
+        return bio;
+    }
+
     public String getProfilePicturePath() {
         return profilePicturePath;
     }
