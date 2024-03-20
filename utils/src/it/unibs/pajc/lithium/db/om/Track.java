@@ -6,6 +6,7 @@ import it.unibs.pajc.db.ManyToMany;
 import it.unibs.pajc.db.Table;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Table(name = "track")
 public class Track implements Serializable {
@@ -34,8 +35,6 @@ public class Track implements Serializable {
     @ManyToMany(otherTableName = "track_by_artist", otherTableColumnName = "artist_id")
     private Integer[] artistsIds;
 
-    private int numberOfSaves;
-
     public Integer getId() {
         return id;
     }
@@ -58,5 +57,18 @@ public class Track implements Serializable {
 
     public Integer[] getArtistsIds() {
         return artistsIds;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Track track = (Track) o;
+        return Objects.equals(id, track.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

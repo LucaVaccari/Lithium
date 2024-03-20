@@ -21,15 +21,23 @@ public class ServerMain {
             post("/register", HttpRoutes::registerUser);
         });
 
+        path("track", () -> {
+            get("/search", (req, res) -> HttpRoutes.searchObject(req, res, Track.class, "track_title"));
+            get("/:id", (req, res) -> HttpRoutes.getObjectById(req, res,
+                    id -> getDbConnector().getObjectById(id, Track.class, "track_id")));
+        });
         path("album", () -> {
+            get("/search", (req, res) -> HttpRoutes.searchObject(req, res, Album.class, "album_title"));
             get("/:id", (req, res) -> HttpRoutes.getObjectById(req, res,
                     id -> getDbConnector().getObjectById(id, Album.class, "album_id")));
         });
         path("artist", () -> {
+            get("/search", (req, res) -> HttpRoutes.searchObject(req, res, Artist.class, "artist_name"));
             get("/:id", (req, res) -> HttpRoutes.getObjectById(req, res,
                     id -> getDbConnector().getObjectById(id, Artist.class, "artist_id")));
         });
         path("playlist", () -> {
+            get("/search", (req, res) -> HttpRoutes.searchObject(req, res, Playlist.class, "playlist_title"));
             get("/:id", (req, res) -> HttpRoutes.getObjectById(req, res,
                     id -> getDbConnector().getObjectById(id, Playlist.class, "playlist_id")));
         });

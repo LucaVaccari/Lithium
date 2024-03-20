@@ -5,6 +5,7 @@ import it.unibs.pajc.db.Id;
 import it.unibs.pajc.db.Table;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Table(name = "genre")
 public class Genre implements Serializable {
@@ -30,11 +31,16 @@ public class Genre implements Serializable {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Genre genre = (Genre) o;
+        return Objects.equals(id, genre.id);
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

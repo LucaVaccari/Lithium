@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.ByteArrayInputStream;
+import java.util.Objects;
 
 public class TrackEntry extends CustomComponent {
     @FXML
@@ -39,9 +40,12 @@ public class TrackEntry extends CustomComponent {
 
         titleLbl.setText(track.getTitle());
 
-        var artists = new String[track.getArtistsIds().length];
+        artistLbl.setText("");
+        int numberOfArtists = track.getArtistsIds().length;
+        if (numberOfArtists == 0) return;
+        var artists = new String[numberOfArtists];
         Integer[] artistsIds = album.getArtistsIds();
-        for (int i = 0; i < artistsIds.length; i++) {
+        for (int i = 0; i < numberOfArtists; i++) {
             var id = artistsIds[i];
             var json = HttpHandler.get("/artist/%d".formatted(id));
             var artist = ClientMain.getGson().fromJson(json, Artist.class);
@@ -50,8 +54,25 @@ public class TrackEntry extends CustomComponent {
         artistLbl.setText(String.join(", ", artists));
     }
 
+    public Track getTrack() {
+        return track;
+    }
+
     @Override
     protected String fxmlPath() {
         return "/FXMLs/listComponents/trackEntry.fxml";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TrackEntry that = (TrackEntry) o;
+        return Objects.equals(track, that.track);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(track);
     }
 }

@@ -6,6 +6,7 @@ import it.unibs.pajc.db.ManyToMany;
 import it.unibs.pajc.db.Table;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Table(name = "playlist")
 public class Playlist implements Serializable {
@@ -50,5 +51,18 @@ public class Playlist implements Serializable {
 
     public Integer[] getTracksIds() {
         return tracksIds;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Playlist playlist = (Playlist) o;
+        return Objects.equals(id, playlist.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

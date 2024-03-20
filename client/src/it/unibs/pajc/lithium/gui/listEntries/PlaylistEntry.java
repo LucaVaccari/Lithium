@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.ByteArrayInputStream;
+import java.util.Objects;
 
 public class PlaylistEntry extends CustomComponent {
     @FXML
@@ -45,12 +46,25 @@ public class PlaylistEntry extends CustomComponent {
         nTracksLbl.setText(numberOfTracks + (numberOfTracks == 1 ? " track" : " tracks"));
     }
 
+    public Playlist getPlaylist() {
+        return playlist;
+    }
+
     @Override
     protected String fxmlPath() {
         return "/FXMLs/listComponents/playlistEntry.fxml";
     }
 
-    public Playlist getPlaylist() {
-        return playlist;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlaylistEntry that = (PlaylistEntry) o;
+        return Objects.equals(playlist, that.playlist);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(playlist);
     }
 }

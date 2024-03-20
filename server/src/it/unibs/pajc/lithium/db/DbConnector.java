@@ -66,6 +66,11 @@ public class DbConnector implements Closeable {
         return dbInf.getObjects(objType, numberOfResults);
     }
 
+    public <T> T[] searchObjects(int numberOfResults, Class<T> objType, String columnName, String searchTerm) {
+        String queryFilter = "where %s LIKE '%%%s%%'".formatted(columnName, searchTerm);
+        return dbInf.getObjects(objType, numberOfResults, queryFilter);
+    }
+
     public <T> T getObjectById(int id, Class<T> objType, String idName) {
         String queryFilter = "where %s = '%d'".formatted(idName, id);
         T[] objects = dbInf.getObjects(objType, 5, queryFilter);

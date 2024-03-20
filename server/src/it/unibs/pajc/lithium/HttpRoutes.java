@@ -78,6 +78,16 @@ public class HttpRoutes {
         return json;
     }
 
+    public static String searchObject(Request req, Response res, Class<?> objType, String columnName) {
+        int numberOfResults = Integer.parseInt(req.queryParamOrDefault("number-of-results", "20"));
+        var searchTerm = req.queryParamOrDefault("search", "");
+        var objects = getDbConnector().searchObjects(numberOfResults, objType, columnName, searchTerm);
+        String json = getGson().toJson(objects);
+        res.status(200);
+        res.body(json);
+        return json;
+    }
+
     public static String getImg(Request req, Response res) throws IOException {
         var path = String.join("/", req.splat());
         Path pathObj = Path.of("database/img/" + path);

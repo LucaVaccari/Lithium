@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.ByteArrayInputStream;
+import java.util.Objects;
 
 public class AlbumEntry extends CustomComponent {
     @FXML
@@ -46,8 +47,25 @@ public class AlbumEntry extends CustomComponent {
         artistLbl.setText(String.join(", ", artists));
     }
 
+    public Album getAlbum() {
+        return album;
+    }
+
     @Override
     protected String fxmlPath() {
         return "/FXMLs/listComponents/albumEntry.fxml";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AlbumEntry that = (AlbumEntry) o;
+        return Objects.equals(album, that.album);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(album);
     }
 }

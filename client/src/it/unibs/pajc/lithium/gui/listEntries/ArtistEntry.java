@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.ByteArrayInputStream;
+import java.util.Objects;
 
 public class ArtistEntry extends CustomComponent {
     @FXML
@@ -36,12 +37,25 @@ public class ArtistEntry extends CustomComponent {
         followersLbl.setText(artist.getFollowerIds().length + " followers");
     }
 
+    public Artist getArtist() {
+        return artist;
+    }
+
     @Override
     protected String fxmlPath() {
         return "/FXMLS/listComponents/artistEntry.fxml";
     }
 
-    public Artist getArtist() {
-        return artist;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ArtistEntry that = (ArtistEntry) o;
+        return Objects.equals(artist, that.artist);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(artist);
     }
 }

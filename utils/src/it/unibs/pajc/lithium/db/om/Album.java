@@ -2,13 +2,13 @@ package it.unibs.pajc.lithium.db.om;
 
 
 import it.unibs.pajc.db.Column;
+import it.unibs.pajc.db.Id;
 import it.unibs.pajc.db.ManyToMany;
 import it.unibs.pajc.db.Table;
-import it.unibs.pajc.db.Id;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Model for the table 'album' on the db.
@@ -48,10 +48,6 @@ public class Album implements Serializable {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getVersion() {
         return version;
     }
@@ -60,24 +56,8 @@ public class Album implements Serializable {
         this.version = version;
     }
 
-    public Date getReleaseDate() {
-        return Date.valueOf(releaseDate);
-    }
-
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate.toString();
-    }
-
     public String getImgPath() {
         return imgPath;
-    }
-
-    public void setImgPath(String imgPath) {
-        this.imgPath = imgPath;
-    }
-
-    public Integer[] getGenresIds() {
-        return genresIds;
     }
 
     public Integer[] getArtistsIds() {
@@ -88,5 +68,18 @@ public class Album implements Serializable {
     public String toString() {
         return "{id=%d, title='%s', version='%s', releaseDate='%s', imgPath='%s', artists='%s'}".formatted(id, title,
                 version, releaseDate, imgPath, Arrays.toString(artistsIds));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Album album = (Album) o;
+        return Objects.equals(id, album.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
