@@ -1,18 +1,12 @@
-package it.unibs.pajc.lithium.gui.controllers;
+package it.unibs.pajc.lithium.gui.controllers.tabs;
 
 import com.google.gson.JsonSyntaxException;
+import it.unibs.pajc.HttpHandler;
 import it.unibs.pajc.lithium.ClientMain;
-import it.unibs.pajc.lithium.HttpHandler;
-import it.unibs.pajc.lithium.db.om.Album;
-import it.unibs.pajc.lithium.db.om.Artist;
-import it.unibs.pajc.lithium.db.om.Playlist;
-import it.unibs.pajc.lithium.db.om.Track;
+import it.unibs.pajc.lithium.db.om.*;
 import it.unibs.pajc.lithium.gui.AlertUtil;
 import it.unibs.pajc.lithium.gui.CustomComponent;
-import it.unibs.pajc.lithium.gui.listEntries.AlbumEntry;
-import it.unibs.pajc.lithium.gui.listEntries.ArtistEntry;
-import it.unibs.pajc.lithium.gui.listEntries.PlaylistEntry;
-import it.unibs.pajc.lithium.gui.listEntries.TrackEntry;
+import it.unibs.pajc.lithium.gui.controllers.listEntries.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;

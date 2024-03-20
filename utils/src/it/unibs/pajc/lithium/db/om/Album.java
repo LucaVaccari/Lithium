@@ -56,6 +56,10 @@ public class Album implements Serializable {
         this.version = version;
     }
 
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
     public String getImgPath() {
         return imgPath;
     }

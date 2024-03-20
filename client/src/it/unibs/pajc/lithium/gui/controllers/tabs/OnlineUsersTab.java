@@ -1,4 +1,4 @@
-package it.unibs.pajc.lithium.gui.controllers;
+package it.unibs.pajc.lithium.gui.controllers.tabs;
 
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import javafx.fxml.FXML;

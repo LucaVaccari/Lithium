@@ -1,9 +1,12 @@
-package it.unibs.pajc.lithium.gui.listEntries;
+package it.unibs.pajc.lithium.gui.controllers.listEntries;
 
-import it.unibs.pajc.lithium.HttpHandler;
+import it.unibs.pajc.HttpHandler;
 import it.unibs.pajc.lithium.db.om.Artist;
 import it.unibs.pajc.lithium.gui.CustomComponent;
+import it.unibs.pajc.lithium.gui.SceneManager;
+import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,6 +15,8 @@ import java.io.ByteArrayInputStream;
 import java.util.Objects;
 
 public class ArtistEntry extends CustomComponent {
+    @FXML
+    private Node root;
     @FXML
     private ImageView proPicImg;
     @FXML
@@ -25,6 +30,10 @@ public class ArtistEntry extends CustomComponent {
         super();
         this.artist = artist;
         initialize();
+        root.setOnMouseClicked(e -> {
+            MainSceneController.setSelectedItem(artist);
+            SceneManager.loadScene("/FXMLs/itemViews/artistView.fxml", this, false);
+        });
     }
 
     private void initialize() {

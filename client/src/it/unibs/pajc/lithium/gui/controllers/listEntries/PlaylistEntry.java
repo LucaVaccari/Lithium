@@ -1,11 +1,14 @@
-package it.unibs.pajc.lithium.gui.listEntries;
+package it.unibs.pajc.lithium.gui.controllers.listEntries;
 
 import it.unibs.pajc.lithium.ClientMain;
-import it.unibs.pajc.lithium.HttpHandler;
+import it.unibs.pajc.HttpHandler;
 import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.db.om.User;
 import it.unibs.pajc.lithium.gui.CustomComponent;
+import it.unibs.pajc.lithium.gui.SceneManager;
+import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,6 +17,8 @@ import java.io.ByteArrayInputStream;
 import java.util.Objects;
 
 public class PlaylistEntry extends CustomComponent {
+    @FXML
+    private Node root;
     @FXML
     private ImageView coverImg;
     @FXML
@@ -29,6 +34,10 @@ public class PlaylistEntry extends CustomComponent {
         super();
         this.playlist = playlist;
         initialize();
+        root.setOnMouseClicked(e -> {
+            MainSceneController.setSelectedItem(playlist);
+            SceneManager.loadScene("/FXMLs/itemViews/playlistView.fxml", this, false);
+        });
     }
 
     private void initialize() {

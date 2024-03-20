@@ -39,7 +39,7 @@ from user_saved_playlist
 where true;
 
 insert into album(album_id, album_title, album_release_date, cover_img_path)
-VALUES ('1', 'Fragile', '2022-07-20', 'img/album_cover/zefiro_eternative1.jpg'),
+VALUES ('1', 'Fragile', '2022-07-20', 'img/album_cover/lit_silver_fragile.jpg'),
        ('2', 'Eternative', '2023-11-22', 'img/album_cover/zefiro_eternative.jpg'),
        ('3', 'Lambda', '2023-06-03', 'img/album_cover/lit_silver_lambda.jpg'),
        ('4', 'Butterfly', '2023-12-07', 'img/album_cover/lit_silver_butterfly.jpg');
@@ -93,7 +93,20 @@ VALUES (1, 1),
        (9, 2),
        (10, 2),
        (11, 2),
-       (12, 2);
+       (12, 2),
+       (13, 1),
+       (14, 1),
+       (15, 1),
+       (16, 1),
+       (17, 1),
+       (18, 1),
+       (19, 1),
+       (20, 1),
+       (21, 1),
+       (22, 1),
+       (23, 1),
+       (24, 1),
+       (25, 1);
 
 insert into user (user_id, username, pwd_hash)
 values (1, 'lucavaccari03', '6cd6e51ad74b5a0ad4f6689e62fcfd621573d4df579762168e04a47cf654b5e5');

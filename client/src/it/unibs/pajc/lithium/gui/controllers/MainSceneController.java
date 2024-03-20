@@ -10,9 +10,19 @@ public class MainSceneController {
     @FXML
     private HBox playbackContainer;
 
+    private static Object selectedItem;
+
     @FXML
     private void initialize() {
         playingNowTab.setDisable(true);
         playbackContainer.setDisable(true);
+    }
+
+    public static Object getSelectedItem() {
+        return selectedItem;
+    }
+
+    public static void setSelectedItem(Object selectedItem) {
+        MainSceneController.selectedItem = selectedItem;
     }
 }

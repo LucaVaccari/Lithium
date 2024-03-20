@@ -1,20 +1,27 @@
-package it.unibs.pajc.lithium.gui.listEntries;
+package it.unibs.pajc.lithium.gui.controllers.listEntries;
 
 import it.unibs.pajc.lithium.ClientMain;
-import it.unibs.pajc.lithium.HttpHandler;
+import it.unibs.pajc.HttpHandler;
+import it.unibs.pajc.lithium.HttpHelper;
 import it.unibs.pajc.lithium.db.om.Album;
 import it.unibs.pajc.lithium.db.om.Artist;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.CustomComponent;
+import it.unibs.pajc.lithium.gui.SceneManager;
+import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.ByteArrayInputStream;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class TrackEntry extends CustomComponent {
+    @FXML
+    private Node root;
     @FXML
     private ImageView coverImg;
     @FXML
@@ -28,6 +35,10 @@ public class TrackEntry extends CustomComponent {
         super();
         this.track = track;
         initialize();
+        root.setOnMouseClicked(e -> {
+            MainSceneController.setSelectedItem(track);
+            SceneManager.loadScene("/FXMLs/itemViews/trackView.fxml", this, false);
+        });
     }
 
     private void initialize() {
@@ -40,18 +51,9 @@ public class TrackEntry extends CustomComponent {
 
         titleLbl.setText(track.getTitle());
 
-        artistLbl.setText("");
-        int numberOfArtists = track.getArtistsIds().length;
-        if (numberOfArtists == 0) return;
-        var artists = new String[numberOfArtists];
-        Integer[] artistsIds = album.getArtistsIds();
-        for (int i = 0; i < numberOfArtists; i++) {
-            var id = artistsIds[i];
-            var json = HttpHandler.get("/artist/%d".formatted(id));
-            var artist = ClientMain.getGson().fromJson(json, Artist.class);
-            artists[i] = artist.getName();
-        }
-        artistLbl.setText(String.join(", ", artists));
+        var artists = HttpHelper.getArtists(album.getArtistsIds());
+        var artistNames = Arrays.stream(artists).map(Artist::getName).toArray(String[]::new);
+        artistLbl.setText(String.join(", ", artistNames));
     }
 
     public Track getTrack() {

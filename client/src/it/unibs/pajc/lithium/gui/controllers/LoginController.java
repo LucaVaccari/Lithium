@@ -1,12 +1,10 @@
 package it.unibs.pajc.lithium.gui.controllers;
 
 import com.google.common.hash.Hashing;
-import it.unibs.pajc.lithium.ClientMain;
-import it.unibs.pajc.lithium.HttpHandler;
-import it.unibs.pajc.lithium.gui.FXMLFileLoader;
+import it.unibs.pajc.HttpHandler;
+import it.unibs.pajc.lithium.gui.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -127,8 +125,7 @@ public class LoginController {
                 boolean auth = Boolean.parseBoolean(HttpHandler.post("/user/auth", username + "," + pswHash));
                 if (auth) {
                     messagesLabel.setText("Login successful");
-                    var root = FXMLFileLoader.loadFXML("/FXMLs/mainScene.fxml", this);
-                    ClientMain.setScene(new Scene(root));
+                    SceneManager.loadScene("/FXMLs/mainScene.fxml", this, true);
                 } else {
                     messagesLabel.setText("Wrong password. Try again");
                     pswTxtField.setText("");

@@ -9,17 +9,22 @@
         - [ ] Queue
     - [ ] Library tab
     - [ ] Search tab
+        - [x] Show default items
+        - [x] Search query
+        - [ ] Right click context menus
     - [ ] Settings tab
-        - [ ] server address
+        - [ ] Server address
         - [ ] Change theme
         - [ ] Equalizer
         - [ ] Log out
+        - [ ] Save settings in file
     - [ ] detail views
+        - [ ] track details
         - [ ] album details
         - [ ] artist details
         - [ ] playlist details
 - [ ] Theme (AtlantaFX)
-- [ ] Client config file
+- [ ] Save login info
 
 ## Server
 

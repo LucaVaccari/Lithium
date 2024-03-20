@@ -1,10 +1,13 @@
-package it.unibs.pajc.lithium;
+package it.unibs.pajc;
 
 import kong.unirest.*;
 
 import java.util.Base64;
 import java.util.HashMap;
 
+/**
+ * Program-independent class providing methods for sending HTTP messages
+ */
 public class HttpHandler {
     // todo Unirest.config().defaultBaseUrl("http://...");
     // todo set url and port in config or settings
