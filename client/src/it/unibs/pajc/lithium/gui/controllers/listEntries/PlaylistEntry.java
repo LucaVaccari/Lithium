@@ -1,7 +1,6 @@
 package it.unibs.pajc.lithium.gui.controllers.listEntries;
 
-import it.unibs.pajc.HttpHandler;
-import it.unibs.pajc.lithium.HttpHelper;
+import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import it.unibs.pajc.lithium.gui.SceneManager;
@@ -9,10 +8,8 @@ import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.ByteArrayInputStream;
 import java.util.Objects;
 
 public class PlaylistEntry extends CustomComponent {
@@ -40,13 +37,11 @@ public class PlaylistEntry extends CustomComponent {
     }
 
     private void initialize() {
-        var imgBytes = HttpHandler.getBase64Img("/" + playlist.getImgPath());
-        Image img = new Image(new ByteArrayInputStream(imgBytes));
-        coverImg.setImage(img);
+        coverImg.setImage(ItemProvider.getImage("/" + playlist.getImgPath()));
 
         nameLbl.setText(playlist.getName());
 
-        var owner = HttpHelper.getPlaylistOwner(playlist);
+        var owner = ItemProvider.getPlaylistOwner(playlist);
         authorLbl.setText("by " + owner.getUsername());
 
         int numberOfTracks = playlist.getTracksIds().length;

@@ -60,7 +60,7 @@ public class HttpHandler {
         return deleteRequest.asString().getBody();
     }
 
-    public static String buildUrl(String subUrl) {
+    private static String buildUrl(String subUrl) {
         return URL + subUrl;
     }
 

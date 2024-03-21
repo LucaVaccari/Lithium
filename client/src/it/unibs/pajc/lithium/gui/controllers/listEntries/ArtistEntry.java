@@ -1,6 +1,6 @@
 package it.unibs.pajc.lithium.gui.controllers.listEntries;
 
-import it.unibs.pajc.HttpHandler;
+import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.db.om.Artist;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import it.unibs.pajc.lithium.gui.SceneManager;
@@ -8,10 +8,8 @@ import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.ByteArrayInputStream;
 import java.util.Objects;
 
 public class ArtistEntry extends CustomComponent {
@@ -37,9 +35,7 @@ public class ArtistEntry extends CustomComponent {
     }
 
     private void initialize() {
-        var imgBytes = HttpHandler.getBase64Img("/" + artist.getProfilePicturePath());
-        Image img = new Image(new ByteArrayInputStream(imgBytes));
-        proPicImg.setImage(img);
+        proPicImg.setImage(ItemProvider.getImage("/" + artist.getProfilePicturePath()));
 
         nameLbl.setText(artist.getName());
 

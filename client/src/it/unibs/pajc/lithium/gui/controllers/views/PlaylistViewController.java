@@ -1,7 +1,6 @@
 package it.unibs.pajc.lithium.gui.controllers.views;
 
-import it.unibs.pajc.HttpHandler;
-import it.unibs.pajc.lithium.HttpHelper;
+import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
@@ -10,10 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import java.io.ByteArrayInputStream;
 
 public class PlaylistViewController {
     @FXML
@@ -33,7 +29,7 @@ public class PlaylistViewController {
     @FXML
     private void initialize() {
         playlist = (Playlist) MainSceneController.getSelectedItem();
-        var owner = HttpHelper.getPlaylistOwner(playlist);
+        var owner = ItemProvider.getPlaylistOwner(playlist);
 
         playlistNameLbl.setText(playlist.getName());
         ownerLlb.setText("By " + owner.getUsername());
@@ -41,7 +37,7 @@ public class PlaylistViewController {
         // TODO: creation date
         // TODO: genres
 
-        coverImg.setImage(new Image(new ByteArrayInputStream(HttpHandler.getBase64Img("/" + playlist.getImgPath()))));
+        coverImg.setImage(ItemProvider.getImage("/" + playlist.getImgPath()));
 
         // TODO: fill track container
     }

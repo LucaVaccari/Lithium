@@ -1,8 +1,6 @@
 package it.unibs.pajc.lithium.gui.controllers.listEntries;
 
-import it.unibs.pajc.lithium.ClientMain;
-import it.unibs.pajc.HttpHandler;
-import it.unibs.pajc.lithium.HttpHelper;
+import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.db.om.Album;
 import it.unibs.pajc.lithium.db.om.Artist;
 import it.unibs.pajc.lithium.db.om.Track;
@@ -12,10 +10,8 @@ import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -42,16 +38,15 @@ public class TrackEntry extends CustomComponent {
     }
 
     private void initialize() {
-        var albumJson = HttpHandler.get("/album/" + track.getAlbumId());
-        var album = ClientMain.getGson().fromJson(albumJson, Album.class);
+//        var albumJson = HttpHandler.get("/album/" + track.getAlbumId());
+//        var album = ItemProvider.getGson().fromJson(albumJson, Album.class);
+        var album = ItemProvider.getItem(track.getAlbumId(), Album.class);
 
-        var imgBytes = HttpHandler.getBase64Img("/" + album.getImgPath());
-        Image img = new Image(new ByteArrayInputStream(imgBytes));
-        coverImg.setImage(img);
+        coverImg.setImage(ItemProvider.getImage("/" + album.getImgPath()));
 
         titleLbl.setText(track.getTitle());
 
-        var artists = HttpHelper.getArtists(album.getArtistsIds());
+        var artists = ItemProvider.getItems(album.getArtistsIds(), Artist.class);
         var artistNames = Arrays.stream(artists).map(Artist::getName).toArray(String[]::new);
         artistLbl.setText(String.join(", ", artistNames));
     }
