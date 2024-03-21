@@ -33,7 +33,7 @@ public class TrackEntry extends CustomComponent {
         initialize();
         root.setOnMouseClicked(e -> {
             MainSceneController.setSelectedItem(track);
-            SceneManager.loadScene("/FXMLs/itemViews/trackView.fxml", this, false);
+            SceneManager.loadScene("/FXMLs/itemViews/trackView.fxml", this);
         });
     }
 

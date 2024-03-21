@@ -3,11 +3,12 @@ package it.unibs.pajc.lithium.gui;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Stack;
+
 public class SceneManager {
     private static Stage mainStage;
 
-    // TODO: substitute mainScene with scene stack
-    public static Scene mainScene;
+    private final static Stack<Scene> scenes = new Stack<>();
 
     public static void init(Stage mainStage) {
         SceneManager.mainStage = mainStage;
@@ -17,14 +18,17 @@ public class SceneManager {
         mainStage.show();
     }
 
-    public static void loadScene(String path, Object caller, boolean isMainScene) {
+    public static void loadScene(String path, Object caller) {
         var root = FXMLFileLoader.loadFXML(path, caller);
         Scene scene = new Scene(root);
         mainStage.setScene(scene);
-        if (isMainScene) mainScene = scene;
+        scenes.push(scene);
     }
 
-    public static void backToMainScene() {
-        if (mainScene != null) mainStage.setScene(mainScene);
+    public static void backToPreviousScene() {
+        scenes.pop();
+        mainStage.setScene(scenes.peek());
     }
+
+    // TODO: back to main scene
 }

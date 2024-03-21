@@ -12,60 +12,44 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="it.unibs.pajc.lithium.gui.controllers.views.PlaylistViewController">
-    <HBox alignment="CENTER" prefHeight="560.0" prefWidth="584.0" spacing="20.0" AnchorPane.bottomAnchor="20.0"
-          AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibs.pajc.lithium.gui.controllers.views.PlaylistViewController">
+    <HBox alignment="CENTER" prefHeight="560.0" prefWidth="584.0" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
         <VBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" prefHeight="560.0" prefWidth="418.0">
             <padding>
-                <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
+                <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
             </padding>
             <Label fx:id="playlistNameLbl" maxWidth="1.7976931348623157E308" text="Playlist name" wrapText="true">
                 <font>
-                    <Font size="36.0"/>
+                    <Font size="36.0" />
                 </font>
             </Label>
-            <Label fx:id="ownerLlb" layoutX="202.0" layoutY="295.0" maxWidth="1.7976931348623157E308" text="Author"
-                   wrapText="true">
+            <Label fx:id="ownerLlb" layoutX="202.0" layoutY="295.0" maxWidth="1.7976931348623157E308" text="Author" wrapText="true">
                 <font>
-                    <Font size="24.0"/>
+                    <Font size="24.0" />
                 </font>
             </Label>
-            <Label fx:id="creationDateLbl" layoutX="202.0" layoutY="309.0" maxWidth="1.7976931348623157E308"
-                   text="Creation date" wrapText="true">
+            <Label fx:id="creationDateLbl" layoutX="202.0" layoutY="309.0" maxWidth="1.7976931348623157E308" text="Creation date" wrapText="true">
                 <font>
-                    <Font size="14.0"/>
+                    <Font size="14.0" />
                 </font>
             </Label>
-            <Label fx:id="genresLbl" layoutX="186.0" layoutY="322.0" maxWidth="1.7976931348623157E308" text="Genre list"
-                   wrapText="true">
+            <Label fx:id="genresLbl" layoutX="186.0" layoutY="322.0" maxWidth="1.7976931348623157E308" text="Genre list" wrapText="true">
                 <font>
-                    <Font size="13.0"/>
+                    <Font size="13.0" />
                 </font>
             </Label>
-            <Pane prefHeight="20.0" prefWidth="338.0"/>
-            <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="338.0"
-                  spacing="10.0">
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPlayNowBtn"
-                        prefHeight="64.0" prefWidth="69.0" text="PLAY NOW" HBox.hgrow="ALWAYS"/>
-                <Button layoutX="145.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                        onAction="#onPlayNextBtn" prefHeight="64.0" prefWidth="69.0" text="PLAY NEXT"
-                        HBox.hgrow="ALWAYS"/>
-                <Button layoutX="184.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                        onAction="#onAddToQueueBtn" prefHeight="64.0" prefWidth="69.0" text="ADD TO QUEUE"
-                        HBox.hgrow="ALWAYS"/>
+            <Pane prefHeight="11.0" prefWidth="338.0" />
+            <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="338.0" spacing="10.0">
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPlayNowBtn" prefHeight="64.0" prefWidth="69.0" text="PLAY NOW" HBox.hgrow="ALWAYS" />
+                <Button layoutX="145.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPlayNextBtn" prefHeight="64.0" prefWidth="69.0" text="PLAY NEXT" HBox.hgrow="ALWAYS" />
+                <Button layoutX="184.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAddToQueueBtn" prefHeight="64.0" prefWidth="69.0" text="ADD TO QUEUE" HBox.hgrow="ALWAYS" />
             </HBox>
-            <Pane prefHeight="16.0" prefWidth="338.0"/>
-            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0"
-                        maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0"
-                        prefWidth="200.0" VBox.vgrow="ALWAYS">
-                <ListView fx:id="trackContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                          prefHeight="200.0" prefWidth="200.0"/>
+            <Pane prefHeight="10.0" prefWidth="338.0" />
+            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                <ListView fx:id="trackContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
             </ScrollPane>
         </VBox>
-        <ImageView fx:id="coverImg" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true"
-                   HBox.hgrow="ALWAYS"/>
+        <ImageView fx:id="coverImg" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
     </HBox>
-    <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackBtn"
-            prefHeight="46.0" prefWidth="50.0" text="&lt;-" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0"/>
+    <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackBtn" prefHeight="46.0" prefWidth="50.0" text="&lt;-" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
 </AnchorPane>

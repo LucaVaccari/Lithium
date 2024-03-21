@@ -2,6 +2,8 @@ package it.unibs.pajc.lithium.gui.controllers.views;
 
 import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.db.om.Playlist;
+import it.unibs.pajc.lithium.db.om.Track;
+import it.unibs.pajc.lithium.db.om.User;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
@@ -29,7 +31,7 @@ public class PlaylistViewController {
     @FXML
     private void initialize() {
         playlist = (Playlist) MainSceneController.getSelectedItem();
-        var owner = ItemProvider.getPlaylistOwner(playlist);
+        var owner = ItemProvider.getItem(playlist.getOwnerId(), User.class);
 
         playlistNameLbl.setText(playlist.getName());
         ownerLlb.setText("By " + owner.getUsername());
@@ -39,12 +41,16 @@ public class PlaylistViewController {
 
         coverImg.setImage(ItemProvider.getImage("/" + playlist.getImgPath()));
 
-        // TODO: fill track container
+        var tracks = ItemProvider.getItems(playlist.getTracksIds(), Track.class);
+        trackContainer.getItems().clear();
+        for (var track : tracks) {
+            trackContainer.getItems().add(new TrackEntry(track));
+        }
     }
 
     public void onBackBtn(ActionEvent ignored) {
         MainSceneController.setSelectedItem(null);
-        SceneManager.backToMainScene();
+        SceneManager.backToPreviousScene();
     }
 
     public void onPlayNowBtn(ActionEvent ignored) {

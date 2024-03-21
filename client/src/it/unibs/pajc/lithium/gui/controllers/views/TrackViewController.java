@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 import java.util.Arrays;
 
@@ -30,11 +31,12 @@ public class TrackViewController {
     @FXML
     private ImageView coverImg;
     private Track track;
+    private Album album;
 
     @FXML
     private void initialize() {
         track = (Track) MainSceneController.getSelectedItem();
-        var album = ItemProvider.getItem(track.getAlbumId(), Album.class);
+        album = ItemProvider.getItem(track.getAlbumId(), Album.class);
         trackTitleLbl.setText(track.getTitle());
         trackAlbumLbl.setText(album.getTitle());
 
@@ -49,7 +51,12 @@ public class TrackViewController {
 
     public void onBackBtn() {
         MainSceneController.setSelectedItem(null);
-        SceneManager.backToMainScene();
+        SceneManager.backToPreviousScene();
+    }
+
+    public void onAlbumMouseClicked(MouseEvent ignored) {
+        MainSceneController.setSelectedItem(album);
+        SceneManager.loadScene("/FXMLs/itemViews/albumView.fxml", this);
     }
 
     public void onPlayNowBtn(ActionEvent ignored) {

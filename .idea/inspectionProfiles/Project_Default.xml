@@ -10,9 +10,10 @@
     <inspection_tool class="FieldCanBeLocal" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="EXCLUDE_ANNOS">
         <value>
-          <list size="2">
+          <list size="3">
             <item index="0" class="java.lang.String" itemvalue="it.unibs.pajc.db.Column" />
-            <item index="1" class="java.lang.String" itemvalue="it.unibs.pajc.db.ManyToMany" />
+            <item index="1" class="java.lang.String" itemvalue="it.unibs.pajc.db.ForeignKey" />
+            <item index="2" class="java.lang.String" itemvalue="it.unibs.pajc.db.ManyToMany" />
           </list>
         </value>
       </option>

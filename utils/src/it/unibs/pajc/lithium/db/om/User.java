@@ -1,8 +1,8 @@
 package it.unibs.pajc.lithium.db.om;
 
 import it.unibs.pajc.db.Column;
+import it.unibs.pajc.db.ForeignKey;
 import it.unibs.pajc.db.Id;
-import it.unibs.pajc.db.ManyToMany;
 import it.unibs.pajc.db.Table;
 
 import java.io.Serializable;
@@ -23,9 +23,9 @@ public class User implements Serializable {
     @Column(name = "profile_pic_path")
     private String profilePicPath;
 
-    @ManyToMany(otherTableName = "user_saved_album", otherTableColumnName = "album_id")
+    @ForeignKey(otherTableName = "user_saved_album", otherTableColumnName = "album_id")
     private Integer[] savedAlbumsIds;
-    @ManyToMany(otherTableName = "user_saved_playlist", otherTableColumnName = "playlist_id")
+    @ForeignKey(otherTableName = "user_saved_playlist", otherTableColumnName = "playlist_id")
     private Integer[] savedPlaylistsIds;
 
     public User() {

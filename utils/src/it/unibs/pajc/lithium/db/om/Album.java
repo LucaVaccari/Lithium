@@ -2,8 +2,8 @@ package it.unibs.pajc.lithium.db.om;
 
 
 import it.unibs.pajc.db.Column;
+import it.unibs.pajc.db.ForeignKey;
 import it.unibs.pajc.db.Id;
-import it.unibs.pajc.db.ManyToMany;
 import it.unibs.pajc.db.Table;
 
 import java.io.Serializable;
@@ -26,10 +26,12 @@ public class Album implements Serializable {
     private String releaseDate;
     @Column(name = "cover_img_path")
     private String imgPath;
-    @ManyToMany(otherTableName = "album_by_artist", otherTableColumnName = "artist_id")
+    @ForeignKey(otherTableName = "album_by_artist", otherTableColumnName = "artist_id")
     private Integer[] artistsIds;
-    @ManyToMany(otherTableName = "album_genre", otherTableColumnName = "genre_id")
+    @ForeignKey(otherTableName = "album_genre", otherTableColumnName = "genre_id")
     private Integer[] genresIds;
+    @ForeignKey(otherTableName = "track", otherTableColumnName = "track_id")
+    private Integer[] trackIds;
 
     public Album() {
     }
@@ -66,6 +68,10 @@ public class Album implements Serializable {
 
     public Integer[] getArtistsIds() {
         return artistsIds;
+    }
+
+    public Integer[] getTrackIds() {
+        return trackIds;
     }
 
     @Override

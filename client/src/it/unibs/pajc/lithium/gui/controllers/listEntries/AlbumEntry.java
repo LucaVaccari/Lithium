@@ -32,7 +32,7 @@ public class AlbumEntry extends CustomComponent {
         initialize();
         root.setOnMouseClicked(e -> {
             MainSceneController.setSelectedItem(album);
-            SceneManager.loadScene("/FXMLs/itemViews/albumView.fxml", this, false);
+            SceneManager.loadScene("/FXMLs/itemViews/albumView.fxml", this);
         });
     }
 

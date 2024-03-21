@@ -152,9 +152,9 @@ public class SQLiteInterface implements Closeable {
                 if (id != null) {
                     Field finalId = id;
                     Arrays.stream(objType.getDeclaredFields())
-                            .filter(field -> field.isAnnotationPresent(ManyToMany.class)).forEach(field -> {
+                            .filter(field -> field.isAnnotationPresent(ForeignKey.class)).forEach(field -> {
                                 try {
-                                    var mtmAnnotation = field.getAnnotation(ManyToMany.class);
+                                    var mtmAnnotation = field.getAnnotation(ForeignKey.class);
                                     finalId.setAccessible(true);
                                     field.setAccessible(true);
                                     String otherTableColumnName = mtmAnnotation.otherTableColumnName();

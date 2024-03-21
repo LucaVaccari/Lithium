@@ -13,6 +13,6 @@ public class ClientMain extends Application {
     @Override
     public void start(Stage stage) {
         SceneManager.init(stage);
-        SceneManager.loadScene("/FXMLs/mainScene.fxml", this, true);
+        SceneManager.loadScene("/FXMLs/mainScene.fxml", this);
     }
 }

@@ -2,6 +2,7 @@ package it.unibs.pajc.lithium.gui.controllers.listEntries;
 
 import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.db.om.Playlist;
+import it.unibs.pajc.lithium.db.om.User;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
@@ -32,7 +33,7 @@ public class PlaylistEntry extends CustomComponent {
         initialize();
         root.setOnMouseClicked(e -> {
             MainSceneController.setSelectedItem(playlist);
-            SceneManager.loadScene("/FXMLs/itemViews/playlistView.fxml", this, false);
+            SceneManager.loadScene("/FXMLs/itemViews/playlistView.fxml", this);
         });
     }
 
@@ -41,7 +42,7 @@ public class PlaylistEntry extends CustomComponent {
 
         nameLbl.setText(playlist.getName());
 
-        var owner = ItemProvider.getPlaylistOwner(playlist);
+        var owner = ItemProvider.getItem(playlist.getOwnerId(), User.class);
         authorLbl.setText("by " + owner.getUsername());
 
         int numberOfTracks = playlist.getTracksIds().length;

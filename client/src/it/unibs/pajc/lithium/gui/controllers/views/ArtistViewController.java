@@ -39,6 +39,6 @@ public class ArtistViewController {
 
     public void onBackBtn(ActionEvent ignored) {
         MainSceneController.setSelectedItem(null);
-        SceneManager.backToMainScene();
+        SceneManager.backToPreviousScene();
     }
 }

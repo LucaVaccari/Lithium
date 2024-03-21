@@ -1,8 +1,8 @@
 package it.unibs.pajc.lithium.db.om;
 
 import it.unibs.pajc.db.Column;
+import it.unibs.pajc.db.ForeignKey;
 import it.unibs.pajc.db.Id;
-import it.unibs.pajc.db.ManyToMany;
 import it.unibs.pajc.db.Table;
 
 import java.io.Serializable;
@@ -32,7 +32,7 @@ public class Track implements Serializable {
     @Column(name = "album_id")
     private Integer albumId;
 
-    @ManyToMany(otherTableName = "track_by_artist", otherTableColumnName = "artist_id")
+    @ForeignKey(otherTableName = "track_by_artist", otherTableColumnName = "artist_id")
     private Integer[] artistsIds;
 
     public Integer getId() {

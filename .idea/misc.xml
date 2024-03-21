@@ -3,7 +3,7 @@
   <component name="EntryPointsManager">
     <list size="3">
       <item index="0" class="java.lang.String" itemvalue="it.unibs.pajc.db.Column" />
-      <item index="1" class="java.lang.String" itemvalue="it.unibs.pajc.db.ManyToMany" />
+      <item index="1" class="java.lang.String" itemvalue="it.unibs.pajc.db.ForeignKey" />
       <item index="2" class="java.lang.String" itemvalue="javafx.fxml.FXML" />
     </list>
     <writeAnnotations>
@@ -11,6 +11,7 @@
       <writeAnnotation name="it.unibs.pajc.db.DbColumn" />
       <writeAnnotation name="javafx.fxml.FXML" />
       <writeAnnotation name="it.unibs.pajc.db.ManyToMany" />
+      <writeAnnotation name="it.unibs.pajc.db.ForeignKey" />
     </writeAnnotations>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />

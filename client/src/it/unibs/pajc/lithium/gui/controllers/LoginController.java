@@ -125,7 +125,7 @@ public class LoginController {
                 boolean auth = Boolean.parseBoolean(HttpHandler.post("/user/auth", username + "," + pswHash));
                 if (auth) {
                     messagesLabel.setText("Login successful");
-                    SceneManager.loadScene("/FXMLs/mainScene.fxml", this, true);
+                    SceneManager.loadScene("/FXMLs/mainScene.fxml", this);
                 } else {
                     messagesLabel.setText("Wrong password. Try again");
                     pswTxtField.setText("");

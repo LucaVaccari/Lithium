@@ -1,8 +1,8 @@
 package it.unibs.pajc.lithium.db.om;
 
 import it.unibs.pajc.db.Column;
+import it.unibs.pajc.db.ForeignKey;
 import it.unibs.pajc.db.Id;
-import it.unibs.pajc.db.ManyToMany;
 import it.unibs.pajc.db.Table;
 
 import java.io.Serializable;
@@ -26,7 +26,7 @@ public class Playlist implements Serializable {
     @Column(name = "cover_img_path")
     private String imgPath;
 
-    @ManyToMany(otherTableName = "track_in_playlist", otherTableColumnName = "track_id")
+    @ForeignKey(otherTableName = "track_in_playlist", otherTableColumnName = "track_id")
     private Integer[] tracksIds;
 
     public Integer getId() {

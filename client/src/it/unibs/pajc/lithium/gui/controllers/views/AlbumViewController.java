@@ -3,6 +3,7 @@ package it.unibs.pajc.lithium.gui.controllers.views;
 import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.db.om.Album;
 import it.unibs.pajc.lithium.db.om.Artist;
+import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
@@ -44,12 +45,16 @@ public class AlbumViewController {
 
         coverImg.setImage(ItemProvider.getImage("/" + album.getImgPath()));
 
-        // TODO: track container
+        var tracks = ItemProvider.getItems(album.getTrackIds(), Track.class);
+        trackContainer.getItems().clear();
+        for (var track : tracks) {
+            trackContainer.getItems().add(new TrackEntry(track));
+        }
     }
 
     public void onBackBtn(ActionEvent ignored) {
         MainSceneController.setSelectedItem(null);
-        SceneManager.backToMainScene();
+        SceneManager.backToPreviousScene();
     }
 
     public void onPlayNowBtn(ActionEvent ignored) {

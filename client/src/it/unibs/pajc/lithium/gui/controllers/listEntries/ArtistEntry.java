@@ -30,7 +30,7 @@ public class ArtistEntry extends CustomComponent {
         initialize();
         root.setOnMouseClicked(e -> {
             MainSceneController.setSelectedItem(artist);
-            SceneManager.loadScene("/FXMLs/itemViews/artistView.fxml", this, false);
+            SceneManager.loadScene("/FXMLs/itemViews/artistView.fxml", this);
         });
     }
 

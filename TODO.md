@@ -25,6 +25,8 @@
         - [ ] playlist details
 - [ ] Theme (AtlantaFX)
 - [ ] Save login info
+- [ ] Cache GUI list entries
+- [ ] Cache items
 
 ## Server
 
