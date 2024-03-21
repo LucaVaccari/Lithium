@@ -1,11 +1,13 @@
 package it.unibs.pajc.lithium.gui.controllers.views;
 
 import it.unibs.pajc.lithium.ItemProvider;
+import it.unibs.pajc.lithium.PlaybackManager;
 import it.unibs.pajc.lithium.db.om.Album;
 import it.unibs.pajc.lithium.db.om.Artist;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
+import it.unibs.pajc.lithium.gui.controllers.PlaybackController;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,11 +30,13 @@ public class AlbumViewController {
     private Label genreLbl;
     @FXML
     private ListView<TrackEntry> trackContainer;
-    private Album album;
+    @FXML
+    private PlaybackController playbackController;
+    private Track[] tracks;
 
     @FXML
     private void initialize() {
-        album = (Album) MainSceneController.getSelectedItem();
+        var album = (Album) MainSceneController.getSelectedItem();
         albumTitleLbl.setText(album.getTitle());
 
         var artists = ItemProvider.getItems(album.getArtistsIds(), Artist.class);
@@ -45,7 +49,7 @@ public class AlbumViewController {
 
         coverImg.setImage(ItemProvider.getImage("/" + album.getImgPath()));
 
-        var tracks = ItemProvider.getItems(album.getTrackIds(), Track.class);
+        tracks = ItemProvider.getItems(album.getTrackIds(), Track.class);
         trackContainer.getItems().clear();
         for (var track : tracks) {
             trackContainer.getItems().add(new TrackEntry(track));
@@ -58,14 +62,17 @@ public class AlbumViewController {
     }
 
     public void onPlayNowBtn(ActionEvent ignored) {
-        // TODO: play album now
+        PlaybackManager.playImmediately(tracks);
+        playbackController.update();
     }
 
     public void onPlayNextBtn(ActionEvent ignored) {
-        // TODO: play album next
+        PlaybackManager.playNext(tracks);
+        playbackController.update();
     }
 
     public void onAddToQueueBtn(ActionEvent ignored) {
-        // TODO: add album to queue
+        PlaybackManager.addToQueue(tracks);
+        playbackController.update();
     }
 }

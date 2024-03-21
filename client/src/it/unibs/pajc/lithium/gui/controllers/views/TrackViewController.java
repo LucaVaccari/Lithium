@@ -1,11 +1,13 @@
 package it.unibs.pajc.lithium.gui.controllers.views;
 
 import it.unibs.pajc.lithium.ItemProvider;
+import it.unibs.pajc.lithium.PlaybackManager;
 import it.unibs.pajc.lithium.db.om.Album;
 import it.unibs.pajc.lithium.db.om.Artist;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
+import it.unibs.pajc.lithium.gui.controllers.PlaybackController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -30,6 +32,8 @@ public class TrackViewController {
     private Label genreListLbl;
     @FXML
     private ImageView coverImg;
+    @FXML
+    private PlaybackController playbackController;
     private Track track;
     private Album album;
 
@@ -60,14 +64,17 @@ public class TrackViewController {
     }
 
     public void onPlayNowBtn(ActionEvent ignored) {
-        // TODO: play track now
+        PlaybackManager.playImmediately(track);
+        playbackController.update();
     }
 
     public void onPlayNextBtn(ActionEvent ignored) {
-        // TODO: play track next
+        PlaybackManager.playNext(track);
+        playbackController.update();
     }
 
     public void onAddToQueueBtn(ActionEvent ignored) {
-        // TODO: add track to queue
+        PlaybackManager.addToQueue(track);
+        playbackController.update();
     }
 }

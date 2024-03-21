@@ -1,5 +1,6 @@
 package it.unibs.pajc.lithium.gui.controllers;
 
+import it.unibs.pajc.lithium.PlaybackManager;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,10 +22,16 @@ public class PlaybackController extends CustomComponent {
     @FXML
     private void initialize() {
         update();
+
+        backBtn.setOnAction(ignored -> PlaybackManager.previousTrack());
+        pauseBtn.setOnAction(ignored -> PlaybackManager.togglePlay());
+        forwardBtn.setOnAction(ignored -> PlaybackManager.nextTrack());
     }
 
-    private void update() {
-        // TODO: update visuals
+    public void update() {
+        progressSlider.setValue(PlaybackManager.getPlayPercentage());
+        int currentTime = PlaybackManager.getCurrentTime();
+        progressLbl.setText("%2d:%2d".formatted(currentTime / 60, currentTime % 60));
     }
 
     @Override

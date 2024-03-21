@@ -36,6 +36,17 @@
                         <Font size="14.0"/>
                     </font>
                 </Label>
+                <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="338.0"
+                      spacing="10.0">
+                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPlayNowBtn"
+                            prefHeight="64.0" prefWidth="69.0" text="PLAY NOW" HBox.hgrow="ALWAYS"/>
+                    <Button layoutX="145.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                            onAction="#onPlayNextBtn" prefHeight="64.0" prefWidth="69.0" text="PLAY NEXT"
+                            HBox.hgrow="ALWAYS"/>
+                    <Button layoutX="184.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                            onAction="#onAddToQueueBtn" prefHeight="64.0" prefWidth="69.0" text="ADD TO QUEUE"
+                            HBox.hgrow="ALWAYS"/>
+                </HBox>
                 <Pane prefHeight="16.0" prefWidth="338.0"/>
                 <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0"
                             maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0"
@@ -47,6 +58,6 @@
             <ImageView fx:id="proPicImg" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true"
                        HBox.hgrow="ALWAYS"/>
         </HBox>
-        <PlaybackController/>
+        <PlaybackController fx:id="playbackController"/>
     </VBox>
 </AnchorPane>

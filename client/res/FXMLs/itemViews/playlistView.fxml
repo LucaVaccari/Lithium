@@ -64,6 +64,6 @@
             <ImageView fx:id="coverImg" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true"
                        HBox.hgrow="ALWAYS"/>
         </HBox>
-        <PlaybackController/>
+        <PlaybackController fx:id="playbackController"/>
     </VBox>
 </AnchorPane>

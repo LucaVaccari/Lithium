@@ -1,9 +1,12 @@
 package it.unibs.pajc.lithium.gui.controllers.views;
 
 import it.unibs.pajc.lithium.ItemProvider;
+import it.unibs.pajc.lithium.PlaybackManager;
 import it.unibs.pajc.lithium.db.om.Artist;
+import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
+import it.unibs.pajc.lithium.gui.controllers.PlaybackController;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,11 +25,13 @@ public class ArtistViewController {
     private ImageView proPicImg;
     @FXML
     private ListView<TrackEntry> trackContainer;
-    private Artist artist;
+    @FXML
+    private PlaybackController playbackController;
+    private Track[] tracks;
 
     @FXML
     private void initialize() {
-        artist = (Artist) MainSceneController.getSelectedItem();
+        var artist = (Artist) MainSceneController.getSelectedItem();
         artistNameLbl.setText(artist.getName());
         bioLbl.setText(artist.getBio());
 
@@ -34,11 +39,26 @@ public class ArtistViewController {
 
         proPicImg.setImage(ItemProvider.getImage("/" + artist.getProfilePicturePath()));
 
-        // TODO: track container
+        // TODO: track container (get tracks from artists)
     }
 
     public void onBackBtn(ActionEvent ignored) {
         MainSceneController.setSelectedItem(null);
         SceneManager.backToPreviousScene();
+    }
+
+    public void onPlayNowBtn(ActionEvent ignored) {
+        PlaybackManager.playImmediately(tracks);
+        playbackController.update();
+    }
+
+    public void onPlayNextBtn(ActionEvent ignored) {
+        PlaybackManager.playNext(tracks);
+        playbackController.update();
+    }
+
+    public void onAddToQueueBtn(ActionEvent ignored) {
+        PlaybackManager.addToQueue(tracks);
+        playbackController.update();
     }
 }

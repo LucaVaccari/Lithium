@@ -1,11 +1,13 @@
 package it.unibs.pajc.lithium.gui.controllers.views;
 
 import it.unibs.pajc.lithium.ItemProvider;
+import it.unibs.pajc.lithium.PlaybackManager;
 import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.db.om.User;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
+import it.unibs.pajc.lithium.gui.controllers.PlaybackController;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,11 +28,13 @@ public class PlaylistViewController {
     private ImageView coverImg;
     @FXML
     public ListView<TrackEntry> trackContainer;
-    private Playlist playlist;
+    @FXML
+    private PlaybackController playbackController;
+    private Track[] tracks;
 
     @FXML
     private void initialize() {
-        playlist = (Playlist) MainSceneController.getSelectedItem();
+        var playlist = (Playlist) MainSceneController.getSelectedItem();
         var owner = ItemProvider.getItem(playlist.getOwnerId(), User.class);
 
         playlistNameLbl.setText(playlist.getName());
@@ -41,7 +45,7 @@ public class PlaylistViewController {
 
         coverImg.setImage(ItemProvider.getImage("/" + playlist.getImgPath()));
 
-        var tracks = ItemProvider.getItems(playlist.getTracksIds(), Track.class);
+        tracks = ItemProvider.getItems(playlist.getTracksIds(), Track.class);
         trackContainer.getItems().clear();
         for (var track : tracks) {
             trackContainer.getItems().add(new TrackEntry(track));
@@ -54,14 +58,17 @@ public class PlaylistViewController {
     }
 
     public void onPlayNowBtn(ActionEvent ignored) {
-        // TODO: play playlist now
+        PlaybackManager.playImmediately(tracks);
+        playbackController.update();
     }
 
     public void onPlayNextBtn(ActionEvent ignored) {
-        // TODO: play playlist next
+        PlaybackManager.playNext(tracks);
+        playbackController.update();
     }
 
     public void onAddToQueueBtn(ActionEvent ignored) {
-        // TODO: add playlist to queue
+        PlaybackManager.addToQueue(tracks);
+        playbackController.update();
     }
 }

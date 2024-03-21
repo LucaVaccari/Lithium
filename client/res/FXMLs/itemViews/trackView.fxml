@@ -70,6 +70,6 @@
                 </HBox.margin>
             </ImageView>
         </HBox>
-        <PlaybackController/>
+        <PlaybackController fx:id="playbackController"/>
     </VBox>
 </AnchorPane>
