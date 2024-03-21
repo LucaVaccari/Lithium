@@ -18,15 +18,16 @@
         - [ ] Equalizer
         - [ ] Log out
         - [ ] Save settings in file
-    - [ ] detail views
-        - [ ] track details
-        - [ ] album details
-        - [ ] artist details
-        - [ ] playlist details
-- [ ] Theme (AtlantaFX)
+    - [x] detail views
+        - [x] track details
+        - [x] album details
+        - [x] artist details
+        - [x] playlist details
 - [ ] Save login info
 - [ ] Cache GUI list entries
 - [ ] Cache items
+- [ ] Async loading
+- [ ] Theme (AtlantaFX)
 
 ## Server
 

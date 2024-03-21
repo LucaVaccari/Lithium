@@ -14,7 +14,7 @@ public class SceneManager {
         SceneManager.mainStage = mainStage;
         mainStage.setTitle("Lithium");
         mainStage.setOnCloseRequest(e -> System.exit(0));
-        mainStage.setResizable(true);
+        mainStage.setResizable(false);
         mainStage.show();
     }
 
@@ -23,11 +23,13 @@ public class SceneManager {
         Scene scene = new Scene(root);
         mainStage.setScene(scene);
         scenes.push(scene);
+        mainStage.sizeToScene();
     }
 
     public static void backToPreviousScene() {
         scenes.pop();
         mainStage.setScene(scenes.peek());
+        mainStage.sizeToScene();
     }
 
     // TODO: back to main scene

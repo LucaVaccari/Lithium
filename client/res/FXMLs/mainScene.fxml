@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import it.unibs.pajc.lithium.gui.controllers.PlaybackController?>
+<?import it.unibs.pajc.lithium.gui.controllers.tabs.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import it.unibs.pajc.lithium.gui.controllers.tabs.LibraryTab?>
-<?import it.unibs.pajc.lithium.gui.controllers.tabs.SearchTab?>
-<?import it.unibs.pajc.lithium.gui.controllers.tabs.PlayingNowTab?>
-<?import it.unibs.pajc.lithium.gui.controllers.tabs.OnlineUsersTab?>
-<?import it.unibs.pajc.lithium.gui.controllers.tabs.SettingsTab?>
-
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="it.unibs.pajc.lithium.gui.controllers.MainSceneController">
     <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0"
@@ -34,25 +27,6 @@
                 <SettingsTab/>
             </Tab>
         </TabPane>
-        <HBox fx:id="playbackContainer" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="41.0"
-              prefWidth="600.0" spacing="5.0">
-            <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-            </padding>
-            <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308"
-                    mnemonicParsing="false" text="Back" HBox.hgrow="ALWAYS"/>
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0"
-                    maxHeight="1.7976931348623157E308" mnemonicParsing="false" HBox.hgrow="ALWAYS">
-                <graphic>
-                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../img/pause-TEMP.png"/>
-                    </ImageView>
-                </graphic>
-            </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="51.0" layoutY="10.0"
-                    maxHeight="1.7976931348623157E308" mnemonicParsing="false" text="Forward" HBox.hgrow="ALWAYS"/>
-            <Slider maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
-            <Label text="00:00"/>
-        </HBox>
+        <PlaybackController/>
     </VBox>
 </AnchorPane>

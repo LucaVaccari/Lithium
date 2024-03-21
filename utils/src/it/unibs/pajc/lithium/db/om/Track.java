@@ -51,6 +51,10 @@ public class Track implements Serializable {
         this.version = version;
     }
 
+    public String getAudioPath() {
+        return audioPath;
+    }
+
     public Integer getAlbumId() {
         return albumId;
     }

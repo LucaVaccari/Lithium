@@ -40,7 +40,7 @@ public class TrackViewController {
         trackTitleLbl.setText(track.getTitle());
         trackAlbumLbl.setText(album.getTitle());
 
-        var artists = ItemProvider.getItems(album.getArtistsIds(), Artist.class);
+        var artists = ItemProvider.getItems(track.getArtistsIds(), Artist.class);
         var artistNames = Arrays.stream(artists).map(Artist::getName).toArray(String[]::new);
         artistLbl.setText(String.join(", ", artistNames));
 
