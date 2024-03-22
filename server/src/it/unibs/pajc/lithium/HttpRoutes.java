@@ -43,8 +43,7 @@ public class HttpRoutes {
 
     private static boolean validateUsername(HttpExchange exchange, String[] strings) throws IOException {
         if (strings.length != 2 || Arrays.stream(strings).anyMatch(String::isEmpty)) {
-            sendStringResponse(exchange, 400,
-                    "The body must be formatted in the following way: <username>,<psw>");
+            sendStringResponse(exchange, 400, "The body must be formatted in the following way: <username>,<psw>");
             return false;
         }
         if (!strings[0].matches("^[a-zA-Z0-9_]+")) {
@@ -58,9 +57,7 @@ public class HttpRoutes {
     // endregion
     // region object CRUD
     public static void manageItem(HttpExchange exchange, Class<?> objType) throws IOException {
-        System.out.println(exchange.getRequestURI().getPath());
         var queryParams = HttpHelper.queryParams(exchange);
-        System.out.println(queryParams);
         if (queryParams.containsKey("id")) getObjectById(exchange, id -> getDbConnector().getObjectById(id, objType));
         else if (queryParams.containsKey("search")) searchObject(exchange, objType);
         else getObjects(exchange, numOfResults -> getDbConnector().getObjects(numOfResults, objType));
@@ -117,13 +114,13 @@ public class HttpRoutes {
     public static void getAudio(HttpExchange exchange) throws IOException {
         var path = exchange.getRequestURI().getPath().replaceFirst("^.*audio", "");
         byte[] responseBytes = Files.readAllBytes(Path.of("database/audio" + path));
-        String contentType = path.endsWith("m3u8") ? "application/vnd.apple.mpegurl" :
-                "audio/aac";
+        String contentType = path.endsWith("m3u8") ? "application/vnd.apple.mpegurl" : "audio/aac";
         exchange.getResponseHeaders().set("content-type", contentType);
         sendByteResponse(exchange, 200, responseBytes);
     }
 
     public static void defaultRoute(HttpExchange exchange) throws IOException {
+        System.out.println("SUS");
         sendStringResponse(exchange, 200, "Welcome to Lithium!");
     }
 

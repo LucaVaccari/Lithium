@@ -13,7 +13,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 
 public class LoginController {
     @FXML
@@ -103,10 +102,7 @@ public class LoginController {
         if (!checkFieldsValidity()) return;
         String username = usernameTxtField.getText();
         if (state == State.Start) {
-            boolean userExists = Boolean.parseBoolean(HttpHandler.get("/user/exists", new HashMap<>() {{
-                put("username", username);
-            }}));
-
+            var userExists = Boolean.parseBoolean(HttpHandler.get("/user/exists?username=" + username));
             pswContainer.setVisible(true);
             confirmPswContainer.setVisible(!userExists);
             submitBtn.setText(userExists ? "Login" : "Register");

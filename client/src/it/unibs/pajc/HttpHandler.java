@@ -1,9 +1,9 @@
 package it.unibs.pajc;
 
-import kong.unirest.*;
-
-import java.util.Base64;
-import java.util.HashMap;
+import kong.unirest.GetRequest;
+import kong.unirest.HttpRequestWithBody;
+import kong.unirest.Unirest;
+import kong.unirest.UnirestException;
 
 /**
  * Program-independent class providing methods for sending HTTP messages
@@ -13,12 +13,6 @@ public class HttpHandler {
     // todo set url and port in config or settings
     private static final String URL = "http://localhost:8080";
 
-    private static void addFilters(HttpRequest<?> request, HashMap<String, String> queries) {
-        for (var entry : queries.entrySet()) {
-            request = request.queryString(entry.getKey(), entry.getValue());
-        }
-    }
-
     /**
      * Sends a GET message to the server
      *
@@ -27,20 +21,6 @@ public class HttpHandler {
      */
     public static String get(String subURL) throws UnirestException {
         GetRequest getRequest = Unirest.get(buildUrl(subURL));
-        var response = getRequest.asString();
-        return response.isSuccess() ? response.getBody() : null;
-    }
-
-    /**
-     * Sends a GET message to the server
-     *
-     * @param subURL  the URI to append after the server address
-     * @param queries query params to add to the subURL (?param=value)
-     * @return The response body received
-     */
-    public static String get(String subURL, HashMap<String, String> queries) {
-        GetRequest getRequest = Unirest.get(buildUrl(subURL));
-        addFilters(getRequest, queries);
         var response = getRequest.asString();
         return response.isSuccess() ? response.getBody() : null;
     }
@@ -68,10 +48,5 @@ public class HttpHandler {
      */
     public static String buildUrl(String subUrl) {
         return URL + "/" + subUrl;
-    }
-
-    public static byte[] getBase64Img(String subUrl) {
-        var encodedImgString = get(subUrl);
-        return encodedImgString != null ? Base64.getDecoder().decode(encodedImgString) : new byte[0];
     }
 }

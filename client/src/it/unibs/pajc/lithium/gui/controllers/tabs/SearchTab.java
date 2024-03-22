@@ -18,6 +18,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import kong.unirest.UnirestException;
 
+import java.util.Arrays;
+
 public class SearchTab extends CustomComponent {
     @FXML
     private TextField searchTxtField;
@@ -37,7 +39,7 @@ public class SearchTab extends CustomComponent {
             var albums = ItemProvider.searchItem(15, searchTerm, Album[].class, "album_title");
             var artists = ItemProvider.searchItem(15, searchTerm, Artist[].class, "artist_name");
             var playlists = ItemProvider.searchItem(15, searchTerm, Playlist[].class, "playlist_title");
-/*
+
             for (var track : tracks) {
                 if (trackContainer.getItems().filtered(t -> t.getTrack().equals(track)).isEmpty())
                     trackContainer.getItems().add(new TrackEntry(track));
@@ -62,7 +64,7 @@ public class SearchTab extends CustomComponent {
                     .removeIf(artistEntry -> !Arrays.stream(artists).toList().contains(artistEntry.getArtist()));
             playlistContainer.getItems().removeIf(
                     playlistEntry -> !Arrays.stream(playlists).toList().contains(playlistEntry.getPlaylist()));
-*/
+
         } catch (UnirestException e) {
             AlertUtil.showErrorAlert("HTTP error", "Error in SearchTab.java", e.getMessage());
         } catch (JsonSyntaxException e) {

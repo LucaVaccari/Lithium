@@ -34,10 +34,12 @@ public class HttpHelper {
         var response = body.getBytes();
         exchange.sendResponseHeaders(code, response.length);
         exchange.getResponseBody().write(response);
+        exchange.close();
     }
 
     public static void sendByteResponse(HttpExchange exchange, int code, byte[] body) throws IOException {
         exchange.sendResponseHeaders(code, body.length);
         exchange.getResponseBody().write(body);
+        exchange.close();
     }
 }
