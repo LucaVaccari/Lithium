@@ -14,5 +14,7 @@ public class ClientMain extends Application {
     public void start(Stage stage) {
         SceneManager.init(stage);
         SceneManager.loadScene("/FXMLs/mainScene.fxml", this);
+        
+        //PlaybackManager.playImmediately(ItemProvider.getItem(8, Track.class));
     }
 }

@@ -38,7 +38,7 @@ public class PlaylistEntry extends CustomComponent {
     }
 
     private void initialize() {
-        coverImg.setImage(ItemProvider.getImage("/" + playlist.getImgPath()));
+        coverImg.setImage(ItemProvider.getImage(playlist.getImgPath()));
 
         nameLbl.setText(playlist.getName());
 

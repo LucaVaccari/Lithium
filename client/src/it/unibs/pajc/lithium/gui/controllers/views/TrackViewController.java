@@ -50,7 +50,7 @@ public class TrackViewController {
 
         releaseDateLbl.setText("Released on " + album.getReleaseDate());
         // todo genre list
-        coverImg.setImage(ItemProvider.getImage("/" + album.getImgPath()));
+        coverImg.setImage(ItemProvider.getImage(album.getImgPath()));
     }
 
     public void onBackBtn() {

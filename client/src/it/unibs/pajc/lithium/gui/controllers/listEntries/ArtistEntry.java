@@ -35,7 +35,7 @@ public class ArtistEntry extends CustomComponent {
     }
 
     private void initialize() {
-        proPicImg.setImage(ItemProvider.getImage("/" + artist.getProfilePicturePath()));
+        proPicImg.setImage(ItemProvider.getImage(artist.getProfilePicturePath()));
 
         nameLbl.setText(artist.getName());
 

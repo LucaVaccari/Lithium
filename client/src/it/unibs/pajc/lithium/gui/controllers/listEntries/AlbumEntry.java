@@ -37,7 +37,7 @@ public class AlbumEntry extends CustomComponent {
     }
 
     private void initialize() {
-        coverImg.setImage(ItemProvider.getImage("/" + album.getImgPath()));
+        coverImg.setImage(ItemProvider.getImage(album.getImgPath()));
 
         titleLbl.setText(album.getTitle());
 

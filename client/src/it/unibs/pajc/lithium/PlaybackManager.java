@@ -1,6 +1,8 @@
 package it.unibs.pajc.lithium;
 
+import it.unibs.pajc.HttpHandler;
 import it.unibs.pajc.lithium.db.om.Track;
+import it.unibs.pajc.lithium.gui.AlertUtil;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -18,13 +20,12 @@ public final class PlaybackManager {
         if (trackQueue.isEmpty()) return;
         var track = trackQueue.pollFirst();
         previouslyPlayedTracks.push(track);
-        currentMedia = new Media(track.getAudioPath());
+        currentMedia = new Media(HttpHandler.buildUrl("audio/" + track.getAudioPath()));
         mediaPlayer = new MediaPlayer(currentMedia);
-        currentMedia.setOnError(() -> {
-            System.out.println("Errore di riproduzione");
-
-        });
+        currentMedia.setOnError(
+                () -> AlertUtil.showErrorAlert("Playback error", "Error during playback", "No further information"));
         mediaPlayer.setOnReady(() -> {
+            System.out.println("Playing track: " + track.getTitle());
             System.out.println(currentMedia.getDuration().toSeconds());
         });
         mediaPlayer.setOnEndOfMedia(() -> {
@@ -32,6 +33,7 @@ public final class PlaybackManager {
             else playQueue();
         });
         mediaPlayer.play();
+        System.out.println("Trying to play track");
     }
 
     public static void playImmediately(Track track) {
@@ -46,13 +48,13 @@ public final class PlaybackManager {
 
     public static void playNext(Track track) {
         if (trackQueue.isEmpty()) playImmediately(track);
-        else trackQueue.add(1, track);
+        else trackQueue.addFirst(track);
         playQueue();
     }
 
     public static void playNext(Track[] tracks) {
         if (trackQueue.isEmpty()) addToQueue(tracks);
-        else trackQueue.addAll(1, List.of(tracks));
+        else trackQueue.addAll(0, List.of(tracks));
         playQueue();
     }
 

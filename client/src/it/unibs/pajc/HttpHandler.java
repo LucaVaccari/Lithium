@@ -60,8 +60,14 @@ public class HttpHandler {
         return deleteRequest.asString().getBody();
     }
 
-    private static String buildUrl(String subUrl) {
-        return URL + subUrl;
+    /***
+     * Builds a URL to the server by appending the subURL to the base URL.
+     * DON'T PUT A '/' AT THE START OF THE SUBURL, it is added automatically.
+     * @param subUrl The subURL to append at the end of the base URL
+     * @return The URL built
+     */
+    public static String buildUrl(String subUrl) {
+        return URL + "/" + subUrl;
     }
 
     public static byte[] getBase64Img(String subUrl) {

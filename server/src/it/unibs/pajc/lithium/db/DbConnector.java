@@ -1,10 +1,13 @@
 package it.unibs.pajc.lithium.db;
 
+import it.unibs.pajc.db.Column;
+import it.unibs.pajc.db.Id;
 import it.unibs.pajc.db.SQLiteInterface;
 import it.unibs.pajc.lithium.db.om.Album;
 import it.unibs.pajc.lithium.db.om.User;
 
 import java.io.Closeable;
+import java.util.Arrays;
 
 /**
  * Provides CRUD methods for managing data in the Lithium database (albums, artists, tracks, etc... )
@@ -71,7 +74,13 @@ public class DbConnector implements Closeable {
         return dbInf.getObjects(objType, numberOfResults, queryFilter);
     }
 
-    public <T> T getObjectById(int id, Class<T> objType, String idName) {
+    public <T> T getObjectById(int id, Class<T> objType) {
+        var objFields = objType.getDeclaredFields();
+        var idField = Arrays.stream(objFields).filter(f -> f.isAnnotationPresent(Id.class)).findFirst();
+        if (idField.isEmpty()) return null;
+        if (!idField.get().isAnnotationPresent(Column.class)) return null;
+        
+        var idName = idField.get().getAnnotation(Column.class).name();
         String queryFilter = "where %s = '%d'".formatted(idName, id);
         T[] objects = dbInf.getObjects(objType, 5, queryFilter);
         if (objects.length == 1) return objects[0];

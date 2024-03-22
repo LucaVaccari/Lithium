@@ -42,7 +42,7 @@ public class TrackEntry extends CustomComponent {
 //        var album = ItemProvider.getGson().fromJson(albumJson, Album.class);
         var album = ItemProvider.getItem(track.getAlbumId(), Album.class);
 
-        coverImg.setImage(ItemProvider.getImage("/" + album.getImgPath()));
+        coverImg.setImage(ItemProvider.getImage(album.getImgPath()));
 
         titleLbl.setText(track.getTitle());
 

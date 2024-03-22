@@ -47,7 +47,7 @@ public class AlbumViewController {
 
         // todo genres
 
-        coverImg.setImage(ItemProvider.getImage("/" + album.getImgPath()));
+        coverImg.setImage(ItemProvider.getImage(album.getImgPath()));
 
         tracks = ItemProvider.getItems(album.getTrackIds(), Track.class);
         trackContainer.getItems().clear();

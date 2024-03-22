@@ -37,7 +37,7 @@ public class ArtistViewController {
 
         // TODO genres
 
-        proPicImg.setImage(ItemProvider.getImage("/" + artist.getProfilePicturePath()));
+        proPicImg.setImage(ItemProvider.getImage(artist.getProfilePicturePath()));
 
         // TODO: track container (get tracks from artists)
     }

@@ -43,7 +43,7 @@ public class PlaylistViewController {
         // TODO: creation date
         // TODO: genres
 
-        coverImg.setImage(ItemProvider.getImage("/" + playlist.getImgPath()));
+        coverImg.setImage(ItemProvider.getImage(playlist.getImgPath()));
 
         tracks = ItemProvider.getItems(playlist.getTracksIds(), Track.class);
         trackContainer.getItems().clear();
