@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Table(name = "genre")
-public class Genre implements Serializable {
+public class Genre implements Item, Serializable {
     @Id
     @Column(name = "genre_id")
     private Integer id;

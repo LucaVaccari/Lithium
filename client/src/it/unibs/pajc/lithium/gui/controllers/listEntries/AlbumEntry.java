@@ -3,7 +3,7 @@ package it.unibs.pajc.lithium.gui.controllers.listEntries;
 import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.db.om.Album;
 import it.unibs.pajc.lithium.db.om.Artist;
-import it.unibs.pajc.lithium.gui.CustomComponent;
+import it.unibs.pajc.lithium.db.om.Item;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import javafx.fxml.FXML;
@@ -12,9 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 
 import java.util.Arrays;
-import java.util.Objects;
 
-public class AlbumEntry extends CustomComponent {
+public class AlbumEntry extends ItemEntry {
     @FXML
     private Node root;
     @FXML
@@ -24,47 +23,32 @@ public class AlbumEntry extends CustomComponent {
     @FXML
     private Label artistLbl;
 
-    private final Album album;
-
-    public AlbumEntry(Album album) {
-        super();
-        this.album = album;
+    public AlbumEntry(Item album) {
+        super(album);
         initialize();
-        root.setOnMouseClicked(e -> {
-            MainSceneController.setSelectedItem(album);
-            SceneManager.loadScene("/FXMLs/itemViews/albumView.fxml", this);
-        });
     }
 
-    private void initialize() {
-        coverImg.setImage(ItemProvider.getImage(album.getImgPath()));
+    protected void initialize() {
+        root.setOnMouseClicked(e -> {
+            MainSceneController.setSelectedItem(item);
+            SceneManager.loadScene("/FXMLs/itemViews/albumView.fxml", this);
+        });
 
-        titleLbl.setText(album.getTitle());
+        coverImg.setImage(ItemProvider.getImage(getAlbum().getImgPath()));
 
-        var artists = ItemProvider.getItems(album.getArtistsIds(), Artist.class);
+        titleLbl.setText(getAlbum().getTitle());
+
+        var artists = ItemProvider.getItems(getAlbum().getArtistsIds(), Artist.class);
         var artistNames = Arrays.stream(artists).map(Artist::getName).toArray(String[]::new);
         artistLbl.setText(String.join(", ", artistNames));
     }
 
     public Album getAlbum() {
-        return album;
+        return (Album) item;
     }
 
     @Override
     protected String fxmlPath() {
         return "/FXMLs/listComponents/albumEntry.fxml";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AlbumEntry that = (AlbumEntry) o;
-        return Objects.equals(album, that.album);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(album);
     }
 }

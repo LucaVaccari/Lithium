@@ -3,8 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<fx:root xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21.0.2" type="AnchorPane"
-         maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="900.0"
+         type="AnchorPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="15.0"
           AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
         <Label text="Your library" VBox.vgrow="ALWAYS">
@@ -12,19 +12,26 @@
                 <Font size="24.0"/>
             </font>
         </Label>
-        <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="46.0"
-              prefWidth="580.0" spacing="20.0" VBox.vgrow="ALWAYS">
-            <Label text="Show:"/>
-            <CheckBox mnemonicParsing="false" selected="true" text="Playlist"/>
-            <CheckBox layoutX="10.0" layoutY="10.0" mnemonicParsing="false" selected="true"
-                      text="Albums"/>
-            <CheckBox layoutX="83.0" layoutY="10.0" mnemonicParsing="false" selected="true"
-                      text="Artists"/>
+        <TextField fx:id="searchTxtField" promptText="Search for tracks, albums, artists and playlists..."/>
+        <HBox VBox.vgrow="ALWAYS">
+            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0"
+                        maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0"
+                        prefWidth="200.0" HBox.hgrow="ALWAYS">
+                <ListView fx:id="albumContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                          minHeight="0.0" minWidth="0.0"/>
+            </ScrollPane>
+            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0"
+                        maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0"
+                        prefWidth="200.0" HBox.hgrow="ALWAYS">
+                <ListView fx:id="artistContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                          minHeight="0.0" minWidth="0.0"/>
+            </ScrollPane>
+            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0"
+                        maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0"
+                        prefWidth="200.0" HBox.hgrow="ALWAYS">
+                <ListView fx:id="playlistContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                          minHeight="0.0" minWidth="0.0"/>
+            </ScrollPane>
         </HBox>
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308"
-                    maxWidth="1.7976931348623157E308" prefHeight="296.0" prefWidth="580.0"
-                    VBox.vgrow="ALWAYS">
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0"/>
-        </ScrollPane>
     </VBox>
 </fx:root>

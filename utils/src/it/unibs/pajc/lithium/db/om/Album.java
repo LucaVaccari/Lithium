@@ -14,7 +14,7 @@ import java.util.Objects;
  * Model for the table 'album' on the db.
  */
 @Table(name = "album")
-public class Album implements Serializable {
+public class Album implements Item, Serializable {
     @Id
     @Column(name = "album_id")
     private Integer id;
@@ -44,6 +44,10 @@ public class Album implements Serializable {
         this.imgPath = imgPath;
         this.artistsIds = artists;
         this.genresIds = genres;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getTitle() {

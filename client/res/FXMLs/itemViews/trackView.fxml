@@ -19,13 +19,13 @@
                 <padding>
                     <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
                 </padding>
-                <Label fx:id="trackTitleLbl" maxWidth="1.7976931348623157E308" text="Track title">
+                <Label fx:id="trackTitleLbl" wrapText="true" maxWidth="1.7976931348623157E308" text="Track title">
                     <font>
-                        <Font size="48.0"/>
+                        <Font size="40.0"/>
                     </font>
                 </Label>
-                <Label fx:id="trackAlbumLbl" layoutX="193.0" layoutY="282.0" maxWidth="1.7976931348623157E308"
-                       onMouseClicked="#onAlbumMouseClicked" text="Album">
+                <Label fx:id="trackAlbumLbl" wrapText="true" layoutX="193.0" layoutY="282.0"
+                       maxWidth="1.7976931348623157E308" onMouseClicked="#onAlbumMouseClicked" text="Album">
                     <font>
                         <Font size="24.0"/>
                     </font>
@@ -33,20 +33,20 @@
                         <Cursor fx:constant="HAND"/>
                     </cursor>
                 </Label>
-                <Label fx:id="artistLbl" layoutX="202.0" layoutY="295.0" maxWidth="1.7976931348623157E308"
-                       text="Artists">
+                <Label fx:id="artistLbl" wrapText="true" layoutX="202.0" layoutY="295.0"
+                       maxWidth="1.7976931348623157E308" text="Artists">
                     <font>
                         <Font size="36.0"/>
                     </font>
                 </Label>
                 <Label fx:id="releaseDateLbl" layoutX="202.0" layoutY="309.0" maxWidth="1.7976931348623157E308"
-                       text="Release date">
+                       text="Release date" wrapText="true">
                     <font>
                         <Font size="18.0"/>
                     </font>
                 </Label>
                 <Label fx:id="genreListLbl" layoutX="186.0" layoutY="322.0" maxWidth="1.7976931348623157E308"
-                       text="Genre list">
+                       text="Genre list" wrapText="true">
                     <font>
                         <Font size="14.0"/>
                     </font>

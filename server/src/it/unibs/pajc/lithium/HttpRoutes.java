@@ -121,7 +121,6 @@ public class HttpRoutes {
     }
 
     public static void defaultRoute(HttpExchange exchange) throws IOException {
-        System.out.println("SUS");
         sendStringResponse(exchange, 200, "Welcome to Lithium!");
     }
 

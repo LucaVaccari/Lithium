@@ -1,9 +1,9 @@
 package it.unibs.pajc.lithium.gui.controllers.listEntries;
 
 import it.unibs.pajc.lithium.ItemProvider;
+import it.unibs.pajc.lithium.db.om.Item;
 import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.db.om.User;
-import it.unibs.pajc.lithium.gui.CustomComponent;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import javafx.fxml.FXML;
@@ -11,9 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 
-import java.util.Objects;
-
-public class PlaylistEntry extends CustomComponent {
+public class PlaylistEntry extends ItemEntry {
     @FXML
     private Node root;
     @FXML
@@ -25,49 +23,34 @@ public class PlaylistEntry extends CustomComponent {
     @FXML
     private Label nTracksLbl;
 
-    private final Playlist playlist;
-
-    public PlaylistEntry(Playlist playlist) {
-        super();
-        this.playlist = playlist;
+    public PlaylistEntry(Item playlist) {
+        super(playlist);
         initialize();
-        root.setOnMouseClicked(e -> {
-            MainSceneController.setSelectedItem(playlist);
-            SceneManager.loadScene("/FXMLs/itemViews/playlistView.fxml", this);
-        });
     }
 
     private void initialize() {
-        coverImg.setImage(ItemProvider.getImage(playlist.getImgPath()));
+        root.setOnMouseClicked(e -> {
+            MainSceneController.setSelectedItem(item);
+            SceneManager.loadScene("/FXMLs/itemViews/playlistView.fxml", this);
+        });
 
-        nameLbl.setText(playlist.getName());
+        coverImg.setImage(ItemProvider.getImage(getPlaylist().getImgPath()));
 
-        var owner = ItemProvider.getItem(playlist.getOwnerId(), User.class);
+        nameLbl.setText(getPlaylist().getName());
+
+        var owner = ItemProvider.getItem(getPlaylist().getOwnerId(), User.class);
         authorLbl.setText("by " + owner.getUsername());
 
-        int numberOfTracks = playlist.getTracksIds().length;
+        int numberOfTracks = getPlaylist().getTracksIds().length;
         nTracksLbl.setText(numberOfTracks + (numberOfTracks == 1 ? " track" : " tracks"));
     }
 
     public Playlist getPlaylist() {
-        return playlist;
+        return (Playlist) item;
     }
 
     @Override
     protected String fxmlPath() {
         return "/FXMLs/listComponents/playlistEntry.fxml";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PlaylistEntry that = (PlaylistEntry) o;
-        return Objects.equals(playlist, that.playlist);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(playlist);
     }
 }

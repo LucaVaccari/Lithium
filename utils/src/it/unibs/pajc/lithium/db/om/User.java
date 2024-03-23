@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Table(name = "user")
-public class User implements Serializable {
+public class User implements Item, Serializable {
     @Id
     @Column(name = "user_id")
     private Integer id;
@@ -27,6 +27,8 @@ public class User implements Serializable {
     private Integer[] savedAlbumsIds;
     @ForeignKey(otherTableName = "user_saved_playlist", otherTableColumnName = "playlist_id")
     private Integer[] savedPlaylistsIds;
+    @ForeignKey(otherTableName = "artist_follower", otherTableColumnName = "artist_id")
+    private Integer[] followedArtistsIds;
 
     public User() {
     }
@@ -42,6 +44,18 @@ public class User implements Serializable {
 
     public String getUsername() {
         return username;
+    }
+
+    public Integer[] getSavedAlbumsIds() {
+        return savedAlbumsIds;
+    }
+
+    public Integer[] getSavedPlaylistsIds() {
+        return savedPlaylistsIds;
+    }
+
+    public Integer[] getFollowedArtistsIds() {
+        return followedArtistsIds;
     }
 
     @Override

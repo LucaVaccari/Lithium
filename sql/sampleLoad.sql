@@ -112,7 +112,9 @@ insert into user (user_id, username, pwd_hash)
 values (1, 'lucavaccari03', '6cd6e51ad74b5a0ad4f6689e62fcfd621573d4df579762168e04a47cf654b5e5');
 
 insert into playlist(playlist_id, playlist_title, playlist_description, user_id, cover_img_path)
-VALUES (1, 'Lit Silver: best of', 'The best songs from Lit Silver catalogue', 1,
+VALUES (0, 'Saved tracks', 'The favourite tracks of lucavaccari03', 1,
+        'img/playlist_cover/lucavaccari03_saved_tracks_cover.jpg'),
+       (1, 'Lit Silver: best of', 'The best songs from Lit Silver catalogue', 1,
         'img/playlist_cover/lucavaccari03_lit_silver_best_of.jpg');
 
 insert into track_in_playlist(track_id, playlist_id, added_on)
@@ -124,4 +126,5 @@ VALUES (12, 1, '2023-10-22'),
        (22, 1, '2023-12-07');
 
 insert into user_saved_playlist(user_id, playlist_id)
-VALUES (1, 1)
+VALUES (1, 0),
+       (1, 1);

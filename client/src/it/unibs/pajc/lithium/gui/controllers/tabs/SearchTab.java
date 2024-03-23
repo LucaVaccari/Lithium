@@ -8,17 +8,12 @@ import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.AlertUtil;
 import it.unibs.pajc.lithium.gui.CustomComponent;
-import it.unibs.pajc.lithium.gui.controllers.listEntries.AlbumEntry;
-import it.unibs.pajc.lithium.gui.controllers.listEntries.ArtistEntry;
-import it.unibs.pajc.lithium.gui.controllers.listEntries.PlaylistEntry;
-import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
+import it.unibs.pajc.lithium.gui.controllers.listEntries.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import kong.unirest.UnirestException;
-
-import java.util.Arrays;
 
 public class SearchTab extends CustomComponent {
     @FXML
@@ -40,31 +35,15 @@ public class SearchTab extends CustomComponent {
             var artists = ItemProvider.searchItem(15, searchTerm, Artist[].class, "artist_name");
             var playlists = ItemProvider.searchItem(15, searchTerm, Playlist[].class, "playlist_title");
 
-            for (var track : tracks) {
-                if (trackContainer.getItems().filtered(t -> t.getTrack().equals(track)).isEmpty())
-                    trackContainer.getItems().add(new TrackEntry(track));
+            if (tracks == null || albums == null || artists == null || playlists == null) {
+                System.err.println("Null items in search tab");
+                return;
             }
-            for (var album : albums) {
-                if (albumContainer.getItems().filtered(a -> a.getAlbum().equals(album)).isEmpty())
-                    albumContainer.getItems().add(new AlbumEntry(album));
-            }
-            for (var artist : artists) {
-                if (artistContainer.getItems().filtered(a -> a.getArtist().equals(artist)).isEmpty())
-                    artistContainer.getItems().add(new ArtistEntry(artist));
-            }
-            for (var playlist : playlists) {
-                if (playlistContainer.getItems().filtered(p -> p.getPlaylist().equals(playlist)).isEmpty())
-                    playlistContainer.getItems().add(new PlaylistEntry(playlist));
-            }
-            trackContainer.getItems()
-                    .removeIf(trackEntry -> !Arrays.stream(tracks).toList().contains(trackEntry.getTrack()));
-            albumContainer.getItems()
-                    .removeIf(albumEntry -> !Arrays.stream(albums).toList().contains(albumEntry.getAlbum()));
-            artistContainer.getItems()
-                    .removeIf(artistEntry -> !Arrays.stream(artists).toList().contains(artistEntry.getArtist()));
-            playlistContainer.getItems().removeIf(
-                    playlistEntry -> !Arrays.stream(playlists).toList().contains(playlistEntry.getPlaylist()));
 
+            EntryUtility.fillEntryList(trackContainer, tracks, TrackEntry.class);
+            EntryUtility.fillEntryList(albumContainer, albums, AlbumEntry.class);
+            EntryUtility.fillEntryList(artistContainer, artists, ArtistEntry.class);
+            EntryUtility.fillEntryList(playlistContainer, playlists, PlaylistEntry.class);
         } catch (UnirestException e) {
             AlertUtil.showErrorAlert("HTTP error", "Error in SearchTab.java", e.getMessage());
         } catch (JsonSyntaxException e) {
@@ -74,7 +53,7 @@ public class SearchTab extends CustomComponent {
     }
 
     @FXML
-    private void initialize() {
+    public void initialize() {
         searchTxtField.setOnKeyTyped(this::onSearchTxtFieldChange);
         onSearchTxtFieldChange(null);
     }

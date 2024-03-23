@@ -21,11 +21,11 @@
     - [x] detail views
         - [x] track details
         - [x] album details
-        - [x] artist details
+        - [ ] artist details
         - [x] playlist details
 - [ ] Save login info
-- [ ] Cache GUI list entries
-- [ ] Cache items
+- [x] Cache items
+- [ ] Tooltips
 - [ ] Async loading
 - [ ] Theme (AtlantaFX)
 
@@ -38,14 +38,16 @@
     - [x] Write object mappers
     - [ ] Implement CRUD methods
         - [ ] Create
-        - [ ] Read
+        - [x] Read
         - [ ] Update
         - [ ] Delete
-- [x] Interface for managing the db
+    - [ ] create entries in relationship tables
+- [ ] Interface for managing the db
 - [ ] Define and implement HTTP contexts
     - [x] Client authentication
-    - [ ] Search queries
-    - [ ] Streaming request
+    - [x] Search queries
+    - [x] Streaming request
+    - [ ] User save item
 
 ## Database
 

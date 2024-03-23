@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Table(name = "track")
-public class Track implements Serializable {
+public class Track implements Item, Serializable {
     @Id
     @Column(name = "track_id")
     private Integer id;
