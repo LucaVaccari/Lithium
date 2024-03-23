@@ -34,6 +34,7 @@ public class SceneManager {
     }
 
     public static void loadMainScene(Object caller) {
+        scenes.clear();
         SceneManager.loadScene("/FXMLs/mainScene.fxml", caller, true);
     }
 

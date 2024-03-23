@@ -7,7 +7,7 @@
     - [ ] Music play view
         - [ ] Currently playing track
         - [ ] Queue
-    - [ ] Library tab
+    - [x] Library tab
     - [ ] Search tab
         - [x] Show default items
         - [x] Search query
@@ -16,15 +16,15 @@
         - [ ] Server address
         - [ ] Change theme
         - [ ] Equalizer
-        - [ ] Log out
+        - [x] Log out
         - [ ] Save settings in file
-    - [x] detail views
+    - [ ] detail views
         - [x] track details
         - [x] album details
         - [ ] artist details
         - [x] playlist details
-- [ ] Save login info
-- [x] Cache items
+- [x] Save login info
+- [x] Cache items and images
 - [ ] Tooltips
 - [ ] Async loading
 - [ ] Theme (AtlantaFX)

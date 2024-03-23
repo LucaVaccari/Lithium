@@ -1,7 +1,7 @@
 package it.unibs.pajc.lithium.gui.controllers.tabs;
 
 import com.google.gson.JsonSyntaxException;
-import it.unibs.pajc.lithium.ClientMain;
+import it.unibs.pajc.lithium.AccountManager;
 import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.db.om.Album;
 import it.unibs.pajc.lithium.db.om.Artist;
@@ -30,9 +30,9 @@ public class LibraryTab extends CustomComponent {
 
     private void onSearchTxtFieldChange(KeyEvent event) {
         try {
-            var albums = ItemProvider.getItems(ClientMain.getUser().getSavedAlbumsIds(), Album.class);
-            var artists = ItemProvider.getItems(ClientMain.getUser().getFollowedArtistsIds(), Artist.class);
-            var playlists = ItemProvider.getItems(ClientMain.getUser().getSavedPlaylistsIds(), Playlist.class);
+            var albums = ItemProvider.getItems(AccountManager.getUser().getSavedAlbumsIds(), Album.class);
+            var artists = ItemProvider.getItems(AccountManager.getUser().getFollowedArtistsIds(), Artist.class);
+            var playlists = ItemProvider.getItems(AccountManager.getUser().getSavedPlaylistsIds(), Playlist.class);
 
             if (albums == null || artists == null || playlists == null) {
                 System.err.println("Null items in search tab");

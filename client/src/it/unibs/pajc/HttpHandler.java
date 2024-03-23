@@ -1,5 +1,6 @@
 package it.unibs.pajc;
 
+import it.unibs.pajc.lithium.Config;
 import kong.unirest.GetRequest;
 import kong.unirest.HttpRequestWithBody;
 import kong.unirest.Unirest;
@@ -10,8 +11,11 @@ import kong.unirest.UnirestException;
  */
 public class HttpHandler {
     // todo Unirest.config().defaultBaseUrl("http://...");
-    // todo set url and port in config or settings
-    private static final String URL = "http://localhost:8080";
+    private final static String URL;
+
+    static {
+        URL = Config.getServerUrl();
+    }
 
     /**
      * Sends a GET message to the server

@@ -1,7 +1,7 @@
 package it.unibs.pajc.lithium.gui.controllers;
 
 import com.google.common.hash.Hashing;
-import it.unibs.pajc.HttpHandler;
+import it.unibs.pajc.lithium.AccountManager;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -57,6 +57,7 @@ public class LoginController {
         submitBtn.setDisable(false);
         String username = usernameTxtField.getText();
         String password = pswTxtField.getText();
+        messagesLabel.setText("");
 
         if (username.contains(" ")) {
             messagesLabel.setText("The username must not contain empty spaces");
@@ -102,25 +103,27 @@ public class LoginController {
         if (!checkFieldsValidity()) return;
         String username = usernameTxtField.getText();
         if (state == State.Start) {
-            var userExists = Boolean.parseBoolean(HttpHandler.get("/user/exists?username=" + username));
+            var userExists = AccountManager.userExists(username);
             pswContainer.setVisible(true);
             confirmPswContainer.setVisible(!userExists);
             submitBtn.setText(userExists ? "Login" : "Register");
             state = userExists ? State.Login : State.Register;
+            pswTxtField.requestFocus();
             onTxtFieldChanged(null);
         } else {
             String password = pswTxtField.getText();
             String pswHash = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
             if (state == State.Register) {
-                HttpHandler.post("/user/register", username + "," + pswHash);
+                AccountManager.registerUser(username, pswHash);
                 state = State.Login;
                 confirmPswContainer.setVisible(false);
                 submitBtn.setText("Login");
                 messagesLabel.setText("Successfully registered!");
             } else if (state == State.Login) {
-                boolean auth = Boolean.parseBoolean(HttpHandler.post("/user/auth", username + "," + pswHash));
+                boolean auth = AccountManager.authenticateUser(username, pswHash);
                 if (auth) {
                     messagesLabel.setText("Login successful");
+                    AccountManager.saveLoginInfo(username, pswHash);
                     SceneManager.loadMainScene(this);
                 } else {
                     messagesLabel.setText("Wrong password. Try again");

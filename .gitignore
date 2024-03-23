@@ -46,3 +46,6 @@ bin/
 
 ### Database ###
 database/
+
+### APP DATA ###
+.lit

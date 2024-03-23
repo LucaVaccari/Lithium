@@ -37,7 +37,8 @@ public final class AlertUtil {
      * @param contentText  The text near the input field (at his left)
      * @return An optional string possibly containing the content of the input field
      */
-    public static Optional<String> showTextInputDialogue(String defaultValue, String title, String headerText, String contentText) {
+    public static Optional<String> showTextInputDialogue(String defaultValue, String title, String headerText,
+                                                         String contentText) {
         TextInputDialog dialog = new TextInputDialog(defaultValue);
         dialog.setTitle(title);
         dialog.setHeaderText(headerText);
@@ -81,6 +82,10 @@ public final class AlertUtil {
      */
     public static void showErrorAlert(String title, String header, String content) {
         showGenericAlert(Alert.AlertType.ERROR, title, header, content);
+    }
+
+    public static void showErrorAlert(Exception e) {
+        showErrorAlert("Exception", e.getClass().getName(), e.getMessage());
     }
 
     /**

@@ -13,10 +13,9 @@ import static it.unibs.pajc.lithium.ServerMain.getDbConnector;
 import static it.unibs.pajc.lithium.ServerMain.getGson;
 
 public class HttpRoutes {
-    // TODO: check calling methods
     //region user authentication
     public static void userExists(HttpExchange exchange) throws IOException {
-        String username = HttpHelper.queryParam(exchange, "username");
+        var username = HttpHelper.queryParam(exchange, "username");
         if (!username.matches("^[a-zA-Z0-9_]+")) {
             sendStringResponse(exchange, 400,
                     "The username specified is not valid (it should contain only numbers, letters and/or _");

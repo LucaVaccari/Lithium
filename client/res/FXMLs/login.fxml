@@ -10,44 +10,31 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="it.unibs.pajc.lithium.gui.controllers.LoginController">
-    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0"
-          AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="0.0">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibs.pajc.lithium.gui.controllers.LoginController">
+    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="0.0">
         <Label text="Welcome to Lithium!">
             <font>
-                <Font size="18.0"/>
+                <Font size="18.0" />
             </font>
         </Label>
-        <Region prefHeight="15.0" prefWidth="200.0"/>
+        <Region prefHeight="15.0" prefWidth="200.0" />
         <HBox alignment="CENTER">
-            <Label labelFor="$usernameTxtField" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                   text="Username"
-                   HBox.hgrow="ALWAYS"/>
-            <TextField fx:id="usernameTxtField" onKeyTyped="#onTxtFieldChanged" promptText="Username..."
-                       HBox.hgrow="ALWAYS"/>
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Username" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="usernameTxtField" onAction="#onSubmitBtn" onKeyTyped="#onTxtFieldChanged" promptText="Username..." HBox.hgrow="ALWAYS" />
         </HBox>
         <HBox fx:id="pswContainer" alignment="CENTER">
-            <Label labelFor="$pswTxtField" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                   text="Password"
-                   HBox.hgrow="ALWAYS"/>
-            <PasswordField fx:id="pswTxtField" promptText="Password..." onKeyTyped="#onTxtFieldChanged"
-                           HBox.hgrow="ALWAYS"/>
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Password" HBox.hgrow="ALWAYS" />
+            <PasswordField fx:id="pswTxtField" onAction="#onSubmitBtn" onKeyTyped="#onTxtFieldChanged" promptText="Password..." HBox.hgrow="ALWAYS" />
         </HBox>
         <HBox fx:id="confirmPswContainer" alignment="CENTER">
-            <Label labelFor="$confirmPswTxtField" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                   text="Confirm"
-                   HBox.hgrow="ALWAYS"/>
-            <PasswordField fx:id="confirmPswTxtField" promptText="Confirm password..."
-                           onKeyTyped="#onTxtFieldChanged" HBox.hgrow="ALWAYS"/>
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Confirm" HBox.hgrow="ALWAYS" />
+            <PasswordField fx:id="confirmPswTxtField" onAction="#onSubmitBtn" onKeyTyped="#onTxtFieldChanged" promptText="Confirm password..." HBox.hgrow="ALWAYS" />
         </HBox>
-        <Label fx:id="messagesLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="25.0"
-               prefWidth="300.0" text="Messages" textAlignment="CENTER" textFill="#757575" wrapText="true"
-               VBox.vgrow="ALWAYS">
+        <Label fx:id="messagesLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="300.0" text="Messages" textAlignment="CENTER" textFill="#757575" wrapText="true" VBox.vgrow="ALWAYS">
             <font>
-                <Font size="10.0"/>
+                <Font size="10.0" />
             </font>
         </Label>
-        <Button fx:id="submitBtn" disable="true" mnemonicParsing="false" onAction="#onSubmitBtn" text="Submit"/>
+        <Button fx:id="submitBtn" disable="true" mnemonicParsing="false" onAction="#onSubmitBtn" text="Submit" />
     </VBox>
 </AnchorPane>
