@@ -23,6 +23,12 @@
         - [x] album details
         - [ ] artist details
         - [x] playlist details
+    - [ ] Playback controls
+        - [ ] song title
+        - [x] back, pause, forward
+        - [x] slider
+        - [x] timestamp
+        - [ ] volume slider
 - [x] Save login info
 - [x] Cache items and images
 - [ ] Tooltips

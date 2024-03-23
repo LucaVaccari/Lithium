@@ -4,6 +4,7 @@ import it.unibs.pajc.HttpHandler;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.AlertUtil;
 import it.unibs.pajc.util.Observer;
+import javafx.application.Platform;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
@@ -18,26 +19,31 @@ public final class PlaybackManager {
     private final static Stack<Track> previouslyPlayedTracks = new Stack<>();
     private final static Observer update = new Observer();
 
+
     private static void playQueue() {
         if (mediaPlayer != null) mediaPlayer.stop();
         if (trackQueue.isEmpty()) return;
         var track = trackQueue.pollFirst();
         previouslyPlayedTracks.push(track);
-        var media = new Media(HttpHandler.buildUrl("audio/" + track.getAudioPath()));
-        mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setStartTime(Duration.seconds(0));
+        String url = HttpHandler.buildUrl("audio/" + track.getAudioPath());
+        mediaPlayer = new MediaPlayer(new Media(url));
+        mediaPlayer.setStartTime(Duration.ZERO);
         mediaPlayer.setStopTime(Duration.seconds(track.getDuration()));
-        media.setOnError(
-                () -> AlertUtil.showErrorAlert("Playback error", "Error during playback", "No further information"));
-        mediaPlayer.setOnReady(() -> {
-            System.out.println("Playing track: " + track.getTitle());
+        mediaPlayer.setOnError(() -> {
+            AlertUtil.showErrorAlert("Playback error", "Error during playback", mediaPlayer.getError().getMessage());
             update.invoke();
         });
+        mediaPlayer.setOnPlaying(update::invoke);
+        mediaPlayer.setOnPaused(update::invoke);
         mediaPlayer.setOnEndOfMedia(() -> {
             if (trackQueue.isEmpty()) stopPlayback();
             else playQueue();
         });
-        mediaPlayer.play();
+        mediaPlayer.setOnReady(() -> {
+            mediaPlayer.play();
+            System.out.println("Playing track: " + track.getTitle());
+            update.invoke();
+        });
     }
 
     public static void playImmediately(Track track) {
@@ -73,20 +79,16 @@ public final class PlaybackManager {
     }
 
     public static void togglePlay() {
-        if (mediaPlayer != null && !trackQueue.isEmpty()) {
+        if (mediaPlayer != null) {
             MediaPlayer.Status status = mediaPlayer.getStatus();
             if (status.equals(MediaPlayer.Status.PAUSED)) mediaPlayer.play();
             else if (status.equals(MediaPlayer.Status.PLAYING)) mediaPlayer.pause();
             else System.out.println("Current status: " + status);
-            update.invoke();
         }
     }
 
     public static void pause() {
-        if (mediaPlayer != null && !trackQueue.isEmpty()) {
-            mediaPlayer.pause();
-            update.invoke();
-        }
+        if (mediaPlayer != null) mediaPlayer.pause();
     }
 
     public static void previousTrack() {
@@ -101,9 +103,7 @@ public final class PlaybackManager {
     public static void seek(double time) {
         if (mediaPlayer == null) return;
         var seekDuration = Duration.seconds(time);
-        if (seekDuration.lessThan(mediaPlayer.getStartTime()) || seekDuration.greaterThan(mediaPlayer.getStopTime()))
-            return;
-        mediaPlayer.seek(seekDuration);
+        Platform.runLater(() -> mediaPlayer.seek(mediaPlayer.getStartTime().add(seekDuration)));
     }
 
     public static void stopPlayback() {
@@ -121,21 +121,20 @@ public final class PlaybackManager {
         return mediaPlayer.getStopTime().subtract(mediaPlayer.getStartTime()).toSeconds();
     }
 
-    public static double getPlayPercentage() {
-        if (mediaPlayer == null) return 0;
-        var currentSeconds = mediaPlayer.getCurrentTime().toSeconds();
-        var totalSeconds = mediaPlayer.getMedia().getDuration().toSeconds();
-        return currentSeconds / totalSeconds;
+    public static boolean isPlaying() {
+        if (mediaPlayer == null) return false;
+        return mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING);
     }
 
     public static Observer getUpdate() {
         return update;
     }
 
-    private PlaybackManager() {
+    public static Track getCurentTrack() {
+        // TODO fix
+        return previouslyPlayedTracks.isEmpty() ? null : previouslyPlayedTracks.peek();
     }
 
-    public static Track getCurentTrack() {
-        return previouslyPlayedTracks.isEmpty() ? null : previouslyPlayedTracks.peek();
+    private PlaybackManager() {
     }
 }

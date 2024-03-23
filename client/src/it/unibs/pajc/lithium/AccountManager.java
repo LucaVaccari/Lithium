@@ -25,13 +25,15 @@ public class AccountManager {
     }
 
     public static boolean authenticateUser(String username, String pswHash) {
-        return Boolean.parseBoolean(HttpHandler.post("user/auth", username + "," + pswHash));
+        int userId = Integer.parseInt(HttpHandler.post("user/auth", username + "," + pswHash));
+        if (userId != -1) user = ItemProvider.getItem(userId, User.class);
+        return userId != -1;
     }
 
-    public static User getUser() {
-        // TODO: this is temp
-        if (user == null) user = ItemProvider.getItem(1, User.class);
-        return user;
+    public static boolean authenticateUserFromSavedInfo() {
+        var info = getLoginInfo();
+        if (info == null) return false;
+        return authenticateUser(info.username, info.passwordHash);
     }
 
     public static void saveLoginInfo(String username, String password) {
@@ -66,5 +68,9 @@ public class AccountManager {
             AlertUtil.showErrorAlert(e);
             e.printStackTrace();
         }
+    }
+
+    public static User getUser() {
+        return user;
     }
 }

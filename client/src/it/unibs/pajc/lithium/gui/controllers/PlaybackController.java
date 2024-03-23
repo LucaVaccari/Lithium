@@ -1,5 +1,6 @@
 package it.unibs.pajc.lithium.gui.controllers;
 
+import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.PlaybackManager;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.CustomComponent;
@@ -23,29 +24,48 @@ public class PlaybackController extends CustomComponent {
     @FXML
     private Label currentlyPlayingLbl;
 
-    private static AnimationTimer timer;
+    private AnimationTimer timer;
+    private boolean sliderChanging;
 
     @FXML
     private void initialize() {
+        update();
         backBtn.setOnAction(ignored -> PlaybackManager.previousTrack());
         pauseBtn.setOnAction(ignored -> PlaybackManager.togglePlay());
         forwardBtn.setOnAction(ignored -> PlaybackManager.nextTrack());
         progressSlider.setBlockIncrement(0.1);
-        progressSlider.setMin(0);
+        progressSlider.valueChangingProperty().addListener((observable, oldVal, newVal) -> {
+            sliderChanging = newVal;
+        });
+        progressSlider.valueProperty().addListener((observable, oldVal, newVal) -> {
+            if (sliderChanging) {
+                PlaybackManager.seek(newVal.doubleValue());
+            }
+        });
+        PlaybackManager.getUpdate().addListener(this::update);
 
         if (timer != null) return;
         timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                progressSlider.setMax(PlaybackManager.getMaxTime());
-                progressSlider.setValue(PlaybackManager.getCurrentTime());
+                Track track = PlaybackManager.getCurentTrack();
+                if (track == null) return;
+                if (!sliderChanging) progressSlider.setValue(PlaybackManager.getCurrentTime());
                 int currentTime = PlaybackManager.getCurrentTime();
                 progressLbl.setText("%02d:%02d".formatted(currentTime / 60, currentTime % 60));
-                Track track = PlaybackManager.getCurentTrack();
-                currentlyPlayingLbl.setText("%s".formatted(track != null ? track.getTitle() : "Nothing is playing"));
             }
         };
         timer.start();
+    }
+
+    private void update() {
+        Track track = PlaybackManager.getCurentTrack();
+        progressSlider.setMin(0);
+        progressSlider.setMax(PlaybackManager.getMaxTime());
+        if (track == null) currentlyPlayingLbl.setText("Nothing is playing");
+        else currentlyPlayingLbl.setText(
+                "%s - %s".formatted(ItemProvider.getArtistNamesFormatted(track.getArtistsIds()), track.getTitle()));
+        pauseBtn.setText(PlaybackManager.isPlaying() ? "Pause" : "Play");
     }
 
     @Override

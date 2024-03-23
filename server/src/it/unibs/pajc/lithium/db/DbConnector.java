@@ -57,11 +57,11 @@ public class DbConnector implements Closeable {
         else throw new RuntimeException("There's more than one user with the same name");
     }
 
-    public boolean authenticateUser(String name, String pswHash) {
+    public int authenticateUser(String name, String pswHash) {
         String queryFilter = "where username = '%s' and pwd_hash = '%s'".formatted(name, pswHash);
         User[] users = dbInf.getObjects(User.class, 5, queryFilter);
-        if (users.length == 1) return true;
-        else if (users.length == 0) return false;
+        if (users.length == 1) return users[0].getId();
+        else if (users.length == 0) return -1;
         else throw new RuntimeException("There's more than one user with the same name");
     }
 
@@ -79,7 +79,7 @@ public class DbConnector implements Closeable {
         var idField = Arrays.stream(objFields).filter(f -> f.isAnnotationPresent(Id.class)).findFirst();
         if (idField.isEmpty()) return null;
         if (!idField.get().isAnnotationPresent(Column.class)) return null;
-        
+
         var idName = idField.get().getAnnotation(Column.class).name();
         String queryFilter = "where %s = '%d'".formatted(idName, id);
         T[] objects = dbInf.getObjects(objType, 5, queryFilter);
