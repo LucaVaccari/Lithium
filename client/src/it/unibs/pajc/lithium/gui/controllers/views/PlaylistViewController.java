@@ -59,16 +59,13 @@ public class PlaylistViewController {
 
     public void onPlayNowBtn(ActionEvent ignored) {
         PlaybackManager.playImmediately(tracks);
-        playbackController.update();
     }
 
     public void onPlayNextBtn(ActionEvent ignored) {
         PlaybackManager.playNext(tracks);
-        playbackController.update();
     }
 
     public void onAddToQueueBtn(ActionEvent ignored) {
         PlaybackManager.addToQueue(tracks);
-        playbackController.update();
     }
 }

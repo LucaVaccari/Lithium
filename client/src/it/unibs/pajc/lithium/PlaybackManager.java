@@ -5,35 +5,36 @@ import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.AlertUtil;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
 public final class PlaybackManager {
-    private static Media currentMedia;
     private static MediaPlayer mediaPlayer;
     private final static LinkedList<Track> trackQueue = new LinkedList<>();
     private final static Stack<Track> previouslyPlayedTracks = new Stack<>();
 
     private static void playQueue() {
+        if (mediaPlayer != null) mediaPlayer.stop();
         if (trackQueue.isEmpty()) return;
         var track = trackQueue.pollFirst();
         previouslyPlayedTracks.push(track);
-        currentMedia = new Media(HttpHandler.buildUrl("audio/" + track.getAudioPath()));
-        mediaPlayer = new MediaPlayer(currentMedia);
-        currentMedia.setOnError(
+        var media = new Media(HttpHandler.buildUrl("audio/" + track.getAudioPath()));
+        mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setStartTime(Duration.seconds(0));
+        mediaPlayer.setStopTime(Duration.seconds(track.getDuration()));
+        media.setOnError(
                 () -> AlertUtil.showErrorAlert("Playback error", "Error during playback", "No further information"));
         mediaPlayer.setOnReady(() -> {
             System.out.println("Playing track: " + track.getTitle());
-            System.out.println(currentMedia.getDuration().toSeconds());
         });
         mediaPlayer.setOnEndOfMedia(() -> {
             if (trackQueue.isEmpty()) stopPlayback();
             else playQueue();
         });
         mediaPlayer.play();
-        System.out.println("Trying to play track");
     }
 
     public static void playImmediately(Track track) {
@@ -99,6 +100,11 @@ public final class PlaybackManager {
         return mediaPlayer != null ? (int) mediaPlayer.getCurrentTime().toSeconds() : 0;
     }
 
+    public static double getMaxTime() {
+        if (mediaPlayer == null) return 0;
+        return mediaPlayer.getStopTime().subtract(mediaPlayer.getStartTime()).toSeconds();
+    }
+
     public static double getPlayPercentage() {
         if (mediaPlayer == null) return 0;
         var currentSeconds = mediaPlayer.getCurrentTime().toSeconds();
@@ -107,5 +113,9 @@ public final class PlaybackManager {
     }
 
     private PlaybackManager() {
+    }
+
+    public static Track getCurentTrack() {
+        return previouslyPlayedTracks.isEmpty() ? null : previouslyPlayedTracks.peek();
     }
 }

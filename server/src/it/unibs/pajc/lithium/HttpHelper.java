@@ -3,6 +3,7 @@ package it.unibs.pajc.lithium;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,15 +32,14 @@ public class HttpHelper {
     }
 
     public static void sendStringResponse(HttpExchange exchange, int code, String body) throws IOException {
-        var response = body.getBytes();
-        exchange.sendResponseHeaders(code, response.length);
-        exchange.getResponseBody().write(response);
-        exchange.close();
+        var response = body.getBytes(StandardCharsets.UTF_8);
+        sendByteResponse(exchange, code, response);
     }
 
     public static void sendByteResponse(HttpExchange exchange, int code, byte[] body) throws IOException {
-        exchange.sendResponseHeaders(code, body.length);
-        exchange.getResponseBody().write(body);
+        var sendBody = !exchange.getRequestMethod().equalsIgnoreCase("head");
+        exchange.sendResponseHeaders(code, sendBody ? body.length : -1);
+        if (sendBody) exchange.getResponseBody().write(body);
         exchange.close();
     }
 }
