@@ -1,14 +1,17 @@
 package it.unibs.pajc.lithium;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import it.unibs.pajc.HttpHandler;
-import it.unibs.pajc.lithium.db.om.Artist;
+import it.unibs.pajc.lithium.db.om.*;
 import it.unibs.pajc.lithium.gui.AlertUtil;
 import javafx.scene.image.Image;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.stream.IntStream;
 
 /**
@@ -16,12 +19,30 @@ import java.util.stream.IntStream;
  * Also implements caching. It is preferable to use this class instead of sending HTTP requests directly.
  */
 public final class ItemProvider {
-    // TODO: implement caching with Guava
     private static final Gson gson = new Gson();
+    private static final HashMap<Class<?>, Cache<Integer, Object>> itemCaches;
+    private static final Cache<String, Image> imgCache;
+
+    static {
+        itemCaches = new HashMap<>();
+        itemCaches.put(Track.class, CacheBuilder.newBuilder().maximumSize(20).build());
+        itemCaches.put(Album.class, CacheBuilder.newBuilder().maximumSize(20).build());
+        itemCaches.put(Artist.class, CacheBuilder.newBuilder().maximumSize(20).build());
+        itemCaches.put(Playlist.class, CacheBuilder.newBuilder().maximumSize(20).build());
+        itemCaches.put(User.class, CacheBuilder.newBuilder().maximumSize(20).build());
+        itemCaches.put(Genre.class, CacheBuilder.newBuilder().maximumSize(20).build());
+        imgCache = CacheBuilder.newBuilder().maximumSize(30).build();
+    }
 
     public static <T> T getItem(int id, Class<T> objType) {
+        Cache<Integer, Object> itemCache = itemCaches.get(objType);
+        T cached = (T) itemCache.getIfPresent(id);
+        if (cached != null) return cached;
+
         var json = HttpHandler.get("%s?id=%d".formatted(objType.getSimpleName().toLowerCase(), id));
-        return gson.fromJson(json, objType);
+        T item = gson.fromJson(json, objType);
+        itemCache.put(id, item);
+        return item;
     }
 
     public static <T> T[] searchItem(int numberOfResults, String searchTerm, Class<T[]> arrType, String fieldName) {
@@ -29,7 +50,6 @@ public final class ItemProvider {
                 arrType.getComponentType().getSimpleName().toLowerCase(), numberOfResults, fieldName, searchTerm));
         try {
             T[] items = gson.fromJson(json, arrType);
-            // TODO cache items
             return items;
         } catch (JsonSyntaxException e) {
             AlertUtil.showErrorAlert("JSON error", "Error while converting json", json);
@@ -45,7 +65,12 @@ public final class ItemProvider {
     }
 
     public static Image getImage(String path) {
-        return new Image(HttpHandler.buildUrl(path), true);
+        Image cached = imgCache.getIfPresent(path);
+        Image image = new Image(HttpHandler.buildUrl(path), true);
+        if (cached == null) {
+            imgCache.put(path, image);
+            return image;
+        } else return cached;
     }
 
     public static String getArtistNamesFormatted(Integer[] ids) {

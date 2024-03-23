@@ -86,10 +86,11 @@ public class HttpRoutes {
     }
 
     public static void searchObject(HttpExchange exchange, Class<?> objType) throws IOException {
+        System.out.println(exchange.getRequestURI());
         var queryParams = queryParams(exchange);
         int numberOfResults = Integer.parseInt(queryParams.getOrDefault("number-of-results", "20"));
         var searchTerm = queryParams.getOrDefault("search", "");
-        if (queryParams.containsKey("field")) {
+        if (!queryParams.containsKey("field")) {
             sendStringResponse(exchange, 400,
                     "Missing 'field' query param, which must specify the name of the field to search for");
             return;

@@ -91,6 +91,14 @@ public final class PlaybackManager {
         playQueue();
     }
 
+    public static void seek(double time) {
+        if (mediaPlayer == null) return;
+        var seekDuration = Duration.seconds(time);
+        if (seekDuration.lessThan(mediaPlayer.getStartTime()) || seekDuration.greaterThan(mediaPlayer.getStopTime()))
+            return;
+        mediaPlayer.seek(seekDuration);
+    }
+
     public static void stopPlayback() {
         pause();
         trackQueue.clear();

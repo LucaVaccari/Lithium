@@ -30,6 +30,7 @@ public class PlaybackController extends CustomComponent {
         backBtn.setOnAction(ignored -> PlaybackManager.previousTrack());
         pauseBtn.setOnAction(ignored -> PlaybackManager.togglePlay());
         forwardBtn.setOnAction(ignored -> PlaybackManager.nextTrack());
+        progressSlider.setBlockIncrement(0.1);
         progressSlider.setMin(0);
 
         if (timer != null) return;
