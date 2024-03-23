@@ -34,6 +34,8 @@ public class Track implements Item, Serializable {
 
     @ForeignKey(otherTableName = "track_by_artist", otherTableColumnName = "artist_id")
     private Integer[] artistsIds;
+    @ForeignKey(otherTableName = "track_genre", otherTableColumnName = "genre_id")
+    private Integer[] genresIds;
 
     public Integer getId() {
         return id;
@@ -65,6 +67,10 @@ public class Track implements Item, Serializable {
 
     public Integer[] getArtistsIds() {
         return artistsIds;
+    }
+
+    public Integer[] getGenresIds() {
+        return genresIds;
     }
 
     @Override

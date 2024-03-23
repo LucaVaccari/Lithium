@@ -61,7 +61,7 @@ CREATE TABLE "playlist"
     "playlist_title"       TEXT    NOT NULL,
     "playlist_description" TEXT,
     "user_id"              INTEGER NOT NULL,
-    "cover_img_path"        TEXT
+    "cover_img_path"       TEXT
 );
 
 CREATE TABLE "track_by_artist"
@@ -79,18 +79,18 @@ CREATE TABLE "track_in_playlist"
     PRIMARY KEY ("track_id", "playlist_id")
 );
 
+CREATE TABLE "track_genre"
+(
+    "track_id" INTEGER NOT NULL references track,
+    "genre_id" INTEGER NOT NULL references genre,
+    primary key ("track_id", "genre_id")
+);
+
 CREATE TABLE "album_by_artist"
 (
     "album_id"  INTEGER NOT NULL references album,
     "artist_id" INTEGER NOT NULL references artist,
     PRIMARY KEY ("album_id", "artist_id")
-);
-
-CREATE TABLE "album_genre"
-(
-    "album_id" INTEGER NOT NULL references album,
-    "genre_id" INTEGER NOT NULL references genre,
-    PRIMARY KEY ("album_id", "genre_id")
 );
 
 CREATE TABLE "artist_follower"

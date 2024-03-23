@@ -3,6 +3,7 @@ package it.unibs.pajc.lithium;
 import it.unibs.pajc.HttpHandler;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.AlertUtil;
+import it.unibs.pajc.util.Observer;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
@@ -15,6 +16,7 @@ public final class PlaybackManager {
     private static MediaPlayer mediaPlayer;
     private final static LinkedList<Track> trackQueue = new LinkedList<>();
     private final static Stack<Track> previouslyPlayedTracks = new Stack<>();
+    private final static Observer update = new Observer();
 
     private static void playQueue() {
         if (mediaPlayer != null) mediaPlayer.stop();
@@ -29,6 +31,7 @@ public final class PlaybackManager {
                 () -> AlertUtil.showErrorAlert("Playback error", "Error during playback", "No further information"));
         mediaPlayer.setOnReady(() -> {
             System.out.println("Playing track: " + track.getTitle());
+            update.invoke();
         });
         mediaPlayer.setOnEndOfMedia(() -> {
             if (trackQueue.isEmpty()) stopPlayback();
@@ -50,19 +53,19 @@ public final class PlaybackManager {
     public static void playNext(Track track) {
         if (trackQueue.isEmpty()) playImmediately(track);
         else trackQueue.addFirst(track);
-        playQueue();
+        update.invoke();
     }
 
     public static void playNext(Track[] tracks) {
         if (trackQueue.isEmpty()) addToQueue(tracks);
         else trackQueue.addAll(0, List.of(tracks));
-        playQueue();
+        update.invoke();
     }
 
     public static void addToQueue(Track track) {
         if (trackQueue.isEmpty()) playImmediately(track);
         else trackQueue.addLast(track);
-        playQueue();
+        update.invoke();
     }
 
     public static void addToQueue(Track[] tracks) {
@@ -75,11 +78,15 @@ public final class PlaybackManager {
             if (status.equals(MediaPlayer.Status.PAUSED)) mediaPlayer.play();
             else if (status.equals(MediaPlayer.Status.PLAYING)) mediaPlayer.pause();
             else System.out.println("Current status: " + status);
+            update.invoke();
         }
     }
 
     public static void pause() {
-        if (mediaPlayer != null && !trackQueue.isEmpty()) mediaPlayer.pause();
+        if (mediaPlayer != null && !trackQueue.isEmpty()) {
+            mediaPlayer.pause();
+            update.invoke();
+        }
     }
 
     public static void previousTrack() {
@@ -102,6 +109,7 @@ public final class PlaybackManager {
     public static void stopPlayback() {
         pause();
         trackQueue.clear();
+        update.invoke();
     }
 
     public static int getCurrentTime() {
@@ -118,6 +126,10 @@ public final class PlaybackManager {
         var currentSeconds = mediaPlayer.getCurrentTime().toSeconds();
         var totalSeconds = mediaPlayer.getMedia().getDuration().toSeconds();
         return currentSeconds / totalSeconds;
+    }
+
+    public static Observer getUpdate() {
+        return update;
     }
 
     private PlaybackManager() {

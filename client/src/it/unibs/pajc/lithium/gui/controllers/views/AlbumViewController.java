@@ -14,6 +14,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 
+import java.util.Arrays;
+
 public class AlbumViewController {
     @FXML
     private ImageView coverImg;
@@ -39,7 +41,6 @@ public class AlbumViewController {
         artistLbl.setText(ItemProvider.getArtistNamesFormatted(album.getArtistsIds()));
         releaseDateLbl.setText(album.getReleaseDate());
 
-        // todo genres
 
         coverImg.setImage(ItemProvider.getImage(album.getImgPath()));
 
@@ -48,6 +49,10 @@ public class AlbumViewController {
         for (var track : tracks) {
             trackContainer.getItems().add(new TrackEntry(track));
         }
+
+        var genresIds =
+                Arrays.stream(tracks).flatMap(track -> Arrays.stream(track.getGenresIds())).toArray(Integer[]::new);
+        genreLbl.setText(ItemProvider.getGenresFormatted(genresIds));
     }
 
     public void onBackBtn(ActionEvent ignored) {

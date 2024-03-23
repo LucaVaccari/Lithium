@@ -35,7 +35,7 @@
                         <Font size="14.0"/>
                     </font>
                 </Label>
-                <Label fx:id="genresLbl" layoutX="186.0" layoutY="322.0" maxWidth="1.7976931348623157E308"
+                <Label fx:id="genreLbl" layoutX="186.0" layoutY="322.0" maxWidth="1.7976931348623157E308"
                        text="Genre list" wrapText="true">
                     <font>
                         <Font size="13.0"/>

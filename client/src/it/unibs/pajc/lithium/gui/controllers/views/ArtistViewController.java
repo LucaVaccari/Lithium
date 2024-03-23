@@ -35,11 +35,10 @@ public class ArtistViewController {
         artistNameLbl.setText(artist.getName());
         bioLbl.setText(artist.getBio());
 
-        // TODO genres
-
         proPicImg.setImage(ItemProvider.getImage(artist.getProfilePicturePath()));
 
         // TODO: track container (get tracks from artists)
+        // TODO genres
     }
 
     public void onBackBtn(ActionEvent ignored) {

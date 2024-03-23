@@ -12,7 +12,6 @@ public class MainSceneController {
 
     @FXML
     private void initialize() {
-        playingNowTab.setDisable(true);
     }
 
     public static Item getSelectedItem() {

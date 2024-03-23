@@ -65,12 +65,12 @@ public class HttpRoutes {
 
     public static void getObjectById(HttpExchange exchange, Function<Integer, ?> dbFunc) throws IOException {
         int id = Integer.parseInt(HttpHelper.queryParam(exchange, "id"));
-        var objects = dbFunc.apply(id);
-        if (objects == null) {
+        var object = dbFunc.apply(id);
+        if (object == null) {
             sendStringResponse(exchange, 500, "Internal server error");
             return;
         }
-        String json = getGson().toJson(objects);
+        String json = getGson().toJson(object);
         sendStringResponse(exchange, 200, json);
     }
 

@@ -15,6 +15,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 
+import java.util.Arrays;
+
 public class PlaylistViewController {
     @FXML
     private Label playlistNameLbl;
@@ -23,7 +25,7 @@ public class PlaylistViewController {
     @FXML
     private Label creationDateLbl;
     @FXML
-    private Label genresLbl;
+    private Label genreLbl;
     @FXML
     private ImageView coverImg;
     @FXML
@@ -41,7 +43,6 @@ public class PlaylistViewController {
         ownerLlb.setText("By " + owner.getUsername());
 
         // TODO: creation date
-        // TODO: genres
 
         coverImg.setImage(ItemProvider.getImage(playlist.getImgPath()));
 
@@ -50,6 +51,10 @@ public class PlaylistViewController {
         for (var track : tracks) {
             trackContainer.getItems().add(new TrackEntry(track));
         }
+
+        var genresIds =
+                Arrays.stream(tracks).flatMap(track -> Arrays.stream(track.getGenresIds())).toArray(Integer[]::new);
+        genreLbl.setText(ItemProvider.getGenresFormatted(genresIds));
     }
 
     public void onBackBtn(ActionEvent ignored) {

@@ -12,6 +12,8 @@ import javafx.scene.image.Image;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.stream.IntStream;
 
 /**
@@ -20,7 +22,7 @@ import java.util.stream.IntStream;
  */
 public final class ItemProvider {
     private static final Gson gson = new Gson();
-    private static final HashMap<Class<?>, Cache<Integer, Object>> itemCaches;
+    private static final HashMap<Class<? extends Item>, Cache<Integer, Item>> itemCaches;
     private static final Cache<String, Image> imgCache;
 
     static {
@@ -34,8 +36,8 @@ public final class ItemProvider {
         imgCache = CacheBuilder.newBuilder().maximumSize(30).build();
     }
 
-    public static <T> T getItem(int id, Class<T> objType) {
-        Cache<Integer, Object> itemCache = itemCaches.get(objType);
+    public static <T extends Item> T getItem(int id, Class<T> objType) {
+        var itemCache = itemCaches.get(objType);
         T cached = (T) itemCache.getIfPresent(id);
         if (cached != null) return cached;
 
@@ -45,12 +47,12 @@ public final class ItemProvider {
         return item;
     }
 
-    public static <T> T[] searchItem(int numberOfResults, String searchTerm, Class<T[]> arrType, String fieldName) {
-        String json = HttpHandler.get("%s?number-of-results=%d&field=%s&search=%s".formatted(
+    public static <T extends Item> T[] searchItem(int numberOfResults, String searchTerm, Class<T[]> arrType,
+                                                  String fieldName) {
+        var json = HttpHandler.get("%s?number-of-results=%d&field=%s&search=%s".formatted(
                 arrType.getComponentType().getSimpleName().toLowerCase(), numberOfResults, fieldName, searchTerm));
         try {
-            T[] items = gson.fromJson(json, arrType);
-            return items;
+            return gson.fromJson(json, arrType);
         } catch (JsonSyntaxException e) {
             AlertUtil.showErrorAlert("JSON error", "Error while converting json", json);
             e.printStackTrace();
@@ -58,7 +60,7 @@ public final class ItemProvider {
         }
     }
 
-    public static <T> T[] getItems(Integer[] ids, Class<T> objType) {
+    public static <T extends Item> T[] getItems(Integer[] ids, Class<T> objType) {
         T[] items = (T[]) Array.newInstance(objType, ids.length);
         IntStream.range(0, ids.length).forEach(i -> items[i] = getItem(ids[i], objType));
         return items;
@@ -77,6 +79,12 @@ public final class ItemProvider {
         var artists = getItems(ids, Artist.class);
         var artistNames = Arrays.stream(artists).map(Artist::getName).toArray(String[]::new);
         return String.join(", ", artistNames);
+    }
+
+    public static String getGenresFormatted(Integer[] ids) {
+        var genres = new HashSet<>(List.of(ids));
+        var genreNames = genres.stream().map(id -> getItem(id, Genre.class).getName()).toArray(String[]::new);
+        return String.join(", ", genreNames);
     }
 
     private ItemProvider() {

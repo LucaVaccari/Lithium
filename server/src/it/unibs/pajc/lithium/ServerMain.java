@@ -26,6 +26,7 @@ public class ServerMain {
             server.createContext("/album", e -> HttpRoutes.manageItem(e, Album.class));
             server.createContext("/artist", e -> HttpRoutes.manageItem(e, Artist.class));
             server.createContext("/playlist", e -> HttpRoutes.manageItem(e, Playlist.class));
+            server.createContext("/genre", e -> HttpRoutes.manageItem(e, Genre.class));
             // DATA CTX
             server.createContext("/img", HttpRoutes::getImg);
             server.createContext("/audio", HttpRoutes::getAudio);

@@ -5,7 +5,7 @@ delete
 from album_by_artist
 where true;
 delete
-from album_genre
+from track_genre
 where true;
 delete
 from artist
@@ -37,6 +37,15 @@ where true;
 delete
 from user_saved_playlist
 where true;
+
+insert into genre(genre_id, genre_name)
+VALUES (1, 'Progressive rock'),
+       (2, 'Rock'),
+       (3, 'Pop'),
+       (4, 'Acoustic'),
+       (5, 'Post-rock'),
+       (6, 'Alternative rock'),
+       (7, 'Metal');
 
 insert into album(album_id, album_title, album_release_date, cover_img_path)
 VALUES ('1', 'Fragile', '2022-07-20', 'img/album_cover/lit_silver_fragile.jpg'),
@@ -80,6 +89,39 @@ VALUES (1, 'In Solitudine', 1, 430, '', 1),
        (23, 'Safe and calm', 3, 364, '', 4),
        (24, 'Rediscovery', 4, 346, '', 4),
        (25, 'Thank you', 5, 160, '', 4);
+
+insert into track_genre(track_id, genre_id)
+VALUES (1, 1),
+       (2, 1),
+       (3, 1),
+       (4, 1),
+       (5, 1),
+       (6, 1),
+       (7, 1),
+       (8, 6),
+       (8, 2),
+       (9, 6),
+       (10, 6),
+       (11, 6),
+       (12, 1),
+       (13, 5),
+       (14, 1),
+       (15, 1),
+       (16, 5),
+       (17, 7),
+       (18, 5),
+       (19, 7),
+       (20, 5),
+       (21, 4),
+       (21, 3),
+       (22, 2),
+       (22, 3),
+       (23, 4),
+       (23, 3),
+       (24, 2),
+       (24, 3),
+       (25, 4),
+       (25, 3);
 
 insert into track_by_artist(track_id, artist_id)
 VALUES (1, 1),

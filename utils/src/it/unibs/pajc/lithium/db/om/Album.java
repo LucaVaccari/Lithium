@@ -28,22 +28,18 @@ public class Album implements Item, Serializable {
     private String imgPath;
     @ForeignKey(otherTableName = "album_by_artist", otherTableColumnName = "artist_id")
     private Integer[] artistsIds;
-    @ForeignKey(otherTableName = "album_genre", otherTableColumnName = "genre_id")
-    private Integer[] genresIds;
     @ForeignKey(otherTableName = "track", otherTableColumnName = "track_id")
     private Integer[] trackIds;
 
     public Album() {
     }
 
-    public Album(String title, String version, String releaseDate, String imgPath, Integer[] artists,
-                 Integer[] genres) {
+    public Album(String title, String version, String releaseDate, String imgPath, Integer[] artists) {
         this.title = title;
         this.version = version;
         this.releaseDate = releaseDate;
         this.imgPath = imgPath;
         this.artistsIds = artists;
-        this.genresIds = genres;
     }
 
     public Integer getId() {

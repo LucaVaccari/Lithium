@@ -44,7 +44,7 @@ public class TrackViewController {
         artistLbl.setText(ItemProvider.getArtistNamesFormatted(track.getArtistsIds()));
 
         releaseDateLbl.setText("Released on " + album.getReleaseDate());
-        // todo genre list
+        genreListLbl.setText(ItemProvider.getGenresFormatted(track.getGenresIds()));
         coverImg.setImage(ItemProvider.getImage(album.getImgPath()));
     }
 
@@ -57,6 +57,9 @@ public class TrackViewController {
         MainSceneController.setSelectedItem(album);
         SceneManager.loadScene("/FXMLs/itemViews/albumView.fxml", this);
     }
+
+    // todo: on artist clicked
+    // todo: on genre clicked
 
     public void onPlayNowBtn(ActionEvent ignored) {
         PlaybackManager.playImmediately(track);
