@@ -54,8 +54,7 @@ public class SearchTab extends CustomComponent {
     }
 
     private void updateTrackList() throws UnirestException, JsonSyntaxException {
-        var searchTerm = searchTxtField.getText().replace(" ", "+");
-        var tracks = ItemProvider.searchItem(15, searchTerm, Track[].class, "track_title");
+        var tracks = ItemProvider.searchItem(15, searchTxtField.getText(), Track[].class, "track_title");
         if (tracks == null) {
             System.err.println("Null items in search tab");
             return;
@@ -64,8 +63,7 @@ public class SearchTab extends CustomComponent {
     }
 
     private void updateAlbumList() throws UnirestException, JsonSyntaxException {
-        var searchTerm = searchTxtField.getText().replace(" ", "+");
-        var albums = ItemProvider.searchItem(15, searchTerm, Album[].class, "album_title");
+        var albums = ItemProvider.searchItem(15, searchTxtField.getText(), Album[].class, "album_title");
         if (albums == null) {
             System.err.println("Null albums in search tab");
             return;
@@ -74,8 +72,7 @@ public class SearchTab extends CustomComponent {
     }
 
     private void updateArtistList() throws UnirestException, JsonSyntaxException {
-        var searchTerm = searchTxtField.getText().replace(" ", "+");
-        var artists = ItemProvider.searchItem(15, searchTerm, Artist[].class, "artist_name");
+        var artists = ItemProvider.searchItem(15, searchTxtField.getText(), Artist[].class, "artist_name");
         if (artists == null) {
             System.err.println("Null items in search tab");
             return;
@@ -84,8 +81,7 @@ public class SearchTab extends CustomComponent {
     }
 
     private void updatePlaylistList() throws UnirestException, JsonSyntaxException {
-        var searchTerm = searchTxtField.getText().replace(" ", "+");
-        var playlists = ItemProvider.searchItem(15, searchTerm, Playlist[].class, "playlist_title");
+        var playlists = ItemProvider.searchItem(15, searchTxtField.getText(), Playlist[].class, "playlist_title");
         if (playlists == null) {
             System.err.println("Null items in search tab");
             return;

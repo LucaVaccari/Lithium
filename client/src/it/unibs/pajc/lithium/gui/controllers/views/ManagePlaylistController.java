@@ -2,14 +2,19 @@ package it.unibs.pajc.lithium.gui.controllers.views;
 
 import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.db.om.Playlist;
+import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
+import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
 import it.unibs.pajc.util.Observer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+
+import java.util.Arrays;
 
 public class ManagePlaylistController {
     // TODO delete playlist btn
@@ -49,8 +54,29 @@ public class ManagePlaylistController {
         onNameTyped(null);
         onDescriptionTyped(null);
 
-        // TODO populate trackView
-        // TODO search track functionality
+        var tracks = ItemProvider.getItems(playlist.getTracksIds(), Track.class);
+        trackView.getItems().clear();
+        for (var track : tracks) {
+            var hbox = getPlaylistTrackHbox(track);
+            trackView.getItems().add(hbox);
+        }
+
+        onSearchTyped(null);
+    }
+
+    private static HBox getPlaylistTrackHbox(Track track) {
+        var btn = new Button("Remove");
+        // TODO: btn.setOnAction()
+        btn.setMaxHeight(Double.MAX_VALUE);
+        btn.setMaxWidth(Double.MAX_VALUE);
+        var trackEntry = new TrackEntry(track);
+        trackEntry.setMaxHeight(Double.MAX_VALUE);
+        trackEntry.setMaxWidth(Double.MAX_VALUE);
+        var hbox = new HBox(trackEntry, btn);
+        hbox.setAlignment(Pos.CENTER);
+        hbox.setFillHeight(true);
+        hbox.setMaxWidth(Double.MAX_VALUE);
+        return hbox;
     }
 
     public void onNameSet(ActionEvent ignored) {
@@ -81,6 +107,35 @@ public class ManagePlaylistController {
 
     public void onNameTyped(KeyEvent ignored) {
         nameSetBtn.setDisable(playlist.getName().equals(nameTxtField.getText()));
+    }
+
+    public void onSearchTyped(KeyEvent ignored) {
+        var searchTerm = searchTxtField.getText();
+        var tracks = ItemProvider.searchItem(15, searchTerm, Track[].class, "track_title");
+        if (tracks == null) {
+            System.err.println("Null items in search tab");
+            return;
+        }
+        for (var track : tracks) {
+            if (searchTrackView.getItems().filtered(a -> ((TrackEntry) a.getChildren().getFirst()).getTrack().equals(track))
+                    .isEmpty()) {
+                var btn = new Button("Add");
+                // TODO: btn.setOnAction()
+                btn.setMaxHeight(Double.MAX_VALUE);
+                btn.setMaxWidth(Double.MAX_VALUE);
+                var trackEntry = new TrackEntry(track);
+                trackEntry.setMaxHeight(Double.MAX_VALUE);
+                trackEntry.setMaxWidth(Double.MAX_VALUE);
+                var hbox = new HBox(trackEntry, btn);
+                hbox.setAlignment(Pos.CENTER);
+                hbox.setFillHeight(true);
+                hbox.setMaxWidth(Double.MAX_VALUE);
+                searchTrackView.getItems().add(hbox);
+            }
+        }
+        searchTrackView.getItems().removeIf(
+                hbox -> !Arrays.stream(tracks).toList().contains(((TrackEntry) hbox.getChildren().getFirst()).getTrack()));
+        searchTrackView.refresh();
     }
 
     private void update() {

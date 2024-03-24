@@ -35,7 +35,7 @@
                         </Label>
                         <TextArea fx:id="descriptionTxtArea" onKeyTyped="#onDescriptionTyped" prefHeight="150.0"
                                   prefWidth="250.0" promptText="Playlist description" GridPane.columnIndex="1"
-                                  GridPane.rowIndex="1"/>
+                                  GridPane.rowIndex="1" wrapText="true"/>
                         <Button fx:id="descriptionSetBtn" mnemonicParsing="false" onAction="#onDescriptionSet"
                                 text="Set" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
                         <Label text="Image file" GridPane.columnIndex="0" GridPane.rowIndex="2">
@@ -60,8 +60,7 @@
                       AnchorPane.topAnchor="0.0">
                     <ImageView fx:id="coverImg" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true"
                                preserveRatio="true"/>
-                    <TextField fx:id="searchTxtField" maxWidth="Infinity"
-                               promptText="Search for tracks...">
+                    <TextField fx:id="searchTxtField" maxWidth="Infinity" promptText="Search for tracks..." onKeyTyped="#onSearchTyped">
                         <font>
                             <Font size="14.0"/>
                         </font>
