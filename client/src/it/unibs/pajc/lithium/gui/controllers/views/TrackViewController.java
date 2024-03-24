@@ -13,7 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
-public class TrackViewController {
+public class TrackViewController extends ViewController {
     // TODO: make album clickable
     // TODO: make artist clickable
 
@@ -48,17 +48,12 @@ public class TrackViewController {
         coverImg.setImage(ItemProvider.getImage(album.getImgPath()));
     }
 
-    public void onBackBtn() {
-        MainSceneController.setSelectedItem(null);
-        SceneManager.backToPreviousScene();
-    }
-
     public void onAlbumMouseClicked(MouseEvent ignored) {
         MainSceneController.setSelectedItem(album);
         SceneManager.loadScene("/FXMLs/itemViews/albumView.fxml", this);
     }
-
     // todo: on artist clicked
+
     // todo: on genre clicked
 
     public void onPlayNowBtn(ActionEvent ignored) {

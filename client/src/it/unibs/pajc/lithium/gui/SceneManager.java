@@ -44,8 +44,8 @@ public class SceneManager {
         mainStage.sizeToScene();
     }
 
-    // TODO add home button to scenes
     public static void backToMainScene() {
+        if (mainStage == null) return;
         scenes.clear();
         mainStage.setScene(mainScene);
         mainStage.sizeToScene();

@@ -10,7 +10,7 @@ import it.unibs.pajc.lithium.gui.AlertUtil;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.AlbumEntry;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.ArtistEntry;
-import it.unibs.pajc.lithium.gui.controllers.listEntries.EntryUtility;
+import it.unibs.pajc.lithium.gui.GUIUtils;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.PlaylistEntry;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -39,9 +39,9 @@ public class LibraryTab extends CustomComponent {
                 return;
             }
 
-            EntryUtility.fillEntryList(albumContainer, albums, AlbumEntry.class);
-            EntryUtility.fillEntryList(artistContainer, artists, ArtistEntry.class);
-            EntryUtility.fillEntryList(playlistContainer, playlists, PlaylistEntry.class);
+            GUIUtils.fillEntryList(albumContainer, albums, AlbumEntry.class);
+            GUIUtils.fillEntryList(artistContainer, artists, ArtistEntry.class);
+            GUIUtils.fillEntryList(playlistContainer, playlists, PlaylistEntry.class);
         } catch (UnirestException e) {
             AlertUtil.showErrorAlert("HTTP error", "Error in SearchTab.java", e.getMessage());
         } catch (JsonSyntaxException e) {

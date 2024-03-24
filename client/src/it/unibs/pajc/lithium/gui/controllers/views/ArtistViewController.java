@@ -4,7 +4,6 @@ import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.PlaybackManager;
 import it.unibs.pajc.lithium.db.om.Artist;
 import it.unibs.pajc.lithium.db.om.Track;
-import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import it.unibs.pajc.lithium.gui.controllers.PlaybackController;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
@@ -14,7 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 
-public class ArtistViewController {
+public class ArtistViewController extends ViewController {
     @FXML
     private Label artistNameLbl;
     @FXML
@@ -39,11 +38,6 @@ public class ArtistViewController {
 
         // TODO: track container (get tracks from artists)
         // TODO genres
-    }
-
-    public void onBackBtn(ActionEvent ignored) {
-        MainSceneController.setSelectedItem(null);
-        SceneManager.backToPreviousScene();
     }
 
     public void onPlayNowBtn(ActionEvent ignored) {

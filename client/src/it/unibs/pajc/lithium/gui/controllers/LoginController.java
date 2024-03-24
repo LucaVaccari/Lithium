@@ -102,6 +102,7 @@ public class LoginController {
     public void onSubmitBtn(ActionEvent ignoredEvent) {
         if (!checkFieldsValidity()) return;
         String username = usernameTxtField.getText();
+        submitBtn.setDisable(true);
         if (state == State.Start) {
             var userExists = AccountManager.userExists(username);
             pswContainer.setVisible(true);

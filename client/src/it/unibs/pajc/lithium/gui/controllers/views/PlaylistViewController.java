@@ -5,7 +5,7 @@ import it.unibs.pajc.lithium.PlaybackManager;
 import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.db.om.User;
-import it.unibs.pajc.lithium.gui.SceneManager;
+import it.unibs.pajc.lithium.gui.GUIUtils;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import it.unibs.pajc.lithium.gui.controllers.PlaybackController;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
@@ -15,9 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 
-import java.util.Arrays;
-
-public class PlaylistViewController {
+public class PlaylistViewController extends ViewController {
     @FXML
     private Label playlistNameLbl;
     @FXML
@@ -45,21 +43,7 @@ public class PlaylistViewController {
         // TODO: creation date
 
         coverImg.setImage(ItemProvider.getImage(playlist.getImgPath()));
-
-        tracks = ItemProvider.getItems(playlist.getTracksIds(), Track.class);
-        trackContainer.getItems().clear();
-        for (var track : tracks) {
-            trackContainer.getItems().add(new TrackEntry(track));
-        }
-
-        var genresIds =
-                Arrays.stream(tracks).flatMap(track -> Arrays.stream(track.getGenresIds())).toArray(Integer[]::new);
-        genreLbl.setText(ItemProvider.getGenresFormatted(genresIds));
-    }
-
-    public void onBackBtn(ActionEvent ignored) {
-        MainSceneController.setSelectedItem(null);
-        SceneManager.backToPreviousScene();
+        tracks = GUIUtils.fillTrackContainerAndGenreLabel(playlist.getTracksIds(), trackContainer, genreLbl);
     }
 
     public void onPlayNowBtn(ActionEvent ignored) {

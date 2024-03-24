@@ -19,7 +19,6 @@ public final class PlaybackManager {
     private final static Stack<Track> previouslyPlayedTracks = new Stack<>();
     private final static Observer update = new Observer();
 
-
     private static void playQueue() {
         if (mediaPlayer != null) mediaPlayer.stop();
         if (trackQueue.isEmpty()) return;

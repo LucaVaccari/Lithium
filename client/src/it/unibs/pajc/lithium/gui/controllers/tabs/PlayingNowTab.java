@@ -27,6 +27,7 @@ public class PlayingNowTab extends CustomComponent {
     @FXML
     private void initialize() {
         PlaybackManager.getUpdate().addListener(this::update);
+        update();
 
         currentTrackTitleLbl.setOnMouseClicked(e -> {
             var track = PlaybackManager.getCurentTrack();
@@ -46,7 +47,14 @@ public class PlayingNowTab extends CustomComponent {
 
     public void update() {
         var track = PlaybackManager.getCurentTrack();
-        if (track == null) return;
+        if (track == null) {
+            currentTrackImgCover.setImage(null);
+            currentTrackTitleLbl.setText("");
+            currentTrackArtistLbl.setText("");
+            currentTrackAlbumLbl.setText("");
+            return;
+        }
+        
         var album = ItemProvider.getItem(track.getAlbumId(), Album.class);
         currentTrackImgCover.setImage(ItemProvider.getImage(album.getImgPath()));
         currentTrackTitleLbl.setText(track.getTitle());
