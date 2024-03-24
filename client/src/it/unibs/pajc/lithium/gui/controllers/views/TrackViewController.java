@@ -13,7 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
-public class TrackViewController extends ViewController {
+public class TrackViewController {
     // TODO: make album clickable
     // TODO: make artist clickable
 

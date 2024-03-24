@@ -51,6 +51,14 @@ public class Playlist implements Item, Serializable {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Integer getOwnerId() {
         return ownerId;
     }

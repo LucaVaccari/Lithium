@@ -7,6 +7,7 @@ import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.db.om.User;
 import it.unibs.pajc.lithium.gui.GUIUtils;
+import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import it.unibs.pajc.lithium.gui.controllers.PlaybackController;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
@@ -19,7 +20,7 @@ import javafx.scene.image.ImageView;
 
 import java.util.Arrays;
 
-public class PlaylistViewController extends ViewController {
+public class PlaylistViewController {
     @FXML
     private Label playlistNameLbl;
     @FXML
@@ -29,13 +30,15 @@ public class PlaylistViewController extends ViewController {
     @FXML
     private Label genreLbl;
     @FXML
-    private ImageView coverImg;
+    private Button saveBtn;
+    @FXML
+    private Button manageBtn;
     @FXML
     public ListView<TrackEntry> trackContainer;
     @FXML
-    private PlaybackController playbackController;
+    private ImageView coverImg;
     @FXML
-    private Button saveBtn;
+    private PlaybackController playbackController;
     private Playlist playlist;
     private Track[] tracks;
 
@@ -54,7 +57,9 @@ public class PlaylistViewController extends ViewController {
 
         saveBtn.setText(isSaved() ? "UNSAVE" : "SAVE");
 
-        if (playlist.getOwnerId().equals(AccountManager.getUser().getId())) saveBtn.setDisable(true);
+        boolean ownedPlaylist = playlist.getOwnerId().equals(AccountManager.getUser().getId());
+        saveBtn.setDisable(ownedPlaylist);
+        manageBtn.setDisable(!ownedPlaylist);
     }
 
     public void onPlayNowBtn(ActionEvent ignored) {
@@ -82,5 +87,10 @@ public class PlaylistViewController extends ViewController {
 
     private boolean isSaved() {
         return Arrays.asList(AccountManager.getUser().getSavedPlaylistsIds()).contains(playlist.getId());
+    }
+
+    public void onManageBtn(ActionEvent ignored) {
+        MainSceneController.setSelectedItem(playlist);
+        SceneManager.loadScene("/FXMLs/managePlaylist.fxml", this);
     }
 }

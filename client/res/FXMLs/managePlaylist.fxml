@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import it.unibs.pajc.lithium.gui.controllers.views.ViewNavbar?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="600.0" prefWidth="900.0"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.unibs.pajc.lithium.gui.controllers.views.ManagePlaylistController">
+    <VBox alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity"
+          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+          AnchorPane.topAnchor="0.0">
+        <ViewNavbar/>
+        <SplitPane dividerPositions="0.5" maxHeight="Infinity" maxWidth="Infinity"
+                   prefHeight="600.0" prefWidth="900.0" VBox.vgrow="ALWAYS">
+            <AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0"
+                        minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <GridPane maxWidth="Infinity" alignment="CENTER" hgap="10" vgap="5">
+                        <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Label>
+                        <TextField fx:id="nameTxtField" onAction="#onNameSet" onKeyTyped="#onNameTyped"
+                                   promptText="Playlist name" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                        <Button fx:id="nameSetBtn" mnemonicParsing="false" onAction="#onNameSet" text="Set"
+                                GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                        <Label text="Description" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Label>
+                        <TextArea fx:id="descriptionTxtArea" onKeyTyped="#onDescriptionTyped" prefHeight="150.0"
+                                  prefWidth="250.0" promptText="Playlist description" GridPane.columnIndex="1"
+                                  GridPane.rowIndex="1"/>
+                        <Button fx:id="descriptionSetBtn" mnemonicParsing="false" onAction="#onDescriptionSet"
+                                text="Set" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                        <Label text="Image file" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="imgPathLbl" text="path" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <Button mnemonicParsing="false" onAction="#onSelectImg" text="Select" GridPane.columnIndex="2"
+                                GridPane.rowIndex="2"/>
+                    </GridPane>
+                    <ListView fx:id="trackView" focusTraversable="false"
+                              maxHeight="Infinity" maxWidth="Infinity"
+                              prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS"/>
+                </VBox>
+            </AnchorPane>
+            <AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0"
+                        minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                <VBox alignment="CENTER" maxHeight="Infinity"
+                      maxWidth="Infinity" prefHeight="200.0" prefWidth="100.0" spacing="5.0"
+                      AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                      AnchorPane.topAnchor="0.0">
+                    <ImageView fx:id="coverImg" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true"
+                               preserveRatio="true"/>
+                    <TextField fx:id="searchTxtField" maxWidth="Infinity"
+                               promptText="Search for tracks...">
+                        <font>
+                            <Font size="14.0"/>
+                        </font>
+                    </TextField>
+                    <ListView fx:id="searchTrackView" focusTraversable="false"
+                              maxHeight="Infinity" maxWidth="Infinity"
+                              prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS"/>
+                </VBox>
+            </AnchorPane>
+        </SplitPane>
+    </VBox>
+</AnchorPane>

@@ -87,7 +87,6 @@ public class SQLiteInterface implements Closeable {
                 sqlBuilder.append(")");
             }
 
-            System.out.println(sqlBuilder);
             statement.executeUpdate(sqlBuilder.toString());
 
         } catch (Exception e) {
@@ -251,7 +250,6 @@ public class SQLiteInterface implements Closeable {
                 previousValueInserted = true;
             }
 
-            System.out.println(sqlBuilder);
             statement.executeUpdate(sqlBuilder.toString());
 
         } catch (Exception e) {

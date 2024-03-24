@@ -17,7 +17,7 @@ import javafx.scene.image.ImageView;
 
 import java.util.Arrays;
 
-public class ArtistViewController extends ViewController {
+public class ArtistViewController {
     @FXML
     private Label artistNameLbl;
     @FXML

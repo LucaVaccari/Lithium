@@ -18,7 +18,7 @@ import javafx.scene.image.ImageView;
 
 import java.util.Arrays;
 
-public class AlbumViewController extends ViewController {
+public class AlbumViewController {
     @FXML
     private ImageView coverImg;
     @FXML
