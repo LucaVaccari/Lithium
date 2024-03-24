@@ -33,9 +33,11 @@ public class ServerMain {
             // DATA CTX
             server.createContext("/img", HttpRoutes::getImg);
             server.createContext("/audio", HttpRoutes::getAudio);
-
+            // OTHER
+            server.createContext("/playlist/add", HttpRoutes::managePlaylist);
             // TODO: show available calls
             server.createContext("/", HttpRoutes::defaultRoute);
+
             server.start();
         } catch (IOException e) {
             e.printStackTrace();

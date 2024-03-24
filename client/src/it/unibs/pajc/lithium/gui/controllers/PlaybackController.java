@@ -64,7 +64,7 @@ public class PlaybackController extends CustomComponent {
         progressSlider.setMax(PlaybackManager.getMaxTime());
         if (track == null) currentlyPlayingLbl.setText("Nothing is playing");
         else currentlyPlayingLbl.setText(
-                "%s - %s".formatted(ItemProvider.getArtistNamesFormatted(track.getArtistsIds()), track.getTitle()));
+                "%s - %s".formatted(ItemProvider.getArtistNamesFormatted(track.getArtistIds()), track.getTitle()));
         pauseBtn.setText(PlaybackManager.isPlaying() ? "Pause" : "Play");
     }
 

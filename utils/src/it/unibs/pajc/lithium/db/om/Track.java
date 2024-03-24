@@ -33,9 +33,9 @@ public class Track implements Item, Serializable {
     private Integer albumId;
 
     @ForeignKey(otherTableName = "track_by_artist", otherTableColumnName = "artist_id")
-    private Integer[] artistsIds;
+    private Integer[] artistIds;
     @ForeignKey(otherTableName = "track_genre", otherTableColumnName = "genre_id")
-    private Integer[] genresIds;
+    private Integer[] genreIds;
 
     public Integer getId() {
         return id;
@@ -53,6 +53,10 @@ public class Track implements Item, Serializable {
         this.version = version;
     }
 
+    public int getNumber() {
+        return number;
+    }
+
     public int getDuration() {
         return duration;
     }
@@ -65,12 +69,12 @@ public class Track implements Item, Serializable {
         return albumId;
     }
 
-    public Integer[] getArtistsIds() {
-        return artistsIds;
+    public Integer[] getArtistIds() {
+        return artistIds;
     }
 
-    public Integer[] getGenresIds() {
-        return genresIds;
+    public Integer[] getGenreIds() {
+        return genreIds;
     }
 
     @Override

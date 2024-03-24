@@ -91,8 +91,19 @@ public final class ItemProvider {
 
     public static void updateItem(Integer id, Class<? extends Item> objType, String... updates) {
         var query = "?id=%d&%s".formatted(id, String.join("&", updates));
-        var subUrl = "/" + objType.getSimpleName().toLowerCase() + query;
+        var subUrl = objType.getSimpleName().toLowerCase() + query;
         System.out.println(HttpHandler.put(subUrl));
+    }
+
+    public static void addTrackToPlaylist(Playlist playlist, int trackId) {
+        if (Arrays.asList(playlist.getTracksIds()).contains(trackId)) return;
+        var subUrl = "playlist/add?id=%d&trackId=%d".formatted(playlist.getId(), trackId);
+        System.out.println(HttpHandler.post(subUrl));
+    }
+
+    public static void removeTrackFromPlaylist(int playlistId, int trackId) {
+        var subUrl = "playlist/add?id=%d&trackId=%d".formatted(playlistId, trackId);
+        System.out.println(HttpHandler.delete(subUrl));
     }
 
     public static String getArtistNamesFormatted(Integer[] ids) {

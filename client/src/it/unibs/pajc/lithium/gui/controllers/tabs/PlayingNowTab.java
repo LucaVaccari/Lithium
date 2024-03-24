@@ -58,7 +58,7 @@ public class PlayingNowTab extends CustomComponent {
         var album = ItemProvider.getItem(track.getAlbumId(), Album.class);
         currentTrackImgCover.setImage(ItemProvider.getImage(album.getImgPath()));
         currentTrackTitleLbl.setText(track.getTitle());
-        currentTrackArtistLbl.setText("By " + ItemProvider.getArtistNamesFormatted(track.getArtistsIds()));
+        currentTrackArtistLbl.setText("By " + ItemProvider.getArtistNamesFormatted(track.getArtistIds()));
         currentTrackAlbumLbl.setText(album.getTitle());
 
         // todo queue

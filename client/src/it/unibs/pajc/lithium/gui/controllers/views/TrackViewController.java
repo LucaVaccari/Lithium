@@ -41,10 +41,10 @@ public class TrackViewController {
         trackTitleLbl.setText(track.getTitle());
         trackAlbumLbl.setText(album.getTitle());
 
-        artistLbl.setText(ItemProvider.getArtistNamesFormatted(track.getArtistsIds()));
+        artistLbl.setText(ItemProvider.getArtistNamesFormatted(track.getArtistIds()));
 
         releaseDateLbl.setText("Released on " + album.getReleaseDate());
-        genreListLbl.setText(ItemProvider.getGenresFormatted(track.getGenresIds()));
+        genreListLbl.setText(ItemProvider.getGenresFormatted(track.getGenreIds()));
         coverImg.setImage(ItemProvider.getImage(album.getImgPath()));
     }
 

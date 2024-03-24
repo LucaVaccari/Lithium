@@ -17,8 +17,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class AlbumViewController {
+    // TODO: show track number
     @FXML
     private ImageView coverImg;
     @FXML
@@ -47,6 +49,7 @@ public class AlbumViewController {
         releaseDateLbl.setText(album.getReleaseDate());
         coverImg.setImage(ItemProvider.getImage(album.getImgPath()));
         tracks = GUIUtils.fillTrackContainerAndGenreLabel(album.getTrackIds(), trackContainer, genreLbl);
+        trackContainer.getItems().sort(Comparator.comparingInt(t -> t.getTrack().getNumber()));
         saveBtn.setText(isSaved() ? "UNSAVE" : "SAVE");
     }
 

@@ -40,9 +40,9 @@ public final class GUIUtils {
         }
 
         if (genreLbl != null) {
-            var genresIds =
-                    Arrays.stream(tracks).flatMap(track -> Arrays.stream(track.getGenresIds())).toArray(Integer[]::new);
-            genreLbl.setText(ItemProvider.getGenresFormatted(genresIds));
+            var genreIds =
+                    Arrays.stream(tracks).flatMap(track -> Arrays.stream(track.getGenreIds())).toArray(Integer[]::new);
+            genreLbl.setText(ItemProvider.getGenresFormatted(genreIds));
         }
         return tracks;
     }

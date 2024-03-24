@@ -6,7 +6,9 @@ import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
 import it.unibs.pajc.util.Observer;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -54,19 +56,44 @@ public class ManagePlaylistController {
         onNameTyped(null);
         onDescriptionTyped(null);
 
-        var tracks = ItemProvider.getItems(playlist.getTracksIds(), Track.class);
-        trackView.getItems().clear();
-        for (var track : tracks) {
-            var hbox = getPlaylistTrackHbox(track);
-            trackView.getItems().add(hbox);
-        }
+        fillTrackView();
 
         onSearchTyped(null);
+
+        playlistUpdate.addListener(() -> Platform.runLater(() -> {
+            playlist = (Playlist) MainSceneController.getSelectedItem();
+            fillTrackView();
+            trackView.refresh();
+            searchTrackView.refresh();
+        }));
     }
 
-    private static HBox getPlaylistTrackHbox(Track track) {
+    private void fillTrackView() {
+        var tracks = ItemProvider.getItems(playlist.getTracksIds(), Track.class);
+        trackView.getItems().clear();
+        for (var track : tracks) addTrackViewItem(track);
+        // TODO order by date added
+//        trackView.getItems()
+//                .sort(Comparator.comparing(t -> ((TrackEntry) t.getChildren().getFirst()).getTrack().getTitle()));
+    }
+
+    private void addTrackViewItem(Track track) {
         var btn = new Button("Remove");
-        // TODO: btn.setOnAction()
+        var hbox = buildHbox(track, btn);
+        btn.setOnAction(getRemoveEventHandler(track, hbox));
+        trackView.getItems().add(hbox);
+    }
+
+    private EventHandler<ActionEvent> getRemoveEventHandler(Track track, HBox hBox) {
+        return ignored -> {
+            ItemProvider.removeTrackFromPlaylist(playlist.getId(), track.getId());
+            MainSceneController.setSelectedItem(ItemProvider.getItem(playlist.getId(), Playlist.class, true));
+            trackView.getItems().remove(hBox);
+            playlistUpdate.invoke();
+        };
+    }
+
+    private HBox buildHbox(Track track, Button btn) {
         btn.setMaxHeight(Double.MAX_VALUE);
         btn.setMaxWidth(Double.MAX_VALUE);
         var trackEntry = new TrackEntry(track);
@@ -111,30 +138,29 @@ public class ManagePlaylistController {
 
     public void onSearchTyped(KeyEvent ignored) {
         var searchTerm = searchTxtField.getText();
-        var tracks = ItemProvider.searchItem(15, searchTerm, Track[].class, "track_title");
+        int numberOfResults = 15 + playlist.getTracksIds().length;
+        var tracks = ItemProvider.searchItem(numberOfResults, searchTerm, Track[].class, "track_title");
         if (tracks == null) {
             System.err.println("Null items in search tab");
             return;
         }
         for (var track : tracks) {
-            if (searchTrackView.getItems().filtered(a -> ((TrackEntry) a.getChildren().getFirst()).getTrack().equals(track))
-                    .isEmpty()) {
+            if (searchTrackView.getItems()
+                    .filtered(a -> ((TrackEntry) a.getChildren().getFirst()).getTrack().equals(track)).isEmpty() &&
+                    !Arrays.asList(playlist.getTracksIds()).contains(track.getId())) {
                 var btn = new Button("Add");
-                // TODO: btn.setOnAction()
-                btn.setMaxHeight(Double.MAX_VALUE);
-                btn.setMaxWidth(Double.MAX_VALUE);
-                var trackEntry = new TrackEntry(track);
-                trackEntry.setMaxHeight(Double.MAX_VALUE);
-                trackEntry.setMaxWidth(Double.MAX_VALUE);
-                var hbox = new HBox(trackEntry, btn);
-                hbox.setAlignment(Pos.CENTER);
-                hbox.setFillHeight(true);
-                hbox.setMaxWidth(Double.MAX_VALUE);
+                var hbox = buildHbox(track, btn);
+                btn.setOnAction(ignored2 -> {
+                    ItemProvider.addTrackToPlaylist(playlist, track.getId());
+                    MainSceneController.setSelectedItem(ItemProvider.getItem(playlist.getId(), Playlist.class, true));
+                    searchTrackView.getItems().remove(hbox);
+                    playlistUpdate.invoke();
+                });
                 searchTrackView.getItems().add(hbox);
             }
         }
-        searchTrackView.getItems().removeIf(
-                hbox -> !Arrays.stream(tracks).toList().contains(((TrackEntry) hbox.getChildren().getFirst()).getTrack()));
+        searchTrackView.getItems().removeIf(hbox -> !Arrays.stream(tracks).toList()
+                .contains(((TrackEntry) hbox.getChildren().getFirst()).getTrack()));
         searchTrackView.refresh();
     }
 

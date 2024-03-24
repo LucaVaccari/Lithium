@@ -3,12 +3,15 @@ package it.unibs.pajc.lithium;
 import com.sun.net.httpserver.HttpExchange;
 import it.unibs.pajc.db.Column;
 import it.unibs.pajc.lithium.db.om.Playlist;
+import it.unibs.pajc.lithium.db.om.TrackInPlaylist;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.function.Function;
 
 import static it.unibs.pajc.lithium.HttpHelper.*;
@@ -100,7 +103,6 @@ public class HttpRoutes {
     }
 
     public static void searchObject(HttpExchange exchange, Class<?> objType) throws IOException {
-        System.out.println(exchange.getRequestURI());
         var queryParams = queryParams(exchange);
         int numberOfResults = Integer.parseInt(queryParams.getOrDefault("number-of-results", "20"));
         var searchTerm = queryParams.getOrDefault("search", "");
@@ -139,7 +141,7 @@ public class HttpRoutes {
     private static <T> void saveItem(HttpExchange exchange, Class<T> objType) throws IOException {
         try {
             var item = getItemToSave(exchange, objType);
-            getDbConnector().saveItem(item, objType);
+            getDbConnector().createObject(item, objType, false);
             sendStringResponse(exchange, 200, "Item added");
         } catch (Exception e) {
             sendStringResponse(exchange, 400, "Exception while creating the object: " + e.getMessage());
@@ -149,7 +151,7 @@ public class HttpRoutes {
     private static <T> void unsaveItem(HttpExchange exchange, Class<T> objType) throws IOException {
         try {
             var item = getItemToSave(exchange, objType);
-            getDbConnector().unsaveItem(item, objType);
+            getDbConnector().deleteObject(item, objType);
             sendStringResponse(exchange, 200, "Item deleted");
         } catch (Exception e) {
             sendStringResponse(exchange, 400, "Exception while deleting the object: " + e.getMessage());
@@ -195,6 +197,26 @@ public class HttpRoutes {
         String contentType = path.endsWith("m3u8") ? "application/vnd.apple.mpegurl" : "audio/aac";
         exchange.getResponseHeaders().set("content-type", contentType);
         sendByteResponse(exchange, 200, responseBytes);
+    }
+
+    public static void managePlaylist(HttpExchange exchange) throws IOException {
+        var method = exchange.getRequestMethod().toLowerCase();
+        var queryParams = queryParams(exchange);
+        var date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        var playlistId = Integer.parseInt(queryParams.get("id"));
+        var trackId = Integer.parseInt(queryParams.get("trackId"));
+        var relationship = new TrackInPlaylist(trackId, playlistId, date);
+        switch (method) {
+            case "post" -> {
+                getDbConnector().createObject(relationship, TrackInPlaylist.class, false);
+                sendStringResponse(exchange, 200, "Track %d added to playlist %d".formatted(trackId, playlistId));
+            }
+            case "delete" -> {
+                getDbConnector().deleteObject(relationship, TrackInPlaylist.class);
+                sendStringResponse(exchange, 200, "Track %d deleted from playlist %d".formatted(trackId, playlistId));
+            }
+            default -> sendStringResponse(exchange, 405, method + " is not supported for this path");
+        }
     }
 
     public static void defaultRoute(HttpExchange exchange) throws IOException {

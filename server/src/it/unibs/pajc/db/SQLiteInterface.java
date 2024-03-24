@@ -44,7 +44,7 @@ public class SQLiteInterface implements Closeable {
     }
 
     // region CREATE
-    public <T> void createObjects(T[] objects, Class<T> objType) {
+    public <T> void createObjects(T[] objects, Class<T> objType, boolean ignoreIds) {
         if (!objType.isAnnotationPresent(Table.class))
             throw new IllegalArgumentException(objType.getName() + " does not have the @Table annotation");
         try {
@@ -59,7 +59,7 @@ public class SQLiteInterface implements Closeable {
 
             var previousValueInserted = false;
             for (var column : declaredFields) {
-                if (!column.isAnnotationPresent(Column.class) || column.isAnnotationPresent(Id.class)) {
+                if (!column.isAnnotationPresent(Column.class) || (ignoreIds && column.isAnnotationPresent(Id.class))) {
                     previousValueInserted = false;
                     continue;
                 }
@@ -75,7 +75,8 @@ public class SQLiteInterface implements Closeable {
                 previousValueInserted = false;
                 for (var column : declaredFields) {
                     column.setAccessible(true);
-                    if (!column.isAnnotationPresent(Column.class) || column.isAnnotationPresent(Id.class)) {
+                    if (!column.isAnnotationPresent(Column.class) ||
+                            (ignoreIds && column.isAnnotationPresent(Id.class))) {
                         previousValueInserted = false;
                         continue;
                     }
@@ -88,6 +89,7 @@ public class SQLiteInterface implements Closeable {
                 sqlBuilder.append(")");
             }
 
+            System.out.println(sqlBuilder);
             statement.executeUpdate(sqlBuilder.toString());
 
         } catch (Exception e) {
@@ -95,11 +97,19 @@ public class SQLiteInterface implements Closeable {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> void createObject(T object, Class<T> objType) {
+    /**
+     * Execute an insert sql query
+     *
+     * @param object    The object to insert. It must have the @Table annotation
+     * @param objType   The type of the object to insert
+     * @param ignoreIds Whether to consider ids assigned in the object or not.
+     *                  Most of the time it should be true, unless a relationship row is being inserted.
+     * @param <T>       The type of the object to insert
+     */
+    public <T> void createObject(T object, Class<T> objType, boolean ignoreIds) {
         var array = (T[]) Array.newInstance(objType, 1);
         array[0] = object;
-        createObjects(array, objType);
+        createObjects(array, objType, ignoreIds);
     }
 
     // endregion
@@ -264,8 +274,9 @@ public class SQLiteInterface implements Closeable {
             sqlBuilder.append("DELETE FROM ").append(tableName).append(" WHERE ");
 
             var previousValueInserted = false;
-            for (var column : declaredFields) {
-                if (!column.isAnnotationPresent(Column.class) || column.isAnnotationPresent(Id.class)) {
+            for (var column : Arrays.stream(declaredFields).filter(f -> f.isAnnotationPresent(Id.class))
+                    .toArray(Field[]::new)) {
+                if (!column.isAnnotationPresent(Column.class)) {
                     previousValueInserted = false;
                     continue;
                 }

@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 /**
- * Provides CRUD methods for managing data in the Lithium database (albums, artists, tracks, etc... )
+ * Provides CRUD methods for managing data in the Lithium database (albums, artists, tracks, etc...)
  * Uses {@link it.unibs.pajc.db.SQLiteInterface} for interacting with the db
  */
 public class DbConnector implements Closeable {
@@ -39,15 +39,15 @@ public class DbConnector implements Closeable {
                 "The user %s already exists, you cannot register it again".formatted(name));
 
         User user = new User(name, pswHash);
-        dbInf.createObject(user, User.class);
+        dbInf.createObject(user, User.class, true);
     }
 
     public void createPlaylist(Playlist playlist) {
-        dbInf.createObject(playlist, Playlist.class);
+        dbInf.createObject(playlist, Playlist.class, true);
     }
 
-    public <T> void saveItem(T item, Class<T> objType) {
-        dbInf.createObject(item, objType);
+    public <T> void createObject(T item, Class<T> objType, boolean ignoreIds) {
+        dbInf.createObject(item, objType, ignoreIds);
     }
 
     //endregion
@@ -104,7 +104,7 @@ public class DbConnector implements Closeable {
 
     //endregion
     //region DELETE
-    public <T> void unsaveItem(T item, Class<T> objType) {
+    public <T> void deleteObject(T item, Class<T> objType) {
         dbInf.deleteObject(item, objType);
     }
     //endregion
