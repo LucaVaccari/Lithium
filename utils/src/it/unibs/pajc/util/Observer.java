@@ -1,12 +1,13 @@
 package it.unibs.pajc.util;
 
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Provides a simple implementation of the observer pattern, with no arguments and no return values
  */
 public class Observer {
-    private final ArrayList<Runnable> listeners = new ArrayList<>();
+    private final Set<Runnable> listeners = ConcurrentHashMap.newKeySet();
 
     public void invoke() {
         listeners.forEach(Runnable::run);

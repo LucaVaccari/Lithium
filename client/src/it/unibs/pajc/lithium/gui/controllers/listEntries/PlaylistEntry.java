@@ -6,6 +6,7 @@ import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.db.om.User;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
+import it.unibs.pajc.lithium.gui.controllers.views.ManagePlaylistController;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -26,6 +27,14 @@ public class PlaylistEntry extends ItemEntry {
     public PlaylistEntry(Item playlist) {
         super(playlist);
         initialize();
+
+        ManagePlaylistController.playlistUpdate.addListener(() -> {
+            Item currentPlaylist = MainSceneController.getSelectedItem();
+            if (currentPlaylist.equals(playlist)) {
+                setItem(currentPlaylist);
+                initialize();
+            }
+        });
     }
 
     private void initialize() {

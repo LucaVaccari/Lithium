@@ -54,8 +54,10 @@ public final class ItemProvider {
 
     public static <T extends Item> T[] searchItem(int numberOfResults, String searchTerm, Class<T[]> arrType,
                                                   String fieldName) {
-        var json = HttpHandler.get("%s?number-of-results=%d&field=%s&search=%s".formatted(
-                arrType.getComponentType().getSimpleName().toLowerCase(), numberOfResults, fieldName, searchTerm));
+        Class<?> objType = arrType.getComponentType();
+        var json = HttpHandler.get(
+                "%s?number-of-results=%d&field=%s&search=%s".formatted(objType.getSimpleName().toLowerCase(),
+                        numberOfResults, fieldName, searchTerm));
         try {
             return gson.fromJson(json, arrType);
         } catch (JsonSyntaxException e) {
@@ -85,6 +87,12 @@ public final class ItemProvider {
         var query = "?userId=%d&%sId=%d".formatted(AccountManager.getUser().getId(), className, id);
         var subURL = "user/save/" + className + query;
         System.out.println(save ? HttpHandler.post(subURL) : HttpHandler.delete(subURL));
+    }
+
+    public static void updateItem(Integer id, Class<? extends Item> objType, String... updates) {
+        var query = "?id=%d&%s".formatted(id, String.join("&", updates));
+        var subUrl = "/" + objType.getSimpleName().toLowerCase() + query;
+        System.out.println(HttpHandler.put(subUrl));
     }
 
     public static String getArtistNamesFormatted(Integer[] ids) {

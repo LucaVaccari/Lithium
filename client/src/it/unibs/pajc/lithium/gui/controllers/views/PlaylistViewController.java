@@ -60,6 +60,8 @@ public class PlaylistViewController {
         boolean ownedPlaylist = playlist.getOwnerId().equals(AccountManager.getUser().getId());
         saveBtn.setDisable(ownedPlaylist);
         manageBtn.setDisable(!ownedPlaylist);
+
+        ManagePlaylistController.playlistUpdate.addListener(this::initialize);
     }
 
     public void onPlayNowBtn(ActionEvent ignored) {

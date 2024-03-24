@@ -16,6 +16,10 @@ public abstract class ItemEntry extends CustomComponent {
         return item;
     }
 
+    protected void setItem(Item item) {
+        this.item = item;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

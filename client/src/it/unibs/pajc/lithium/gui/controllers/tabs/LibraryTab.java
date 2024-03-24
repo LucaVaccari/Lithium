@@ -12,6 +12,7 @@ import it.unibs.pajc.lithium.gui.GUIUtils;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.AlbumEntry;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.ArtistEntry;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.PlaylistEntry;
+import it.unibs.pajc.lithium.gui.controllers.views.ManagePlaylistController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,35 +42,55 @@ public class LibraryTab extends CustomComponent {
         onSearchTxtFieldChange(null);
         AccountManager.userUpdated.addListener(() -> Platform.runLater(() -> onSearchTxtFieldChange(null)));
         createPlaylistBtn.setOnAction(this::onCreatePlaylistBtn);
+        ManagePlaylistController.playlistUpdate.addListener(this::updatePlaylistList);
     }
 
     private void onSearchTxtFieldChange(KeyEvent event) {
         try {
-            var albums = ItemProvider.getItems(AccountManager.getUser().getSavedAlbumsIds(), Album.class);
-            var artists = ItemProvider.getItems(AccountManager.getUser().getFollowedArtistsIds(), Artist.class);
-            var playlists = ItemProvider.getItems(AccountManager.getUser().getSavedPlaylistsIds(), Playlist.class);
-
-
-            if (albums == null || artists == null || playlists == null) {
-                System.err.println("Null items in search tab");
-                return;
-            }
-
-            String searchTerm = searchTxtField.getText().toLowerCase();
-            var filteredAlbums = Arrays.stream(albums).filter(a -> a.getTitle().toLowerCase().contains(searchTerm))
-                    .toArray(Album[]::new);
-            var filteredArtists = Arrays.stream(artists).filter(a -> a.getName().toLowerCase().contains(searchTerm))
-                    .toArray(Artist[]::new);
-            var filteredPlaylists = Arrays.stream(playlists).filter(p -> p.getName().toLowerCase().contains(searchTerm))
-                    .toArray(Playlist[]::new);
-            GUIUtils.fillEntryList(albumContainer, filteredAlbums, AlbumEntry.class);
-            GUIUtils.fillEntryList(artistContainer, filteredArtists, ArtistEntry.class);
-            GUIUtils.fillEntryList(playlistContainer, filteredPlaylists, PlaylistEntry.class);
+            updateAlbumList();
+            updateArtistList();
+            updatePlaylistList();
         } catch (UnirestException e) {
             AlertUtil.showErrorAlert("HTTP error", "Error in SearchTab.java", e.getMessage());
         } catch (JsonSyntaxException e) {
             AlertUtil.showErrorAlert("JSON error", "Error in SearchTab.java", e.getMessage());
         }
+    }
+
+    private void updateAlbumList() throws UnirestException, JsonSyntaxException {
+        var albums = ItemProvider.getItems(AccountManager.getUser().getSavedAlbumsIds(), Album.class);
+        if (albums == null) {
+            System.err.println("Null albums in search tab");
+            return;
+        }
+        String searchTerm = searchTxtField.getText().toLowerCase();
+        var filteredAlbums = Arrays.stream(albums).filter(a -> a.getTitle().toLowerCase().contains(searchTerm))
+                .toArray(Album[]::new);
+        GUIUtils.fillEntryList(albumContainer, filteredAlbums, AlbumEntry.class);
+    }
+
+    private void updateArtistList() throws UnirestException, JsonSyntaxException {
+        var artists = ItemProvider.getItems(AccountManager.getUser().getFollowedArtistsIds(), Artist.class);
+        if (artists == null) {
+            System.err.println("Null items in search tab");
+            return;
+        }
+        String searchTerm = searchTxtField.getText().toLowerCase();
+        var filteredArtists = Arrays.stream(artists).filter(a -> a.getName().toLowerCase().contains(searchTerm))
+                .toArray(Artist[]::new);
+        GUIUtils.fillEntryList(artistContainer, filteredArtists, ArtistEntry.class);
+    }
+
+    private void updatePlaylistList() throws UnirestException, JsonSyntaxException {
+        var playlists = ItemProvider.getItems(AccountManager.getUser().getSavedPlaylistsIds(), Playlist.class);
+        if (playlists == null) {
+            System.err.println("Null items in search tab");
+            return;
+        }
+        String searchTerm = searchTxtField.getText().toLowerCase();
+        var filteredPlaylists = Arrays.stream(playlists).filter(p -> p.getName().toLowerCase().contains(searchTerm))
+                .toArray(Playlist[]::new);
+        GUIUtils.fillEntryList(playlistContainer, filteredPlaylists, PlaylistEntry.class);
     }
 
     private void onCreatePlaylistBtn(ActionEvent ignored) {

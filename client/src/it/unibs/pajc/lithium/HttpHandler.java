@@ -53,9 +53,9 @@ public class HttpHandler {
         return post(subURL, "");
     }
 
-    public static String put(String subURL, String body, int id) {
-        HttpRequestWithBody putRequest = Unirest.put(buildUrl(subURL) + "/" + id);
-        return putRequest.body(body).asString().getBody();
+    public static String put(String subURL) {
+        HttpRequestWithBody putRequest = Unirest.put(buildUrl(subURL));
+        return putRequest.asString().getBody();
     }
 
     /**
