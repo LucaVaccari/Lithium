@@ -5,7 +5,7 @@
 - [ ] Client interface
     - [x] Login screen
     - [ ] Music play view
-        - [ ] Currently playing track
+        - [x] Currently playing track
         - [ ] Queue
     - [x] Library tab
     - [ ] Search tab
@@ -14,17 +14,18 @@
         - [ ] Right click context menus
     - [ ] Settings tab
         - [ ] Server address
-        - [ ] Change theme
-        - [ ] Equalizer
         - [x] Log out
         - [ ] Save settings in file
     - [ ] detail views
-        - [x] track details
+        - [ ] track details
+            -  [ ] add to playlist btn
         - [x] album details
         - [ ] artist details
-        - [x] playlist details
+        - [ ] playlist details
+            - [ ] manage playlist btn
+        - [ ] playlist management
     - [ ] Playback controls
-        - [ ] song title
+        - [x] song title
         - [x] back, pause, forward
         - [x] slider
         - [x] timestamp
@@ -43,17 +44,18 @@
 - [ ] Server database integration
     - [x] Write object mappers
     - [ ] Implement CRUD methods
-        - [ ] Create
+        - [x] Create
         - [x] Read
         - [ ] Update
-        - [ ] Delete
+        - [x] Delete
     - [ ] create entries in relationship tables
 - [ ] Interface for managing the db
 - [ ] Define and implement HTTP contexts
     - [x] Client authentication
     - [x] Search queries
     - [x] Streaming request
-    - [ ] User save item
+    - [x] User save item
+    - [ ] Add to playlist
 
 ## Database
 

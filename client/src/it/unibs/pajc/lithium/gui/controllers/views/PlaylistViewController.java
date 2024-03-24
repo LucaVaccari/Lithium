@@ -1,5 +1,6 @@
 package it.unibs.pajc.lithium.gui.controllers.views;
 
+import it.unibs.pajc.lithium.AccountManager;
 import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.PlaybackManager;
 import it.unibs.pajc.lithium.db.om.Playlist;
@@ -11,9 +12,12 @@ import it.unibs.pajc.lithium.gui.controllers.PlaybackController;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
+
+import java.util.Arrays;
 
 public class PlaylistViewController extends ViewController {
     @FXML
@@ -30,11 +34,14 @@ public class PlaylistViewController extends ViewController {
     public ListView<TrackEntry> trackContainer;
     @FXML
     private PlaybackController playbackController;
+    @FXML
+    private Button saveBtn;
+    private Playlist playlist;
     private Track[] tracks;
 
     @FXML
     private void initialize() {
-        var playlist = (Playlist) MainSceneController.getSelectedItem();
+        playlist = (Playlist) MainSceneController.getSelectedItem();
         var owner = ItemProvider.getItem(playlist.getOwnerId(), User.class);
 
         playlistNameLbl.setText(playlist.getName());
@@ -44,6 +51,10 @@ public class PlaylistViewController extends ViewController {
 
         coverImg.setImage(ItemProvider.getImage(playlist.getImgPath()));
         tracks = GUIUtils.fillTrackContainerAndGenreLabel(playlist.getTracksIds(), trackContainer, genreLbl);
+
+        saveBtn.setText(isSaved() ? "UNSAVE" : "SAVE");
+
+        if (playlist.getOwnerId().equals(AccountManager.getUser().getId())) saveBtn.setDisable(true);
     }
 
     public void onPlayNowBtn(ActionEvent ignored) {
@@ -56,5 +67,20 @@ public class PlaylistViewController extends ViewController {
 
     public void onAddToQueueBtn(ActionEvent ignored) {
         PlaybackManager.addToQueue(tracks);
+    }
+
+    public void onSaveBtn(ActionEvent ignored) {
+        if (isSaved()) {
+            ItemProvider.saveItem(playlist.getId(), Playlist.class, false);
+            saveBtn.setText("SAVE");
+        } else {
+            ItemProvider.saveItem(playlist.getId(), Playlist.class, true);
+            saveBtn.setText("UNSAVE");
+        }
+        AccountManager.updateUser();
+    }
+
+    private boolean isSaved() {
+        return Arrays.asList(AccountManager.getUser().getSavedPlaylistsIds()).contains(playlist.getId());
     }
 }

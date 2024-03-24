@@ -4,7 +4,6 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import it.unibs.pajc.HttpHandler;
 import it.unibs.pajc.lithium.db.om.*;
 import it.unibs.pajc.lithium.gui.AlertUtil;
 import javafx.scene.image.Image;
@@ -36,15 +35,21 @@ public final class ItemProvider {
         imgCache = CacheBuilder.newBuilder().maximumSize(30).build();
     }
 
-    public static <T extends Item> T getItem(int id, Class<T> objType) {
+    public static <T extends Item> T getItem(int id, Class<T> objType, boolean ignoreCache) {
         var itemCache = itemCaches.get(objType);
-        T cached = (T) itemCache.getIfPresent(id);
-        if (cached != null) return cached;
+        if (!ignoreCache) {
+            T cached = (T) itemCache.getIfPresent(id);
+            if (cached != null) return cached;
+        }
 
         var json = HttpHandler.get("%s?id=%d".formatted(objType.getSimpleName().toLowerCase(), id));
         T item = gson.fromJson(json, objType);
         itemCache.put(id, item);
         return item;
+    }
+
+    public static <T extends Item> T getItem(int id, Class<T> objType) {
+        return getItem(id, objType, false);
     }
 
     public static <T extends Item> T[] searchItem(int numberOfResults, String searchTerm, Class<T[]> arrType,
@@ -73,6 +78,13 @@ public final class ItemProvider {
             imgCache.put(path, image);
             return image;
         } else return cached;
+    }
+
+    public static void saveItem(Integer id, Class<? extends Item> objType, boolean save) {
+        var className = objType.getSimpleName().toLowerCase();
+        var query = "?userId=%d&%sId=%d".formatted(AccountManager.getUser().getId(), className, id);
+        var subURL = "user/save/" + className + query;
+        System.out.println(save ? HttpHandler.post(subURL) : HttpHandler.delete(subURL));
     }
 
     public static String getArtistNamesFormatted(Integer[] ids) {

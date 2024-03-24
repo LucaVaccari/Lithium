@@ -2,6 +2,7 @@ package it.unibs.pajc.lithium.gui;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import kong.unirest.Unirest;
 
 import java.util.Stack;
 
@@ -15,7 +16,10 @@ public class SceneManager {
     public static void init(Stage mainStage) {
         SceneManager.mainStage = mainStage;
         mainStage.setTitle("Lithium");
-        mainStage.setOnCloseRequest(e -> System.exit(0));
+        mainStage.setOnCloseRequest(e -> {
+            Unirest.shutDown();
+            System.exit(0);
+        });
         mainStage.setResizable(false);
         mainStage.show();
     }
@@ -39,14 +43,19 @@ public class SceneManager {
     }
 
     public static void backToPreviousScene() {
-        scenes.pop();
-        mainStage.setScene(scenes.peek());
-        mainStage.sizeToScene();
+        if (scenes.size() > 1) {
+            scenes.pop();
+            mainStage.setScene(scenes.peek());
+            mainStage.sizeToScene();
+        } else {
+            System.err.println("Not enough scenes in stack :(");
+        }
     }
 
     public static void backToMainScene() {
         if (mainStage == null) return;
         scenes.clear();
+        scenes.push(mainScene);
         mainStage.setScene(mainScene);
         mainStage.sizeToScene();
     }

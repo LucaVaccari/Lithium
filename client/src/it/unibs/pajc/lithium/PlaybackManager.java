@@ -1,6 +1,5 @@
 package it.unibs.pajc.lithium;
 
-import it.unibs.pajc.HttpHandler;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.AlertUtil;
 import it.unibs.pajc.util.Observer;

@@ -49,6 +49,10 @@ public class DbConnector implements Closeable {
         dbInf.createObject(item, objType);
     }
 
+    public <T> void unsaveItem(T item, Class<T> objType) {
+        dbInf.deleteObject(item, objType);
+    }
+
     //endregion
     //region READ
     public User getUserByName(String name) {

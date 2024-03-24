@@ -6,6 +6,7 @@ drop table if exists user;
 drop table if exists playlist;
 drop table if exists track_by_artist;
 drop table if exists track_in_playlist;
+drop table if exists track_genre;
 drop table if exists album_by_artist;
 drop table if exists album_genre;
 drop table if exists artist_follower;
@@ -29,7 +30,7 @@ CREATE TABLE "track"
     "track_number"  INTEGER NOT NULL,
     "duration"      INTEGER,
     "audio_path"    TEXT    NOT NULL,
-    "album_id"      INTEGER NOT NULL
+    "album_id"      INTEGER NOT NULL references album
 );
 
 CREATE TABLE "artist"
@@ -49,10 +50,10 @@ CREATE TABLE "genre"
 
 CREATE TABLE "user"
 (
-    "user_id"          INTEGER PRIMARY KEY UNIQUE,
-    "username"         TEXT NOT NULL UNIQUE,
-    "pwd_hash"         TEXT NOT NULL,
-    "profile_pic_path" TEXT
+    "user_id"                  INTEGER PRIMARY KEY UNIQUE,
+    "username"                 TEXT NOT NULL UNIQUE,
+    "pwd_hash"                 TEXT NOT NULL,
+    "profile_pic_path"         TEXT
 );
 
 CREATE TABLE "playlist"
@@ -60,7 +61,7 @@ CREATE TABLE "playlist"
     "playlist_id"          INTEGER PRIMARY KEY UNIQUE,
     "playlist_title"       TEXT    NOT NULL,
     "playlist_description" TEXT,
-    "user_id"              INTEGER NOT NULL,
+    "user_id"              INTEGER NOT NULL references user,
     "cover_img_path"       TEXT
 );
 

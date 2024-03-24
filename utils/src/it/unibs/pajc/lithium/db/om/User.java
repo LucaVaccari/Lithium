@@ -6,6 +6,7 @@ import it.unibs.pajc.db.Id;
 import it.unibs.pajc.db.Table;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Objects;
 
 @Table(name = "user")
@@ -13,16 +14,12 @@ public class User implements Item, Serializable {
     @Id
     @Column(name = "user_id")
     private Integer id;
-
     @Column(name = "username")
     private String username;
-
     @Column(name = "pwd_hash")
     private String pwdHash;
-
     @Column(name = "profile_pic_path")
     private String profilePicPath;
-
     @ForeignKey(otherTableName = "user_saved_album", otherTableColumnName = "album_id")
     private Integer[] savedAlbumsIds;
     @ForeignKey(otherTableName = "user_saved_playlist", otherTableColumnName = "playlist_id")
@@ -56,6 +53,14 @@ public class User implements Item, Serializable {
 
     public Integer[] getFollowedArtistsIds() {
         return followedArtistsIds;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", username='" + username + '\'' + ", pwdHash='" + pwdHash + '\'' +
+                ", profilePicPath='" + profilePicPath + '\'' + ", savedAlbumsIds=" + Arrays.toString(savedAlbumsIds) +
+                ", savedPlaylistsIds=" + Arrays.toString(savedPlaylistsIds) + ", followedArtistsIds=" +
+                Arrays.toString(followedArtistsIds) + '}';
     }
 
     @Override

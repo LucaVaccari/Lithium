@@ -107,33 +107,55 @@ public class HttpRoutes {
         sendStringResponse(exchange, 200, json);
     }
 
-    public static <T> void saveItem(HttpExchange exchange, Class<T> objType) throws IOException {
-        if (!exchange.getRequestMethod().equalsIgnoreCase("post")) {
-            sendStringResponse(exchange, 400, "Only POST method is allowed with this URL");
-            return;
-        }
-        var queryParams = queryParams(exchange);
-        var idNames =
-                Arrays.stream(objType.getDeclaredFields()).filter(f -> f.isAnnotationPresent(Column.class))
-                        .map(Field::getName).toArray(String[]::new);
-        if (idNames.length != 2) {
-            sendStringResponse(exchange, 500, "Internal error: invalid class provided in the server");
-            return;
-        }
-        for (var idName : idNames) {
-            if (!queryParams.containsKey(idName)) {
-                sendStringResponse(exchange, 400, "Invalid request URL. It must contain: " + Arrays.toString(idNames));
-                return;
-            }
-        }
-        var ids = Arrays.stream(idNames).map(key -> Integer.parseInt(queryParams.get(key))).toArray(Integer[]::new);
+    public static <T> void manageItemSave(HttpExchange exchange, Class<T> objType) throws IOException {
+        String method = exchange.getRequestMethod();
+        if (method.equalsIgnoreCase("post")) {
+            saveItem(exchange, objType);
+        } else if (method.equalsIgnoreCase("delete")) {
+            unsaveItem(exchange, objType);
+        } else sendStringResponse(exchange, 400, "Only POST method is allowed with this URL");
+    }
+
+    private static <T> void saveItem(HttpExchange exchange, Class<T> objType) throws IOException {
         try {
-            var item = objType.getDeclaredConstructor(Integer.class, Integer.class).newInstance(ids[0], ids[1]);
+            var item = getItemToSave(exchange, objType);
             getDbConnector().saveItem(item, objType);
             sendStringResponse(exchange, 200, "Item added");
         } catch (Exception e) {
             sendStringResponse(exchange, 400, "Exception while creating the object: " + e.getMessage());
         }
+    }
+
+    private static <T> void unsaveItem(HttpExchange exchange, Class<T> objType) throws IOException {
+        try {
+            var item = getItemToSave(exchange, objType);
+            getDbConnector().unsaveItem(item, objType);
+            sendStringResponse(exchange, 200, "Item deleted");
+        } catch (Exception e) {
+            sendStringResponse(exchange, 400, "Exception while deleting the object: " + e.getMessage());
+        }
+    }
+
+    private static <T> String[] getIdNames(HttpExchange exchange, Class<T> objType) throws IOException {
+        var queryParams = queryParams(exchange);
+        var idNames = Arrays.stream(objType.getDeclaredFields()).filter(f -> f.isAnnotationPresent(Column.class))
+                .map(Field::getName).toArray(String[]::new);
+        if (idNames.length != 2) {
+            throw new IllegalArgumentException("Internal error: invalid class provided in the server");
+        }
+        for (var idName : idNames) {
+            if (!queryParams.containsKey(idName)) {
+                throw new IllegalArgumentException("Invalid request URL. It must contain: " + Arrays.toString(idNames));
+            }
+        }
+        return idNames;
+    }
+
+    private static <T> T getItemToSave(HttpExchange exchange, Class<T> objType) throws Exception {
+        var queryParams = queryParams(exchange);
+        var idNames = getIdNames(exchange, objType);
+        var ids = Arrays.stream(idNames).map(key -> Integer.parseInt(queryParams.get(key))).toArray(Integer[]::new);
+        return objType.getDeclaredConstructor(Integer.class, Integer.class).newInstance(ids[0], ids[1]);
     }
 
     public static void getImg(HttpExchange exchange) throws IOException {
@@ -156,6 +178,7 @@ public class HttpRoutes {
     }
 
     public static void defaultRoute(HttpExchange exchange) throws IOException {
+        System.out.println(exchange.getRequestURI());
         sendStringResponse(exchange, 200, "Welcome to Lithium!");
     }
 

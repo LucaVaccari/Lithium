@@ -15,23 +15,26 @@
         <TextField fx:id="searchTxtField" promptText="Search for tracks, albums, artists and playlists..."/>
         <HBox VBox.vgrow="ALWAYS">
             <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0"
-                        maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0"
+                        maxHeight="Infinity" maxWidth="Infinity" prefHeight="200.0"
                         prefWidth="200.0" HBox.hgrow="ALWAYS">
-                <ListView fx:id="albumContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                <ListView fx:id="albumContainer" maxHeight="Infinity" maxWidth="Infinity"
                           minHeight="0.0" minWidth="0.0"/>
             </ScrollPane>
             <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0"
-                        maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0"
+                        maxHeight="Infinity" maxWidth="Infinity" prefHeight="200.0"
                         prefWidth="200.0" HBox.hgrow="ALWAYS">
-                <ListView fx:id="artistContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                <ListView fx:id="artistContainer" maxHeight="Infinity" maxWidth="Infinity"
                           minHeight="0.0" minWidth="0.0"/>
             </ScrollPane>
-            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0"
-                        maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0"
-                        prefWidth="200.0" HBox.hgrow="ALWAYS">
-                <ListView fx:id="playlistContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                          minHeight="0.0" minWidth="0.0"/>
-            </ScrollPane>
+            <VBox HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                <ScrollPane VBox.vgrow="ALWAYS" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0"
+                            maxHeight="Infinity" maxWidth="Infinity" prefHeight="200.0"
+                            prefWidth="200.0" HBox.hgrow="ALWAYS">
+                    <ListView fx:id="playlistContainer" maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0"
+                              minWidth="0.0"/>
+                </ScrollPane>
+                <Button maxWidth="Infinity" fx:id="createPlaylistBtn" text="Create playlist"/>
+            </VBox>
         </HBox>
     </VBox>
 </fx:root>

@@ -1,8 +1,8 @@
 package it.unibs.pajc.lithium;
 
-import it.unibs.pajc.HttpHandler;
 import it.unibs.pajc.lithium.db.om.User;
 import it.unibs.pajc.lithium.gui.AlertUtil;
+import it.unibs.pajc.util.Observer;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -11,6 +11,8 @@ import java.nio.file.Path;
 public class AccountManager {
     private final static String LOGIN_INFO_PATH = "login.lit";
     private static User user;
+
+    public final static Observer userUpdated = new Observer();
 
     public record LoginInfo(String username, String passwordHash) implements Serializable {
     }
@@ -36,6 +38,12 @@ public class AccountManager {
         return authenticateUser(info.username, info.passwordHash);
     }
 
+    public static void updateUser() {
+        if (user == null) return;
+        user = ItemProvider.getItem(user.getId(), User.class, true);
+        userUpdated.invoke();
+    }
+
     public static void saveLoginInfo(String username, String password) {
         try {
             var file = new File(LOGIN_INFO_PATH);
@@ -44,7 +52,6 @@ public class AccountManager {
             stream.writeObject(new LoginInfo(username, password));
         } catch (IOException e) {
             AlertUtil.showErrorAlert(e);
-            e.printStackTrace();
         }
     }
 
@@ -56,7 +63,6 @@ public class AccountManager {
             return (LoginInfo) stream.readObject();
         } catch (IOException | ClassNotFoundException e) {
             AlertUtil.showErrorAlert(e);
-            e.printStackTrace();
             return null;
         }
     }
@@ -66,7 +72,6 @@ public class AccountManager {
             Files.deleteIfExists(Path.of(LOGIN_INFO_PATH));
         } catch (IOException e) {
             AlertUtil.showErrorAlert(e);
-            e.printStackTrace();
         }
     }
 

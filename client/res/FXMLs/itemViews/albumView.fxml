@@ -57,6 +57,9 @@
                     <Button layoutX="184.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
                             onAction="#onAddToQueueBtn" prefHeight="64.0" prefWidth="69.0" text="ADD TO QUEUE"
                             HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="saveBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                            onAction="#onSaveAlbumBtn" prefHeight="64.0" prefWidth="69.0" text="SAVE"
+                            HBox.hgrow="ALWAYS"/>
                 </HBox>
                 <Pane prefHeight="16.0" prefWidth="338.0"/>
                 <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0"

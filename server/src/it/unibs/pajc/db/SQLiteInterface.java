@@ -223,5 +223,39 @@ public class SQLiteInterface implements Closeable {
     // TODO: update
     // DELETE
 
-    // TODO: delete
+    public <T> void deleteObject(T object, Class<T> objType) {
+        if (!objType.isAnnotationPresent(Table.class))
+            throw new IllegalArgumentException("The argument class must have the @Table annotation");
+
+        try {
+            var statement = connection.createStatement();
+
+            // BUILD QUERY
+            Field[] declaredFields = objType.getDeclaredFields();
+            var sqlBuilder = new StringBuilder();
+            sqlBuilder.ensureCapacity(14 + 10 * (1 + declaredFields.length));
+            var tableName = objType.getAnnotation(Table.class).name();
+            sqlBuilder.append("DELETE FROM ").append(tableName).append(" WHERE ");
+
+            var previousValueInserted = false;
+            for (var column : declaredFields) {
+                if (!column.isAnnotationPresent(Column.class) || column.isAnnotationPresent(Id.class)) {
+                    previousValueInserted = false;
+                    continue;
+                }
+                if (previousValueInserted) sqlBuilder.append(" and ");
+                sqlBuilder.append(column.getAnnotation(Column.class).name());
+                sqlBuilder.append(" = ");
+                column.setAccessible(true);
+                sqlBuilder.append(column.get(object));
+                previousValueInserted = true;
+            }
+
+            System.out.println(sqlBuilder);
+            statement.executeUpdate(sqlBuilder.toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
