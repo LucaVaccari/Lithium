@@ -43,8 +43,6 @@ public class SQLiteInterface implements Closeable {
     }
 
     // region CREATE
-    // TODO: create
-
     public <T> void createObjects(T[] objects, Class<T> objType) {
         if (!objType.isAnnotationPresent(Table.class))
             throw new IllegalArgumentException("The argument class must have the @Table annotation");

@@ -155,7 +155,7 @@ values (1, 'lucavaccari03', '6cd6e51ad74b5a0ad4f6689e62fcfd621573d4df579762168e0
 
 insert into playlist(playlist_id, playlist_title, playlist_description, user_id, cover_img_path)
 VALUES (0, 'Saved tracks', 'The favourite tracks of lucavaccari03', 1,
-        'img/playlist_cover/lucavaccari03_saved_tracks_cover.jpg'),
+        'img/playlist_cover/saved_tracks_cover.jpg'),
        (1, 'Lit Silver: best of', 'The best songs from Lit Silver catalogue', 1,
         'img/playlist_cover/lucavaccari03_lit_silver_best_of.jpg');
 

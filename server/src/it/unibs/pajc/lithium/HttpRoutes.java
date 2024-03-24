@@ -1,8 +1,11 @@
 package it.unibs.pajc.lithium;
 
 import com.sun.net.httpserver.HttpExchange;
+import it.unibs.pajc.db.Column;
+import it.unibs.pajc.lithium.db.om.Playlist;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -37,6 +40,10 @@ public class HttpRoutes {
         String[] strings = new String(requestBody).split(",");
         if (!validateUsername(exchange, strings)) return;
         getDbConnector().registerUser(strings[0], strings[1]);
+        var user = getDbConnector().getUserByName(strings[0]);
+        getDbConnector().createPlaylist(
+                new Playlist("Saved tracks", "Tracks saved by the user " + user.getUsername(), user.getId(),
+                        "img/playlist_cover/saved_tracks_cover.jpg"));
         sendStringResponse(exchange, 200, "Done");
     }
 
@@ -98,6 +105,35 @@ public class HttpRoutes {
         var objects = getDbConnector().searchObjects(numberOfResults, objType, columnName, searchTerm);
         String json = getGson().toJson(objects);
         sendStringResponse(exchange, 200, json);
+    }
+
+    public static <T> void saveItem(HttpExchange exchange, Class<T> objType) throws IOException {
+        if (!exchange.getRequestMethod().equalsIgnoreCase("post")) {
+            sendStringResponse(exchange, 400, "Only POST method is allowed with this URL");
+            return;
+        }
+        var queryParams = queryParams(exchange);
+        var idNames =
+                Arrays.stream(objType.getDeclaredFields()).filter(f -> f.isAnnotationPresent(Column.class))
+                        .map(Field::getName).toArray(String[]::new);
+        if (idNames.length != 2) {
+            sendStringResponse(exchange, 500, "Internal error: invalid class provided in the server");
+            return;
+        }
+        for (var idName : idNames) {
+            if (!queryParams.containsKey(idName)) {
+                sendStringResponse(exchange, 400, "Invalid request URL. It must contain: " + Arrays.toString(idNames));
+                return;
+            }
+        }
+        var ids = Arrays.stream(idNames).map(key -> Integer.parseInt(queryParams.get(key))).toArray(Integer[]::new);
+        try {
+            var item = objType.getDeclaredConstructor(Integer.class, Integer.class).newInstance(ids[0], ids[1]);
+            getDbConnector().saveItem(item, objType);
+            sendStringResponse(exchange, 200, "Item added");
+        } catch (Exception e) {
+            sendStringResponse(exchange, 400, "Exception while creating the object: " + e.getMessage());
+        }
     }
 
     public static void getImg(HttpExchange exchange) throws IOException {

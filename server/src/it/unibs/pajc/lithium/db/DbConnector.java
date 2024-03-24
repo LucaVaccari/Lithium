@@ -3,7 +3,7 @@ package it.unibs.pajc.lithium.db;
 import it.unibs.pajc.db.Column;
 import it.unibs.pajc.db.Id;
 import it.unibs.pajc.db.SQLiteInterface;
-import it.unibs.pajc.lithium.db.om.Album;
+import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.db.om.User;
 
 import java.io.Closeable;
@@ -41,10 +41,12 @@ public class DbConnector implements Closeable {
         dbInf.createObject(user, User.class);
     }
 
-    public void createAlbum(Album album) {
-        dbInf.createObject(album, Album.class);
+    public void createPlaylist(Playlist playlist) {
+        dbInf.createObject(playlist, Playlist.class);
+    }
 
-        // TODO insert artist and genre list
+    public <T> void saveItem(T item, Class<T> objType) {
+        dbInf.createObject(item, objType);
     }
 
     //endregion

@@ -29,6 +29,16 @@ public class Playlist implements Item, Serializable {
     @ForeignKey(otherTableName = "track_in_playlist", otherTableColumnName = "track_id")
     private Integer[] tracksIds;
 
+    public Playlist() {
+    }
+
+    public Playlist(String name, String description, Integer ownerId, String imgPath) {
+        this.name = name;
+        this.description = description;
+        this.ownerId = ownerId;
+        this.imgPath = imgPath;
+    }
+
     public Integer getId() {
         return id;
     }

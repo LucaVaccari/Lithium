@@ -20,6 +20,9 @@ public class ServerMain {
             server.createContext("/user/exists", HttpRoutes::userExists);
             server.createContext("/user/auth", HttpRoutes::authenticateUser);
             server.createContext("/user/register", HttpRoutes::registerUser);
+            server.createContext("/user/save/album", e -> HttpRoutes.saveItem(e, UserSavedAlbum.class));
+            server.createContext("/user/save/playlist", e -> HttpRoutes.saveItem(e, UserSavedPlaylist.class));
+            server.createContext("/user/save/artist", e -> HttpRoutes.saveItem(e, ArtistFollower.class));
             // ITEM CTX
             server.createContext("/user", e -> HttpRoutes.manageItem(e, User.class));
             server.createContext("/track", e -> HttpRoutes.manageItem(e, Track.class));
