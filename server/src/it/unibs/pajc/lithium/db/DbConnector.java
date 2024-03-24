@@ -8,6 +8,7 @@ import it.unibs.pajc.lithium.db.om.User;
 
 import java.io.Closeable;
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Provides CRUD methods for managing data in the Lithium database (albums, artists, tracks, etc... )
@@ -49,12 +50,9 @@ public class DbConnector implements Closeable {
         dbInf.createObject(item, objType);
     }
 
-    public <T> void unsaveItem(T item, Class<T> objType) {
-        dbInf.deleteObject(item, objType);
-    }
-
     //endregion
     //region READ
+
     public User getUserByName(String name) {
         String queryFilter = "where username = '%s'".formatted(name);
         User[] users = dbInf.getObjects(User.class, 5, queryFilter);
@@ -81,12 +79,8 @@ public class DbConnector implements Closeable {
     }
 
     public <T> T getObjectById(int id, Class<T> objType) {
-        var objFields = objType.getDeclaredFields();
-        var idField = Arrays.stream(objFields).filter(f -> f.isAnnotationPresent(Id.class)).findFirst();
-        if (idField.isEmpty()) return null;
-        if (!idField.get().isAnnotationPresent(Column.class)) return null;
-
-        var idName = idField.get().getAnnotation(Column.class).name();
+        var idName = getIdName(objType);
+        if (idName == null) return null;
         String queryFilter = "where %s = '%d'".formatted(idName, id);
         T[] objects = dbInf.getObjects(objType, 5, queryFilter);
         if (objects.length == 1) return objects[0];
@@ -99,9 +93,28 @@ public class DbConnector implements Closeable {
         var whereQuery = "where trackId = %d".formatted(trackId);
         return dbInf.getNumberOfEntries("track_in_playlist", whereQuery);
     }
+
     //endregion
     //region UPDATE
+    public <T> void updateItem(int id, Map<String, String> updates, Class<T> objType) {
+        var idName = getIdName(objType);
+        if (idName == null) throw new IllegalArgumentException("Invalid class provided");
+        dbInf.updateObject(updates, objType, "where %s = %d".formatted(idName, id));
+    }
+
     //endregion
     //region DELETE
+    public <T> void unsaveItem(T item, Class<T> objType) {
+        dbInf.deleteObject(item, objType);
+    }
     //endregion
+
+    private <T> String getIdName(Class<T> objType) {
+        var objFields = objType.getDeclaredFields();
+        var idField = Arrays.stream(objFields).filter(f -> f.isAnnotationPresent(Id.class)).findFirst();
+        if (idField.isEmpty()) return null;
+        if (!idField.get().isAnnotationPresent(Column.class)) return null;
+
+        return idField.get().getAnnotation(Column.class).name();
+    }
 }

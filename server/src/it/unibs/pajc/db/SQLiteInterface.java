@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Establishes a connection with the SQLie db and provides methods for interacting with it (independent of the rest
@@ -45,7 +46,7 @@ public class SQLiteInterface implements Closeable {
     // region CREATE
     public <T> void createObjects(T[] objects, Class<T> objType) {
         if (!objType.isAnnotationPresent(Table.class))
-            throw new IllegalArgumentException("The argument class must have the @Table annotation");
+            throw new IllegalArgumentException(objType.getName() + " does not have the @Table annotation");
         try {
             var statement = connection.createStatement();
 
@@ -126,7 +127,7 @@ public class SQLiteInterface implements Closeable {
     public <T> T[] getObjects(Class<T> objType, int maxSize, String optionalQuery, String[] fields)
             throws IllegalArgumentException {
         if (!objType.isAnnotationPresent(Table.class))
-            throw new IllegalArgumentException("The specified class must have the @Table annotation");
+            throw new IllegalArgumentException(objType.getName() + " does not have the @Table annotation");
         try {
             String tableName = objType.getAnnotation(Table.class).name();
             var resultSet = genericGetQuery(fields, tableName, optionalQuery);
@@ -217,9 +218,35 @@ public class SQLiteInterface implements Closeable {
             return -1;
         }
     }
+
     //endregion
     // UPDATE
-    // TODO: update
+    public <T> void updateObject(Map<String, String> updates, Class<T> objType, String appendedQuery) {
+        if (!objType.isAnnotationPresent(Table.class))
+            throw new IllegalArgumentException(objType.getName() + " does not have the @Table annotation");
+
+        try {
+            var statement = connection.createStatement();
+
+            // BUILD QUERY
+            var sqlBuilder = new StringBuilder();
+            sqlBuilder.ensureCapacity(12 + 15 * (1 + updates.size()));
+            var tableName = objType.getAnnotation(Table.class).name();
+            sqlBuilder.append("UPDATE ").append(tableName).append(" SET ");
+
+            var previousValueInserted = false;
+            for (var key : updates.keySet()) {
+                if (previousValueInserted) sqlBuilder.append(", ");
+                sqlBuilder.append(key).append(" = '").append(updates.get(key)).append("'");
+                previousValueInserted = true;
+            }
+            sqlBuilder.append(" ").append(appendedQuery);
+
+            statement.executeUpdate(sqlBuilder.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     // DELETE
 
     public <T> void deleteObject(T object, Class<T> objType) {
@@ -251,7 +278,6 @@ public class SQLiteInterface implements Closeable {
             }
 
             statement.executeUpdate(sqlBuilder.toString());
-
         } catch (Exception e) {
             e.printStackTrace();
         }

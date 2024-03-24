@@ -63,10 +63,18 @@ public class HttpRoutes {
     // endregion
     // region object CRUD
     public static void manageItem(HttpExchange exchange, Class<?> objType) throws IOException {
-        var queryParams = HttpHelper.queryParams(exchange);
-        if (queryParams.containsKey("id")) getObjectById(exchange, id -> getDbConnector().getObjectById(id, objType));
-        else if (queryParams.containsKey("search")) searchObject(exchange, objType);
-        else getObjects(exchange, numOfResults -> getDbConnector().getObjects(numOfResults, objType));
+        var method = exchange.getRequestMethod().toLowerCase();
+        switch (method) {
+            case "get" -> {
+                var queryParams = HttpHelper.queryParams(exchange);
+                if (queryParams.containsKey("id"))
+                    getObjectById(exchange, id -> getDbConnector().getObjectById(id, objType));
+                else if (queryParams.containsKey("search")) searchObject(exchange, objType);
+                else getObjects(exchange, numOfResults -> getDbConnector().getObjects(numOfResults, objType));
+            }
+            case "put" -> putObject(exchange, objType);
+            default -> sendStringResponse(exchange, 405, method + " is not supported for this path");
+        }
     }
 
     public static void getObjectById(HttpExchange exchange, Function<Integer, ?> dbFunc) throws IOException {
@@ -107,13 +115,25 @@ public class HttpRoutes {
         sendStringResponse(exchange, 200, json);
     }
 
+    public static <T> void putObject(HttpExchange exchange, Class<T> objType) throws IOException {
+        var queryParams = queryParams(exchange);
+        if (!queryParams.containsKey("id")) {
+            sendStringResponse(exchange, 400, "The request must contain an id query parameter");
+            return;
+        }
+        var id = Integer.parseInt(queryParams.get("id"));
+        queryParams.remove("id");
+        getDbConnector().updateItem(id, queryParams, objType);
+        sendStringResponse(exchange, 200, "Item updated successfully");
+    }
+
     public static <T> void manageItemSave(HttpExchange exchange, Class<T> objType) throws IOException {
-        String method = exchange.getRequestMethod();
-        if (method.equalsIgnoreCase("post")) {
-            saveItem(exchange, objType);
-        } else if (method.equalsIgnoreCase("delete")) {
-            unsaveItem(exchange, objType);
-        } else sendStringResponse(exchange, 400, "Only POST method is allowed with this URL");
+        String method = exchange.getRequestMethod().toLowerCase();
+        switch (method) {
+            case "post" -> saveItem(exchange, objType);
+            case "delete" -> unsaveItem(exchange, objType);
+            default -> sendStringResponse(exchange, 405, method + " is not supported for this path");
+        }
     }
 
     private static <T> void saveItem(HttpExchange exchange, Class<T> objType) throws IOException {
@@ -136,7 +156,7 @@ public class HttpRoutes {
         }
     }
 
-    private static <T> String[] getIdNames(HttpExchange exchange, Class<T> objType) throws IOException {
+    private static <T> String[] getIdNames(HttpExchange exchange, Class<T> objType) {
         var queryParams = queryParams(exchange);
         var idNames = Arrays.stream(objType.getDeclaredFields()).filter(f -> f.isAnnotationPresent(Column.class))
                 .map(Field::getName).toArray(String[]::new);
