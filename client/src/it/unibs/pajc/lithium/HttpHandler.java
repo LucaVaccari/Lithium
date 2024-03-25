@@ -13,7 +13,7 @@ public class HttpHandler {
     private final static String URL;
 
     static {
-        URL = Config.getServerUrl();
+        URL = Config.getServerHttpURL();
     }
 
     /**

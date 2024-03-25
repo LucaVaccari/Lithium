@@ -22,8 +22,16 @@ public final class Config {
         }
     }
 
+    public static String getServerHttpURL() {
+        return properties.getProperty("server_http_url", "http://localhost:8080");
+    }
+
     public static String getServerUrl() {
-        return properties.getProperty("server_url", "http://localhost:8080");
+        return properties.getProperty("server_url", "localhost");
+    }
+
+    public static int getServerPort() {
+        return Integer.parseInt(properties.getProperty("server_port", "1234"));
     }
 
     private Config() {

@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Provides a simple implementation of the observer pattern, with no arguments and no return values
+ * Provides a simple implementation of the observer pattern, with one argument and no return values
  */
 public class Observer<T> {
     private final Set<NoReturnFunction<T>> listeners = ConcurrentHashMap.newKeySet();

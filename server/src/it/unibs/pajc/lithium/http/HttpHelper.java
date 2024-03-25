@@ -1,4 +1,4 @@
-package it.unibs.pajc.lithium;
+package it.unibs.pajc.lithium.http;
 
 import com.sun.net.httpserver.HttpExchange;
 

@@ -1,4 +1,4 @@
-package it.unibs.pajc.lithium;
+package it.unibs.pajc.lithium.http;
 
 import com.sun.net.httpserver.HttpExchange;
 import it.unibs.pajc.db.Column;
@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.function.Function;
 
-import static it.unibs.pajc.lithium.HttpHelper.*;
+import static it.unibs.pajc.lithium.http.HttpHelper.*;
 import static it.unibs.pajc.lithium.ServerMain.getDbConnector;
 import static it.unibs.pajc.lithium.ServerMain.getGson;
 
