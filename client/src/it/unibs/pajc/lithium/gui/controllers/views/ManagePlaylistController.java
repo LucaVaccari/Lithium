@@ -20,6 +20,7 @@ import java.util.Arrays;
 
 public class ManagePlaylistController {
     // TODO delete playlist btn
+    // TODO really slow when adding/removing tracks many times
     @FXML
     private TextField nameTxtField;
     @FXML
@@ -74,7 +75,8 @@ public class ManagePlaylistController {
         for (var track : tracks) addTrackViewItem(track);
         // TODO order by date added
 //        trackView.getItems()
-//                .sort(Comparator.comparing(t -> ((TrackEntry) t.getChildren().getFirst()).getTrack().getTitle()));
+//                .sort(Comparator.comparing(t ->
+//                ((TrackEntry) t.getChildren().getFirst()).getTrack().getTitle()));
     }
 
     private void addTrackViewItem(Track track) {

@@ -35,6 +35,14 @@ public final class ItemProvider {
         imgCache = CacheBuilder.newBuilder().maximumSize(30).build();
     }
 
+    public static int createPlaylist() {
+        try {
+            return Integer.parseInt(HttpHandler.post("/playlist?userId=" + AccountManager.getUser().getId()));
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
     public static <T extends Item> T getItem(int id, Class<T> objType, boolean ignoreCache) {
         var itemCache = itemCaches.get(objType);
         if (!ignoreCache) {
@@ -44,6 +52,7 @@ public final class ItemProvider {
 
         var json = HttpHandler.get("%s?id=%d".formatted(objType.getSimpleName().toLowerCase(), id));
         T item = gson.fromJson(json, objType);
+        System.out.println(item);
         itemCache.put(id, item);
         return item;
     }

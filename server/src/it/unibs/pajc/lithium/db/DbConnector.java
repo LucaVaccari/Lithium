@@ -5,6 +5,7 @@ import it.unibs.pajc.db.Id;
 import it.unibs.pajc.db.SQLiteInterface;
 import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.db.om.User;
+import it.unibs.pajc.lithium.db.om.UserSavedPlaylist;
 
 import java.io.Closeable;
 import java.util.Arrays;
@@ -42,8 +43,16 @@ public class DbConnector implements Closeable {
         dbInf.createObject(user, User.class, true);
     }
 
-    public void createPlaylist(Playlist playlist) {
-        dbInf.createObject(playlist, Playlist.class, true);
+    public int createPlaylist(Playlist playlist) {
+        createObject(playlist, Playlist.class, true);
+        String whereFilter =
+                ("where playlist_title = '%s' and playlist_description = '%s' and user_id = '%s' and cover_img_path =" +
+                        " '%s'").formatted(playlist.getName(), playlist.getDescription(), playlist.getOwnerId(),
+                        playlist.getImgPath());
+        var createdPlaylist = dbInf.getObjects(Playlist.class, 1, whereFilter)[0];
+        createObject(new UserSavedPlaylist(createdPlaylist.getOwnerId(), createdPlaylist.getId()),
+                UserSavedPlaylist.class, false);
+        return createdPlaylist.getId();
     }
 
     public <T> void createObject(T item, Class<T> objType, boolean ignoreIds) {
@@ -87,6 +96,11 @@ public class DbConnector implements Closeable {
         else if (objects.length == 0) return null;
         else throw new RuntimeException(
                     "There's more than one %s with the same id".formatted(objType.getName().toLowerCase()));
+    }
+
+    public int getNumberOfPlaylistsWithName(String name) {
+        var whereQuery = "where playlist_title LIKE '%%%s%%'".formatted(name);
+        return dbInf.getNumberOfEntries("playlist", whereQuery);
     }
 
     public int getNumberOfSavesPerTrack(int trackId) {

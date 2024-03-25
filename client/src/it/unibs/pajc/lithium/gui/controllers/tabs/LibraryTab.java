@@ -9,6 +9,8 @@ import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.gui.AlertUtil;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import it.unibs.pajc.lithium.gui.GUIUtils;
+import it.unibs.pajc.lithium.gui.SceneManager;
+import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.AlbumEntry;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.ArtistEntry;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.PlaylistEntry;
@@ -94,8 +96,15 @@ public class LibraryTab extends CustomComponent {
     }
 
     private void onCreatePlaylistBtn(ActionEvent ignored) {
-        // TODO create playlist button
-        System.out.println("Create playlist...");
+        var playlistId = ItemProvider.createPlaylist();
+        if (playlistId == -1) {
+            AlertUtil.showErrorAlert("Error", "Server error", "Cannot create playlist");
+            return;
+        }
+        MainSceneController.setSelectedItem(ItemProvider.getItem(playlistId, Playlist.class));
+        SceneManager.loadScene("/FXMLs/managePlaylist.fxml", this);
+        AccountManager.updateUser();
+        ManagePlaylistController.playlistUpdate.invoke();
     }
 
     @Override

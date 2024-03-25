@@ -128,13 +128,13 @@ public class SQLiteInterface implements Closeable {
      * @param objType       The class which fields will be used in the SQL query
      * @param maxSize       The max number of results that can be fetched from the db
      * @param optionalQuery An optional part of the query appended to "select * from [table] ". Useful for where or join
-     * @param fields        The list of column names from which to retrieve data from the db. If empty all the
-     *                      columns will be retrieved
+     * @param fields        The list of column names from which to retrieve data from the db.
+     *                      If empty, all the columns will be retrieved
      * @param <T>           The type of the object to retrieve
      * @return An array of retrieved objects
      * @throws IllegalArgumentException Thrown when objClass does not have the {@link Table} annotation
      */
-    public <T> T[] getObjects(Class<T> objType, int maxSize, String optionalQuery, String[] fields)
+    public <T> T[] getObjects(Class<T> objType, int maxSize, String optionalQuery, String... fields)
             throws IllegalArgumentException {
         if (!objType.isAnnotationPresent(Table.class))
             throw new IllegalArgumentException(objType.getName() + " does not have the @Table annotation");
@@ -194,20 +194,6 @@ public class SQLiteInterface implements Closeable {
     /**
      * Performs a query on the db using the annotated fields of the specified class.
      *
-     * @param objType       The class which fields will be used in the SQL query
-     * @param maxSize       The max number of results that can be fetched from the db
-     * @param optionalQuery An optional part of the query appended to "select * from [table] ". Useful for where or join
-     * @param <T>           The type of the object to retrieve
-     * @return An array of retrieved objects
-     * @throws IllegalArgumentException Thrown when objClass does not have the {@link Table} annotation
-     */
-    public <T> T[] getObjects(Class<T> objType, int maxSize, String optionalQuery) throws IllegalArgumentException {
-        return getObjects(objType, maxSize, optionalQuery, new String[]{});
-    }
-
-    /**
-     * Performs a query on the db using the annotated fields of the specified class.
-     *
      * @param objType The class which fields will be used in the SQL query
      * @param maxSize The max number of results that can be fetched from the db
      * @param <T>     The type of the object to retrieve
@@ -221,7 +207,6 @@ public class SQLiteInterface implements Closeable {
     public int getNumberOfEntries(String tableName, String optionalQuery) {
         try {
             var resultSet = genericGetQuery(new String[]{"COUNT(*) AS n"}, tableName, optionalQuery);
-            System.out.println(resultSet.getInt("n"));
             return resultSet.getInt("n");
         } catch (SQLException e) {
             e.printStackTrace();

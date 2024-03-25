@@ -61,7 +61,7 @@ CREATE TABLE "playlist"
     "playlist_id"          INTEGER PRIMARY KEY UNIQUE,
     "playlist_title"       TEXT    NOT NULL,
     "playlist_description" TEXT,
-    "user_id"              INTEGER NOT NULL references user,
+    "user_id"              INTEGER NOT NULL references user ON DELETE CASCADE,
     "cover_img_path"       TEXT
 );
 

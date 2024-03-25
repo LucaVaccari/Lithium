@@ -75,9 +75,22 @@ public class HttpRoutes {
                 else if (queryParams.containsKey("search")) searchObject(exchange, objType);
                 else getObjects(exchange, numOfResults -> getDbConnector().getObjects(numOfResults, objType));
             }
+            case "post" -> {
+                if (objType.equals(Playlist.class)) createPlaylist(exchange);
+            }
             case "put" -> putObject(exchange, objType);
             default -> sendStringResponse(exchange, 405, method + " is not supported for this path");
         }
+    }
+
+    public static void createPlaylist(HttpExchange exchange) throws IOException {
+        var ownerId = Integer.parseInt(queryParam(exchange, "userId"));
+        var numberOfPlaylists = getDbConnector().getNumberOfPlaylistsWithName("Playlist");
+        String playlistName = "Playlist #%d".formatted(numberOfPlaylists);
+        // TODO: default img path
+        var playlist = new Playlist(playlistName, "Playlist from user %d".formatted(ownerId), ownerId, "");
+        var id = getDbConnector().createPlaylist(playlist);
+        sendStringResponse(exchange, 200, String.valueOf(id));
     }
 
     public static void getObjectById(HttpExchange exchange, Function<Integer, ?> dbFunc) throws IOException {

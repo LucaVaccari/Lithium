@@ -10,22 +10,22 @@
 <?import javafx.scene.text.*?>
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="it.unibs.pajc.lithium.gui.controllers.views.TrackViewController">
-    <VBox layoutX="5.0" layoutY="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+    <VBox layoutX="5.0" layoutY="5.0" maxHeight="Infinity" maxWidth="Infinity"
           AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
           AnchorPane.topAnchor="5.0">
         <ViewNavbar/>
         <HBox alignment="CENTER" prefHeight="560.0" prefWidth="584.0" spacing="20.0">
-            <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="560.0" prefWidth="418.0">
+            <VBox alignment="CENTER" maxHeight="Infinity" prefHeight="560.0" prefWidth="418.0">
                 <padding>
                     <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
                 </padding>
-                <Label fx:id="trackTitleLbl" wrapText="true" maxWidth="1.7976931348623157E308" text="Track title">
+                <Label fx:id="trackTitleLbl" wrapText="true" maxWidth="Infinity" text="Track title">
                     <font>
                         <Font size="40.0"/>
                     </font>
                 </Label>
                 <Label fx:id="trackAlbumLbl" wrapText="true" layoutX="193.0" layoutY="282.0"
-                       maxWidth="1.7976931348623157E308" onMouseClicked="#onAlbumMouseClicked" text="Album">
+                       maxWidth="Infinity" onMouseClicked="#onAlbumMouseClicked" text="Album">
                     <font>
                         <Font size="24.0"/>
                     </font>
@@ -34,31 +34,33 @@
                     </cursor>
                 </Label>
                 <Label fx:id="artistLbl" wrapText="true" layoutX="202.0" layoutY="295.0"
-                       maxWidth="1.7976931348623157E308" text="Artists">
+                       maxWidth="Infinity" text="Artists">
                     <font>
                         <Font size="36.0"/>
                     </font>
                 </Label>
-                <Label fx:id="releaseDateLbl" layoutX="202.0" layoutY="309.0" maxWidth="1.7976931348623157E308"
+                <Label fx:id="releaseDateLbl" layoutX="202.0" layoutY="309.0" maxWidth="Infinity"
                        text="Release date" wrapText="true">
                     <font>
                         <Font size="18.0"/>
                     </font>
                 </Label>
-                <Label fx:id="genreListLbl" layoutX="186.0" layoutY="322.0" maxWidth="1.7976931348623157E308"
+                <Label fx:id="genreListLbl" layoutX="186.0" layoutY="322.0" maxWidth="Infinity"
                        text="Genre list" wrapText="true">
                     <font>
                         <Font size="14.0"/>
                     </font>
                 </Label>
                 <Pane prefHeight="35.0" prefWidth="338.0"/>
-                <FlowPane alignment="CENTER" maxWidth="1.7976931348623157E308">
-                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPlayNowBtn"
+                <FlowPane alignment="CENTER" maxWidth="Infinity">
+                    <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#onPlayNowBtn"
                             prefHeight="20" text="PLAY NOW" HBox.hgrow="ALWAYS"/>
-                    <Button layoutX="145.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                    <Button layoutX="145.0" layoutY="10.0" maxWidth="Infinity" mnemonicParsing="false"
                             onAction="#onPlayNextBtn" prefHeight="20" text="PLAY NEXT"/>
-                    <Button layoutX="184.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                    <Button layoutX="184.0" layoutY="10.0" maxWidth="Infinity" mnemonicParsing="false"
                             onAction="#onAddToQueueBtn" prefHeight="20" text="ADD TO QUEUE"/>
+                    <Button maxWidth="Infinity" mnemonicParsing="false"
+                            onAction="#addToPlaylist" prefHeight="20" text="ADD TO PLAYLIST"/>
                 </FlowPane>
             </VBox>
             <ImageView fx:id="coverImg" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true"

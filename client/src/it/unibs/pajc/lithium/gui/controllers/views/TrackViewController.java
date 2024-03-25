@@ -67,4 +67,8 @@ public class TrackViewController {
     public void onAddToQueueBtn(ActionEvent ignored) {
         PlaybackManager.addToQueue(track);
     }
+
+    public void addToPlaylist(ActionEvent ignored) {
+        // TODO: show new window for adding to playlist
+    }
 }
