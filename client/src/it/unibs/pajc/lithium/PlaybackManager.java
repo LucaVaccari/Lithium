@@ -11,6 +11,7 @@ import javafx.util.Duration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
+import java.util.stream.Stream;
 
 public final class PlaybackManager {
     private static MediaPlayer mediaPlayer;
@@ -98,6 +99,11 @@ public final class PlaybackManager {
         playQueue();
     }
 
+    public static void removeFromQueue(Track track) {
+        trackQueue.remove(track);
+        update.invoke(getCurentTrack());
+    }
+
     public static void seek(double time) {
         if (mediaPlayer == null) return;
         var seekDuration = Duration.seconds(time);
@@ -131,6 +137,10 @@ public final class PlaybackManager {
     public static Track getCurentTrack() {
         // TODO fix
         return previouslyPlayedTracks.isEmpty() ? null : previouslyPlayedTracks.peek();
+    }
+
+    public static List<Track> getTrackQueue() {
+        return Stream.concat(previouslyPlayedTracks.stream(), trackQueue.stream()).toList();
     }
 
     private PlaybackManager() {

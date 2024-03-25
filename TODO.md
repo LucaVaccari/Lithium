@@ -4,9 +4,9 @@
 
 - [ ] Client interface
     - [x] Login screen
-    - [ ] Music play view
+    - [x] Music play view
         - [x] Currently playing track
-        - [ ] Queue
+        - [x] Queue
     - [x] Library tab
     - [ ] Search tab
         - [x] Show default items
@@ -17,9 +17,10 @@
         - [x] Log out
         - [ ] Save settings in file
     - [ ] detail views
-        - [ ] track details
-            -  [ ] add to playlist btn
+        - [x] track details
+            -  [x] add to playlist btn
         - [x] album details
+            - [ ] track number
         - [ ] artist details
         - [x] playlist details
             - [x] manage playlist btn
