@@ -32,6 +32,10 @@ public class Playlist implements Item, Serializable {
     public Playlist() {
     }
 
+    public Playlist(Integer id) {
+        this.id = id;
+    }
+
     public Playlist(String name, String description, Integer ownerId, String imgPath) {
         this.name = name;
         this.description = description;

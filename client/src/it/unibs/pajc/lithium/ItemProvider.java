@@ -35,14 +35,6 @@ public final class ItemProvider {
         imgCache = CacheBuilder.newBuilder().maximumSize(30).build();
     }
 
-    public static int createPlaylist() {
-        try {
-            return Integer.parseInt(HttpHandler.post("/playlist?userId=" + AccountManager.getUser().getId()));
-        } catch (NumberFormatException e) {
-            return -1;
-        }
-    }
-
     public static <T extends Item> T getItem(int id, Class<T> objType, boolean ignoreCache) {
         var itemCache = itemCaches.get(objType);
         if (!ignoreCache) {
@@ -50,11 +42,14 @@ public final class ItemProvider {
             if (cached != null) return cached;
         }
 
-        var json = HttpHandler.get("%s?id=%d".formatted(objType.getSimpleName().toLowerCase(), id));
-        T item = gson.fromJson(json, objType);
-        System.out.println(item);
-        itemCache.put(id, item);
-        return item;
+        try {
+            var json = HttpHandler.get("%s?id=%d".formatted(objType.getSimpleName().toLowerCase(), id));
+            T item = gson.fromJson(json, objType);
+            itemCache.put(id, item);
+            return item;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static <T extends Item> T getItem(int id, Class<T> objType) {
@@ -102,6 +97,19 @@ public final class ItemProvider {
         var query = "?id=%d&%s".formatted(id, String.join("&", updates));
         var subUrl = objType.getSimpleName().toLowerCase() + query;
         System.out.println(HttpHandler.put(subUrl));
+    }
+
+    public static int createPlaylist() {
+        try {
+            return Integer.parseInt(HttpHandler.post("/playlist?userId=" + AccountManager.getUser().getId()));
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    public static void deletePlaylist(int playlistId) {
+        itemCaches.get(Playlist.class).invalidate(playlistId);
+        System.out.println(HttpHandler.delete("/playlist?id=" + playlistId));
     }
 
     public static void addTrackToPlaylist(Playlist playlist, int trackId) {

@@ -25,6 +25,7 @@ import javafx.scene.input.KeyEvent;
 import kong.unirest.UnirestException;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class LibraryTab extends CustomComponent {
     @FXML
@@ -90,8 +91,8 @@ public class LibraryTab extends CustomComponent {
             return;
         }
         String searchTerm = searchTxtField.getText().toLowerCase();
-        var filteredPlaylists = Arrays.stream(playlists).filter(p -> p.getName().toLowerCase().contains(searchTerm))
-                .toArray(Playlist[]::new);
+        var filteredPlaylists = Arrays.stream(playlists).filter(Objects::nonNull)
+                .filter(p -> p.getName().toLowerCase().contains(searchTerm)).toArray(Playlist[]::new);
         GUIUtils.fillEntryList(playlistContainer, filteredPlaylists, PlaylistEntry.class);
     }
 

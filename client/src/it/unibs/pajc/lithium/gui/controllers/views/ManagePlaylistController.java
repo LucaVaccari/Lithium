@@ -3,6 +3,8 @@ package it.unibs.pajc.lithium.gui.controllers.views;
 import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.db.om.Track;
+import it.unibs.pajc.lithium.gui.AlertUtil;
+import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
 import it.unibs.pajc.util.Observer;
@@ -46,6 +48,10 @@ public class ManagePlaylistController {
     @FXML
     private void initialize() {
         playlist = (Playlist) MainSceneController.getSelectedItem();
+        if (playlist == null) {
+            SceneManager.backToMainScene();
+            return;
+        }
 
         nameTxtField.setText(playlist.getName());
         descriptionTxtArea.setText(playlist.getDescription());
@@ -63,6 +69,10 @@ public class ManagePlaylistController {
 
         playlistUpdate.addListener(() -> Platform.runLater(() -> {
             playlist = (Playlist) MainSceneController.getSelectedItem();
+            if (playlist == null) {
+                SceneManager.backToMainScene();
+                return;
+            }
             fillTrackView();
             trackView.refresh();
             searchTrackView.refresh();
@@ -164,6 +174,18 @@ public class ManagePlaylistController {
         searchTrackView.getItems().removeIf(hbox -> !Arrays.stream(tracks).toList()
                 .contains(((TrackEntry) hbox.getChildren().getFirst()).getTrack()));
         searchTrackView.refresh();
+    }
+
+    public void onDeletePlaylist(ActionEvent ignored) {
+        // TODO delete playlist
+        var btnType = AlertUtil.showConfirmationAlert("Confirm operation", "Are you sure",
+                "The playlist will be deleted forever, there's no turning back");
+        if (btnType.isEmpty()) return;
+        if (!btnType.get().equals(ButtonType.OK)) return;
+        ItemProvider.deletePlaylist(playlist.getId());
+        MainSceneController.setSelectedItem(null);
+        playlistUpdate.invoke();
+        SceneManager.backToMainScene();
     }
 
     private void update() {

@@ -45,6 +45,10 @@ public class PlaylistViewController {
     @FXML
     private void initialize() {
         playlist = (Playlist) MainSceneController.getSelectedItem();
+        if (playlist == null) {
+            SceneManager.backToPreviousScene();
+            return;
+        }
         var owner = ItemProvider.getItem(playlist.getOwnerId(), User.class);
 
         playlistNameLbl.setText(playlist.getName());

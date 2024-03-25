@@ -2,8 +2,10 @@ package it.unibs.pajc.lithium;
 
 import com.sun.net.httpserver.HttpExchange;
 import it.unibs.pajc.db.Column;
+import it.unibs.pajc.lithium.db.DbConnector;
 import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.db.om.TrackInPlaylist;
+import it.unibs.pajc.lithium.db.om.UserSavedPlaylist;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -18,6 +20,9 @@ import static it.unibs.pajc.lithium.HttpHelper.*;
 import static it.unibs.pajc.lithium.ServerMain.getDbConnector;
 import static it.unibs.pajc.lithium.ServerMain.getGson;
 
+/**
+ * Provides methods which take parameters from HTTP requests and call {@link DbConnector} methods
+ */
 public class HttpRoutes {
     //region user authentication
     public static void userExists(HttpExchange exchange) throws IOException {
@@ -77,20 +82,17 @@ public class HttpRoutes {
             }
             case "post" -> {
                 if (objType.equals(Playlist.class)) createPlaylist(exchange);
+                else sendStringResponse(exchange, 405,
+                        "Cannot create a %s from a client".formatted(objType.getSimpleName().toLowerCase()));
             }
             case "put" -> putObject(exchange, objType);
+            case "delete" -> {
+                if (objType.equals(Playlist.class)) deletePlaylist(exchange);
+                else sendStringResponse(exchange, 405,
+                        "Cannot delete a %s from a client".formatted(objType.getSimpleName().toLowerCase()));
+            }
             default -> sendStringResponse(exchange, 405, method + " is not supported for this path");
         }
-    }
-
-    public static void createPlaylist(HttpExchange exchange) throws IOException {
-        var ownerId = Integer.parseInt(queryParam(exchange, "userId"));
-        var numberOfPlaylists = getDbConnector().getNumberOfPlaylistsWithName("Playlist");
-        String playlistName = "Playlist #%d".formatted(numberOfPlaylists);
-        // TODO: default img path
-        var playlist = new Playlist(playlistName, "Playlist from user %d".formatted(ownerId), ownerId, "");
-        var id = getDbConnector().createPlaylist(playlist);
-        sendStringResponse(exchange, 200, String.valueOf(id));
     }
 
     public static void getObjectById(HttpExchange exchange, Function<Integer, ?> dbFunc) throws IOException {
@@ -212,6 +214,52 @@ public class HttpRoutes {
         sendByteResponse(exchange, 200, responseBytes);
     }
 
+    /**
+     * Creates a playlist with these defaults:
+     * <br/>name = 'Playlist #[number]' where [number] is progressive, to avoid name duplicates
+     * <br/>description = 'Playlist from user [id]', where '[id]' is the id of the user creating the playlist
+     * <br/>userId = [id], the id of the user
+     * <br/>imgPath = [default], the default image for new playlists
+     *
+     * @param exchange The HTTP exchange object.
+     *                 The request url must contain the field 'userId', the id of the user creating the playlist.
+     *                 The id of the created playlist is then returned in the body of the response.
+     * @throws IOException When there's an exception during the HTTP exchange
+     */
+    public static void createPlaylist(HttpExchange exchange) throws IOException {
+        var ownerId = Integer.parseInt(queryParam(exchange, "userId"));
+        var numberOfPlaylists = getDbConnector().getNumberOfPlaylistsWithName("Playlist #");
+        String playlistName = "Playlist #%d".formatted(numberOfPlaylists);
+        var playlist = new Playlist(playlistName, "Playlist from user %d".formatted(ownerId), ownerId,
+                "img/playlist_cover/default_playlist.jpg");
+        var id = getDbConnector().createPlaylist(playlist);
+        sendStringResponse(exchange, 200, String.valueOf(id));
+    }
+
+    /**
+     * Deletes a playlist, taking care of removing records from user_saved_playlist
+     *
+     * @param exchange The HTTP exchange object.
+     *                 The request url must contain the field 'id', id of the playlist to delete.
+     * @throws IOException When there's an exception during the HTTP exchange
+     */
+    public static void deletePlaylist(HttpExchange exchange) throws IOException {
+        var playlistId = Integer.parseInt(queryParam(exchange, "id"));
+        var playlist = getDbConnector().getObjectById(playlistId, Playlist.class);
+        getDbConnector().deleteObject(new UserSavedPlaylist(playlist.getOwnerId(), playlistId),
+                UserSavedPlaylist.class);
+        getDbConnector().deleteObject(new Playlist(playlistId), Playlist.class);
+        sendStringResponse(exchange, 200, "Playlist %d removed successfully".formatted(playlistId));
+    }
+
+    /**
+     * Handles addition and deletion of tracks in playlists
+     *
+     * @param exchange The HTTP exchange object.
+     *                 The request url must contain the fields 'id', id of the playlist and 'trackId', id of the track
+     *                 to add.
+     * @throws IOException When there's an exception during the HTTP exchange
+     */
     public static void managePlaylist(HttpExchange exchange) throws IOException {
         var method = exchange.getRequestMethod().toLowerCase();
         var queryParams = queryParams(exchange);
@@ -232,6 +280,12 @@ public class HttpRoutes {
         }
     }
 
+    /**
+     * Invoked when no other routes are matched.
+     *
+     * @param exchange The HTTP exchange
+     * @throws IOException When there's an exception during the HTTP exchange
+     */
     public static void defaultRoute(HttpExchange exchange) throws IOException {
         System.out.println(exchange.getRequestURI());
         sendStringResponse(exchange, 200, "Welcome to Lithium!");

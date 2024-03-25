@@ -30,7 +30,7 @@ public class PlaylistEntry extends ItemEntry {
 
         ManagePlaylistController.playlistUpdate.addListener(() -> {
             Item currentPlaylist = MainSceneController.getSelectedItem();
-            if (currentPlaylist.equals(playlist)) {
+            if (currentPlaylist != null && currentPlaylist.equals(playlist)) {
                 setItem(currentPlaylist);
                 initialize();
             }
