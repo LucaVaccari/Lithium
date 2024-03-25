@@ -3,6 +3,7 @@ package it.unibs.pajc.lithium.gui.controllers.tabs;
 import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.PlaybackManager;
 import it.unibs.pajc.lithium.db.om.Album;
+import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
@@ -27,7 +28,7 @@ public class PlayingNowTab extends CustomComponent {
     @FXML
     private void initialize() {
         PlaybackManager.getUpdate().addListener(this::update);
-        update();
+        update(PlaybackManager.getCurentTrack());
 
         currentTrackTitleLbl.setOnMouseClicked(e -> {
             var track = PlaybackManager.getCurentTrack();
@@ -45,8 +46,7 @@ public class PlayingNowTab extends CustomComponent {
         });
     }
 
-    public void update() {
-        var track = PlaybackManager.getCurentTrack();
+    public void update(Track track) {
         if (track == null) {
             currentTrackImgCover.setImage(null);
             currentTrackTitleLbl.setText("");
@@ -54,7 +54,7 @@ public class PlayingNowTab extends CustomComponent {
             currentTrackAlbumLbl.setText("");
             return;
         }
-        
+
         var album = ItemProvider.getItem(track.getAlbumId(), Album.class);
         currentTrackImgCover.setImage(ItemProvider.getImage(album.getImgPath()));
         currentTrackTitleLbl.setText(track.getTitle());

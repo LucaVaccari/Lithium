@@ -16,7 +16,7 @@ public final class PlaybackManager {
     private static MediaPlayer mediaPlayer;
     private final static LinkedList<Track> trackQueue = new LinkedList<>();
     private final static Stack<Track> previouslyPlayedTracks = new Stack<>();
-    private final static Observer update = new Observer();
+    private final static Observer<Track> update = new Observer<>();
 
     private static void playQueue() {
         if (mediaPlayer != null) mediaPlayer.stop();
@@ -29,10 +29,10 @@ public final class PlaybackManager {
         mediaPlayer.setStopTime(Duration.seconds(track.getDuration()));
         mediaPlayer.setOnError(() -> {
             AlertUtil.showErrorAlert("Playback error", "Error during playback", mediaPlayer.getError().getMessage());
-            update.invoke();
+            update.invoke(track);
         });
-        mediaPlayer.setOnPlaying(update::invoke);
-        mediaPlayer.setOnPaused(update::invoke);
+        mediaPlayer.setOnPlaying(() -> update.invoke(track));
+        mediaPlayer.setOnPaused(() -> update.invoke(track));
         mediaPlayer.setOnEndOfMedia(() -> {
             if (trackQueue.isEmpty()) stopPlayback();
             else playQueue();
@@ -40,7 +40,7 @@ public final class PlaybackManager {
         mediaPlayer.setOnReady(() -> {
             mediaPlayer.play();
             System.out.println("Playing track: " + track.getTitle());
-            update.invoke();
+            update.invoke(track);
         });
     }
 
@@ -57,19 +57,19 @@ public final class PlaybackManager {
     public static void playNext(Track track) {
         if (trackQueue.isEmpty()) playImmediately(track);
         else trackQueue.addFirst(track);
-        update.invoke();
+        update.invoke(getCurentTrack());
     }
 
     public static void playNext(Track[] tracks) {
         if (trackQueue.isEmpty()) addToQueue(tracks);
         else trackQueue.addAll(0, List.of(tracks));
-        update.invoke();
+        update.invoke(getCurentTrack());
     }
 
     public static void addToQueue(Track track) {
         if (trackQueue.isEmpty()) playImmediately(track);
         else trackQueue.addLast(track);
-        update.invoke();
+        update.invoke(getCurentTrack());
     }
 
     public static void addToQueue(Track[] tracks) {
@@ -107,7 +107,7 @@ public final class PlaybackManager {
     public static void stopPlayback() {
         pause();
         trackQueue.clear();
-        update.invoke();
+        update.invoke(getCurentTrack());
     }
 
     public static int getCurrentTime() {
@@ -124,7 +124,7 @@ public final class PlaybackManager {
         return mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING);
     }
 
-    public static Observer getUpdate() {
+    public static Observer<Track> getUpdate() {
         return update;
     }
 

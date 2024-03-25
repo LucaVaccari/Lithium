@@ -37,7 +37,7 @@ public class SearchTab extends CustomComponent {
         searchTxtField.setOnKeyTyped(this::onSearchTxtFieldChange);
         onSearchTxtFieldChange(null);
 
-        ManagePlaylistController.playlistUpdate.addListener(this::updatePlaylistList);
+        ManagePlaylistController.playlistUpdate.addListener(playlist -> updatePlaylistList());
     }
 
     private void onSearchTxtFieldChange(KeyEvent event) {

@@ -6,18 +6,18 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Provides a simple implementation of the observer pattern, with no arguments and no return values
  */
-public class Observer {
-    private final Set<Runnable> listeners = ConcurrentHashMap.newKeySet();
+public class Observer<T> {
+    private final Set<NoReturnFunction<T>> listeners = ConcurrentHashMap.newKeySet();
 
-    public void invoke() {
-        listeners.forEach(Runnable::run);
+    public void invoke(T param) {
+        listeners.forEach(l -> l.apply(param));
     }
 
-    public void addListener(Runnable listener) {
+    public void addListener(NoReturnFunction<T> listener) {
         listeners.add(listener);
     }
 
-    public void removeListener(Runnable listener) {
+    public void removeListener(NoReturnFunction<T> listener) {
         listeners.remove(listener);
     }
 

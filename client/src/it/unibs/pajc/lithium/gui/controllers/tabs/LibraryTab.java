@@ -43,9 +43,9 @@ public class LibraryTab extends CustomComponent {
     public void initialize() {
         searchTxtField.setOnKeyTyped(this::onSearchTxtFieldChange);
         onSearchTxtFieldChange(null);
-        AccountManager.userUpdated.addListener(() -> Platform.runLater(() -> onSearchTxtFieldChange(null)));
+        AccountManager.userUpdated.addListener(user -> Platform.runLater(() -> onSearchTxtFieldChange(null)));
         createPlaylistBtn.setOnAction(this::onCreatePlaylistBtn);
-        ManagePlaylistController.playlistUpdate.addListener(this::updatePlaylistList);
+        ManagePlaylistController.playlistUpdate.addListener(playlist -> updatePlaylistList());
     }
 
     private void onSearchTxtFieldChange(KeyEvent event) {
@@ -102,10 +102,11 @@ public class LibraryTab extends CustomComponent {
             AlertUtil.showErrorAlert("Error", "Server error", "Cannot create playlist");
             return;
         }
-        MainSceneController.setSelectedItem(ItemProvider.getItem(playlistId, Playlist.class));
+        Playlist newPlaylist = ItemProvider.getItem(playlistId, Playlist.class);
+        MainSceneController.setSelectedItem(newPlaylist);
         SceneManager.loadScene("/FXMLs/managePlaylist.fxml", this);
         AccountManager.updateUser();
-        ManagePlaylistController.playlistUpdate.invoke();
+        ManagePlaylistController.playlistUpdate.invoke(newPlaylist);
     }
 
     @Override

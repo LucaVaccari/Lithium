@@ -1,6 +1,7 @@
 package it.unibs.pajc.lithium.gui;
 
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import kong.unirest.Unirest;
 
@@ -58,5 +59,15 @@ public class SceneManager {
         scenes.push(mainScene);
         mainStage.setScene(mainScene);
         mainStage.sizeToScene();
+    }
+
+    public static void openBlockingWindow(String title, String path, Object caller) {
+        Stage newStage = new Stage();
+        newStage.setScene(new Scene(FXMLFileLoader.loadFXML(path, caller)));
+        newStage.initModality(Modality.APPLICATION_MODAL);
+        newStage.setResizable(false);
+        newStage.sizeToScene();
+        newStage.setTitle(title);
+        newStage.showAndWait();
     }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane prefHeight="300.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.unibs.pajc.lithium.gui.controllers.TrackInPlaylistController">
+    <BorderPane maxHeight="Infinity" maxWidth="Infinity" AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <bottom>
+            <ButtonBar maxHeight="Infinity" maxWidth="Infinity" prefHeight="40.0"
+                       BorderPane.alignment="CENTER">
+                <buttons>
+                    <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#onCancel" text="Cancel"
+                            ButtonBar.buttonData="OK_DONE"/>
+                    <Button contentDisplay="CENTER" layoutX="135.0" layoutY="18.0" mnemonicParsing="false"
+                            ButtonBar.buttonData="CANCEL_CLOSE"
+                            onAction="#onSave" text="Save"/>
+                </buttons>
+            </ButtonBar>
+        </bottom>
+        <center>
+            <ListView fx:id="playlistListView" maxHeight="Infinity" maxWidth="Infinity"
+                      BorderPane.alignment="CENTER"/>
+        </center>
+    </BorderPane>
+</AnchorPane>

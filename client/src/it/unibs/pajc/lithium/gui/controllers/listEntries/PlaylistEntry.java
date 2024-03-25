@@ -24,24 +24,27 @@ public class PlaylistEntry extends ItemEntry {
     @FXML
     private Label nTracksLbl;
 
+    private final boolean clickable;
+
+    public PlaylistEntry(Item playlist, boolean clickable) {
+        super(playlist);
+        this.clickable = clickable;
+        initialize();
+    }
+
     public PlaylistEntry(Item playlist) {
         super(playlist);
+        clickable = true;
         initialize();
-
-        ManagePlaylistController.playlistUpdate.addListener(() -> {
-            Item currentPlaylist = MainSceneController.getSelectedItem();
-            if (currentPlaylist != null && currentPlaylist.equals(playlist)) {
-                setItem(currentPlaylist);
-                initialize();
-            }
-        });
     }
 
     private void initialize() {
-        root.setOnMouseClicked(e -> {
-            MainSceneController.setSelectedItem(item);
-            SceneManager.loadScene("/FXMLs/itemViews/playlistView.fxml", this);
-        });
+        if (clickable) {
+            root.setOnMouseClicked(e -> {
+                MainSceneController.setSelectedItem(item);
+                SceneManager.loadScene("/FXMLs/itemViews/playlistView.fxml", this);
+            });
+        }
 
         coverImg.setImage(ItemProvider.getImage(getPlaylist().getImgPath()));
 
@@ -50,8 +53,14 @@ public class PlaylistEntry extends ItemEntry {
         var owner = ItemProvider.getItem(getPlaylist().getOwnerId(), User.class);
         authorLbl.setText("by " + owner.getUsername());
 
-        int numberOfTracks = getPlaylist().getTracksIds().length;
+        int numberOfTracks = getPlaylist().getTrackIds().length;
         nTracksLbl.setText(numberOfTracks + (numberOfTracks == 1 ? " track" : " tracks"));
+
+        ManagePlaylistController.playlistUpdate.addListener(playlist -> {
+            if (playlist == null || !playlist.equals(getPlaylist())) return;
+            setItem(playlist);
+            initialize();
+        });
     }
 
     public Playlist getPlaylist() {

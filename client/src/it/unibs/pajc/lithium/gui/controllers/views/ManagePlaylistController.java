@@ -42,7 +42,7 @@ public class ManagePlaylistController {
     @FXML
     private ListView<HBox> searchTrackView;
 
-    public final static Observer playlistUpdate = new Observer();
+    public final static Observer<Playlist> playlistUpdate = new Observer<>();
     private Playlist playlist;
 
     @FXML
@@ -67,8 +67,8 @@ public class ManagePlaylistController {
 
         onSearchTyped(null);
 
-        playlistUpdate.addListener(() -> Platform.runLater(() -> {
-            playlist = (Playlist) MainSceneController.getSelectedItem();
+        playlistUpdate.addListener(playlist -> Platform.runLater(() -> {
+            this.playlist = playlist;
             if (playlist == null) {
                 SceneManager.backToMainScene();
                 return;
@@ -80,7 +80,7 @@ public class ManagePlaylistController {
     }
 
     private void fillTrackView() {
-        var tracks = ItemProvider.getItems(playlist.getTracksIds(), Track.class);
+        var tracks = ItemProvider.getItems(playlist.getTrackIds(), Track.class);
         trackView.getItems().clear();
         for (var track : tracks) addTrackViewItem(track);
         // TODO order by date added
@@ -98,10 +98,10 @@ public class ManagePlaylistController {
 
     private EventHandler<ActionEvent> getRemoveEventHandler(Track track, HBox hBox) {
         return ignored -> {
-            ItemProvider.removeTrackFromPlaylist(playlist.getId(), track.getId());
+            ItemProvider.removeTrackFromPlaylist(playlist, track.getId());
             MainSceneController.setSelectedItem(ItemProvider.getItem(playlist.getId(), Playlist.class, true));
             trackView.getItems().remove(hBox);
-            playlistUpdate.invoke();
+            playlistUpdate.invoke(playlist);
         };
     }
 
@@ -150,7 +150,7 @@ public class ManagePlaylistController {
 
     public void onSearchTyped(KeyEvent ignored) {
         var searchTerm = searchTxtField.getText();
-        int numberOfResults = 15 + playlist.getTracksIds().length;
+        int numberOfResults = 15 + playlist.getTrackIds().length;
         var tracks = ItemProvider.searchItem(numberOfResults, searchTerm, Track[].class, "track_title");
         if (tracks == null) {
             System.err.println("Null items in search tab");
@@ -159,14 +159,15 @@ public class ManagePlaylistController {
         for (var track : tracks) {
             if (searchTrackView.getItems()
                     .filtered(a -> ((TrackEntry) a.getChildren().getFirst()).getTrack().equals(track)).isEmpty() &&
-                    !Arrays.asList(playlist.getTracksIds()).contains(track.getId())) {
+                    !Arrays.asList(playlist.getTrackIds()).contains(track.getId())) {
                 var btn = new Button("Add");
                 var hbox = buildHbox(track, btn);
                 btn.setOnAction(ignored2 -> {
                     ItemProvider.addTrackToPlaylist(playlist, track.getId());
-                    MainSceneController.setSelectedItem(ItemProvider.getItem(playlist.getId(), Playlist.class, true));
+                    Playlist newPlaylist = ItemProvider.getItem(playlist.getId(), Playlist.class, true);
+                    playlist = newPlaylist;
                     searchTrackView.getItems().remove(hbox);
-                    playlistUpdate.invoke();
+                    playlistUpdate.invoke(newPlaylist);
                 });
                 searchTrackView.getItems().add(hbox);
             }
@@ -177,19 +178,18 @@ public class ManagePlaylistController {
     }
 
     public void onDeletePlaylist(ActionEvent ignored) {
-        // TODO delete playlist
         var btnType = AlertUtil.showConfirmationAlert("Confirm operation", "Are you sure",
                 "The playlist will be deleted forever, there's no turning back");
         if (btnType.isEmpty()) return;
         if (!btnType.get().equals(ButtonType.OK)) return;
         ItemProvider.deletePlaylist(playlist.getId());
         MainSceneController.setSelectedItem(null);
-        playlistUpdate.invoke();
+        playlistUpdate.invoke(playlist);
         SceneManager.backToMainScene();
     }
 
     private void update() {
-        MainSceneController.setSelectedItem(ItemProvider.getItem(playlist.getId(), Playlist.class, true));
-        playlistUpdate.invoke();
+        Playlist newPlaylist = ItemProvider.getItem(playlist.getId(), Playlist.class, true);
+        playlistUpdate.invoke(newPlaylist);
     }
 }

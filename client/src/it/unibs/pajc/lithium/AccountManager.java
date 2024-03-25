@@ -12,7 +12,7 @@ public class AccountManager {
     private final static String LOGIN_INFO_PATH = "login.lit";
     private static User user;
 
-    public final static Observer userUpdated = new Observer();
+    public final static Observer<User> userUpdated = new Observer<>();
 
     public record LoginInfo(String username, String passwordHash) implements Serializable {
     }
@@ -41,7 +41,7 @@ public class AccountManager {
     public static void updateUser() {
         if (user == null) return;
         user = ItemProvider.getItem(user.getId(), User.class, true);
-        userUpdated.invoke();
+        userUpdated.invoke(user);
     }
 
     public static void saveLoginInfo(String username, String password) {

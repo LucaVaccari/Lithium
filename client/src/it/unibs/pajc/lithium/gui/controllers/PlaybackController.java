@@ -29,7 +29,7 @@ public class PlaybackController extends CustomComponent {
 
     @FXML
     private void initialize() {
-        update();
+        update(PlaybackManager.getCurentTrack());
         backBtn.setOnAction(ignored -> PlaybackManager.previousTrack());
         pauseBtn.setOnAction(ignored -> PlaybackManager.togglePlay());
         forwardBtn.setOnAction(ignored -> PlaybackManager.nextTrack());
@@ -58,8 +58,7 @@ public class PlaybackController extends CustomComponent {
         timer.start();
     }
 
-    private void update() {
-        Track track = PlaybackManager.getCurentTrack();
+    private void update(Track track) {
         progressSlider.setMin(0);
         progressSlider.setMax(PlaybackManager.getMaxTime());
         if (track == null) currentlyPlayingLbl.setText("Nothing is playing");

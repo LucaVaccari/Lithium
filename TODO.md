@@ -49,7 +49,7 @@
         - [x] Update
         - [x] Delete
 - [ ] Interface for managing the db
-- [ ] Define and implement HTTP contexts
+- [x] Define and implement HTTP contexts
     - [x] Client authentication
     - [x] Search queries
     - [x] Streaming request

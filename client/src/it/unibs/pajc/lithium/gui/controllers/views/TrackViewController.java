@@ -69,6 +69,7 @@ public class TrackViewController {
     }
 
     public void addToPlaylist(ActionEvent ignored) {
-        // TODO: show new window for adding to playlist
+        MainSceneController.setSelectedItem(track);
+        SceneManager.openBlockingWindow("Track adding", "/FXMLs/trackInPlaylist.fxml", this);
     }
 }

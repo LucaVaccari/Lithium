@@ -49,6 +49,16 @@ public class PlaylistViewController {
             SceneManager.backToPreviousScene();
             return;
         }
+        update();
+
+        ManagePlaylistController.playlistUpdate.addListener(playlist -> {
+            if (playlist == null) return;
+            this.playlist = playlist;
+            update();
+        });
+    }
+
+    private void update() {
         var owner = ItemProvider.getItem(playlist.getOwnerId(), User.class);
 
         playlistNameLbl.setText(playlist.getName());
@@ -57,15 +67,13 @@ public class PlaylistViewController {
         // TODO: creation date
 
         coverImg.setImage(ItemProvider.getImage(playlist.getImgPath()));
-        tracks = GUIUtils.fillTrackContainerAndGenreLabel(playlist.getTracksIds(), trackContainer, genreLbl);
+        tracks = GUIUtils.fillTrackContainerAndGenreLabel(playlist.getTrackIds(), trackContainer, genreLbl);
 
         saveBtn.setText(isSaved() ? "UNSAVE" : "SAVE");
 
         boolean ownedPlaylist = playlist.getOwnerId().equals(AccountManager.getUser().getId());
         saveBtn.setDisable(ownedPlaylist);
         manageBtn.setDisable(!ownedPlaylist);
-
-        ManagePlaylistController.playlistUpdate.addListener(this::initialize);
     }
 
     public void onPlayNowBtn(ActionEvent ignored) {

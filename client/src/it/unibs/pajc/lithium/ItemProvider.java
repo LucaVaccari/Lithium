@@ -113,14 +113,21 @@ public final class ItemProvider {
     }
 
     public static void addTrackToPlaylist(Playlist playlist, int trackId) {
-        if (Arrays.asList(playlist.getTracksIds()).contains(trackId)) return;
+        if (trackInPlaylist(playlist, trackId)) return;
+        itemCaches.get(Playlist.class).invalidate(playlist.getId());
         var subUrl = "playlist/add?id=%d&trackId=%d".formatted(playlist.getId(), trackId);
         System.out.println(HttpHandler.post(subUrl));
     }
 
-    public static void removeTrackFromPlaylist(int playlistId, int trackId) {
-        var subUrl = "playlist/add?id=%d&trackId=%d".formatted(playlistId, trackId);
+    public static void removeTrackFromPlaylist(Playlist playlist, int trackId) {
+        if (!trackInPlaylist(playlist, trackId)) return;
+        itemCaches.get(Playlist.class).invalidate(playlist.getId());
+        var subUrl = "playlist/add?id=%d&trackId=%d".formatted(playlist.getId(), trackId);
         System.out.println(HttpHandler.delete(subUrl));
+    }
+
+    public static boolean trackInPlaylist(Playlist playlist, int trackId) {
+        return Arrays.asList(playlist.getTrackIds()).contains(trackId);
     }
 
     public static String getArtistNamesFormatted(Integer[] ids) {

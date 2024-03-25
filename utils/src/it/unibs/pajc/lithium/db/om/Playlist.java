@@ -6,6 +6,7 @@ import it.unibs.pajc.db.Id;
 import it.unibs.pajc.db.Table;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Objects;
 
 @Table(name = "playlist")
@@ -27,7 +28,7 @@ public class Playlist implements Item, Serializable {
     private String imgPath;
 
     @ForeignKey(otherTableName = "track_in_playlist", otherTableColumnName = "track_id")
-    private Integer[] tracksIds;
+    private Integer[] trackIds;
 
     public Playlist() {
     }
@@ -71,8 +72,15 @@ public class Playlist implements Item, Serializable {
         return imgPath;
     }
 
-    public Integer[] getTracksIds() {
-        return tracksIds;
+    public Integer[] getTrackIds() {
+        return trackIds;
+    }
+
+    @Override
+    public String toString() {
+        return "Playlist{" + "id=" + id + ", name='" + name + '\'' + ", description='" + description + '\'' +
+                ", ownerId=" + ownerId + ", imgPath='" + imgPath + '\'' + ", trackIds=" + Arrays.toString(trackIds) +
+                '}';
     }
 
     @Override
