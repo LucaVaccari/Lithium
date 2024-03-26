@@ -1,5 +1,6 @@
 package it.unibs.pajc.lithium;
 
+import it.unibs.pajc.lithium.managers.AccountManager;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

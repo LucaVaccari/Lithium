@@ -1,8 +1,8 @@
 package it.unibs.pajc.lithium.gui.controllers;
 
 import com.google.common.hash.Hashing;
-import it.unibs.pajc.lithium.AccountManager;
 import it.unibs.pajc.lithium.gui.SceneManager;
+import it.unibs.pajc.lithium.managers.AccountManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -35,21 +35,18 @@ public class LoginController {
     }
 
     private State state;
+    private String validUsername;
 
     @FXML
     private void initialize() {
-        state = State.Start;
-        pswContainer.setVisible(false);
-        confirmPswContainer.setVisible(false);
-        messagesLabel.setText("");
+        backToStart();
     }
 
     public void onTxtFieldChanged(KeyEvent ignoredEvent) {
-        boolean disable =
-                usernameTxtField.getText().isEmpty() || pswTxtField.getText().isEmpty() && state != State.Start ||
-                        confirmPswTxtField.getText().isEmpty() && state == State.Register;
-        submitBtn.setDisable(disable);
-
+//        boolean disable =
+//                usernameTxtField.getText().isEmpty() || pswTxtField.getText().isEmpty() && state != State.Start ||
+//                        confirmPswTxtField.getText().isEmpty() && state == State.Register;
+//        submitBtn.setDisable(disable);
         checkFieldsValidity();
     }
 
@@ -57,7 +54,6 @@ public class LoginController {
         submitBtn.setDisable(false);
         String username = usernameTxtField.getText();
         String password = pswTxtField.getText();
-        messagesLabel.setText("");
 
         if (username.contains(" ")) {
             messagesLabel.setText("The username must not contain empty spaces");
@@ -70,9 +66,12 @@ public class LoginController {
         }
 
         switch (state) {
-            case Start -> {
-            }
+            case Start -> validUsername = null;
             case Register -> {
+                if (!username.equals(validUsername)) {
+                    backToStart();
+                    return false;
+                }
                 if (!password.equals(confirmPswTxtField.getText())) {
                     messagesLabel.setText("The passwords don't match");
                     submitBtn.setDisable(true);
@@ -86,6 +85,10 @@ public class LoginController {
                 if (password.isEmpty()) submitBtn.setDisable(true);
             }
             case Login -> {
+                if (!username.equals(validUsername)) {
+                    backToStart();
+                    return false;
+                }
                 if (password.contains(" ")) {
                     messagesLabel.setText("The password must not contain empty spaces");
                     submitBtn.setDisable(true);
@@ -96,7 +99,15 @@ public class LoginController {
         }
         if (username.isEmpty()) submitBtn.setDisable(true);
 
+        if (!submitBtn.isDisabled()) messagesLabel.setText("");
         return !submitBtn.isDisabled();
+    }
+
+    private void backToStart() {
+        state = State.Start;
+        pswContainer.setVisible(false);
+        confirmPswContainer.setVisible(false);
+        messagesLabel.setText("");
     }
 
     public void onSubmitBtn(ActionEvent ignoredEvent) {
@@ -105,6 +116,7 @@ public class LoginController {
         submitBtn.setDisable(true);
         if (state == State.Start) {
             var userExists = AccountManager.userExists(username);
+            validUsername = username;
             pswContainer.setVisible(true);
             confirmPswContainer.setVisible(!userExists);
             submitBtn.setText(userExists ? "Login" : "Register");

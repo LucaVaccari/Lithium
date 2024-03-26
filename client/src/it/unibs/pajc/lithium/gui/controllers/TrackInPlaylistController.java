@@ -1,11 +1,12 @@
 package it.unibs.pajc.lithium.gui.controllers;
 
-import it.unibs.pajc.lithium.AccountManager;
 import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.db.om.Track;
+import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.PlaylistEntry;
 import it.unibs.pajc.lithium.gui.controllers.views.ManagePlaylistController;
+import it.unibs.pajc.lithium.managers.AccountManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -60,7 +61,8 @@ public class TrackInPlaylistController {
         onCancel(e);
     }
 
-    public void onCancel(ActionEvent e) {
+    public void onCancel(ActionEvent ignored) {
         ((Stage) playlistListView.getScene().getWindow()).close();
+        SceneManager.backToMainScene();
     }
 }

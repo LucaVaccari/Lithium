@@ -16,9 +16,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.function.Function;
 
-import static it.unibs.pajc.lithium.http.HttpHelper.*;
 import static it.unibs.pajc.lithium.ServerMain.getDbConnector;
 import static it.unibs.pajc.lithium.ServerMain.getGson;
+import static it.unibs.pajc.lithium.http.HttpHelper.*;
 
 /**
  * Provides methods which take parameters from HTTP requests and call {@link DbConnector} methods
@@ -47,12 +47,16 @@ public class HttpRoutes {
         byte[] requestBody = exchange.getRequestBody().readAllBytes();
         String[] strings = new String(requestBody).split(",");
         if (!validateUsername(exchange, strings)) return;
-        getDbConnector().registerUser(strings[0], strings[1]);
-        var user = getDbConnector().getUserByName(strings[0]);
-        getDbConnector().createPlaylist(
-                new Playlist("Saved tracks", "Tracks saved by the user " + user.getUsername(), user.getId(),
-                        "img/playlist_cover/saved_tracks_cover.jpg"));
-        sendStringResponse(exchange, 200, "Done");
+        try {
+            getDbConnector().registerUser(strings[0], strings[1]);
+            var user = getDbConnector().getUserByName(strings[0]);
+            getDbConnector().createPlaylist(
+                    new Playlist("Saved tracks", "Tracks saved by the user " + user.getUsername(), user.getId(),
+                            "img/playlist_cover/saved_tracks_cover.jpg"));
+            sendStringResponse(exchange, 200, "Done");
+        } catch (IllegalArgumentException e) {
+            sendStringResponse(exchange, 400, e.getMessage());
+        }
     }
 
     private static boolean validateUsername(HttpExchange exchange, String[] strings) throws IOException {

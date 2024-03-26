@@ -1,5 +1,7 @@
 package it.unibs.pajc.lithium.connection;
 
+import it.unibs.pajc.lithium.ServerMain;
+import it.unibs.pajc.lithium.db.om.User;
 import it.unibs.pajc.util.NoReturnFunction2;
 
 import java.io.BufferedReader;
@@ -14,12 +16,41 @@ public class Connection {
     private final Socket socket;
     private final PrintWriter writer;
     private static final Map<String, NoReturnFunction2<String, Connection>> commands = new ConcurrentHashMap<>();
+    private boolean running = true;
+
+    private User user;
 
     static {
-        commands.put("hello", (s, c) -> c.writeMessage("world"));
+        commands.put("hello", (body, connection) -> connection.writeMessage("world"));
+        commands.put("auth", (body, connection) -> {
+            if (connection.user != null) {
+                connection.writeMessage("error;;The user is already authenticated");
+                return;
+            }
+            var tokens = body.split("::");
+            if (tokens.length != 2) {
+                connection.writeMessage("error;;The body of the message must be formed in the following way: " +
+                        "<username>::<passwordHash>");
+            }
+            int userid = ServerMain.getDbConnector().authenticateUser(tokens[0], tokens[1]);
+            if (userid == -1) {
+                connection.writeMessage("error;;User not authenticated: wrong credentials");
+                return;
+            }
+            User newUser = ServerMain.getDbConnector().getObjectById(userid, User.class);
+            if (ConnectionReceiver.duplicateUser(newUser)) {
+                connection.writeMessage("error;;User is already authenticated on another socket");
+                return;
+            }
+            connection.user = newUser;
+            System.out.println(connection.user.getUsername() + " authenticated");
+        });
+        commands.put("joinParty", PartyManager::joinParty);
+        commands.put("leaveParty", PartyManager::leaveParty);
+        commands.put("syncParty", PartyManager::syncParty);
+        commands.put("partyTrack", PartyManager::updateTrack);
+        commands.put("partyChat", PartyManager::chat);
     }
-
-    private boolean running = true;
 
     public Connection(Socket socket) {
         this.socket = socket;
@@ -31,13 +62,12 @@ public class Connection {
                 while (running) {
                     try {
                         var input = reader.readLine();
-                        System.out.println(input);
                         var inputTokens = input.strip().split(";;");
                         if (inputTokens.length > 2 || inputTokens.length == 0) {
-                            // TODO: send error
-                        } else {
-                            commands.get(inputTokens[0]).apply(inputTokens[1], this);
+                            writeMessage("error;;The message must be formed in the following way: <command>;;<body>");
+                            continue;
                         }
+                        commands.get(inputTokens[0]).apply(inputTokens[1], this);
                     } catch (IOException e) {
                         interrupt();
                     }
@@ -48,17 +78,19 @@ public class Connection {
         }
     }
 
-    private void writeMessage(String message) {
+    public void writeMessage(String message) {
         writer.println(message);
     }
 
-    private Socket getSocket() {
-        return socket;
+    public User getUser() {
+        return user;
     }
 
     public void interrupt() {
-        running = false;
         try {
+            running = false;
+            System.out.println("Connection removed: " + socket.getInetAddress().getHostAddress());
+            ConnectionReceiver.remove(this);
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();

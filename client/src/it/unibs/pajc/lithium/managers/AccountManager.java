@@ -1,5 +1,8 @@
-package it.unibs.pajc.lithium;
+package it.unibs.pajc.lithium.managers;
 
+import it.unibs.pajc.lithium.ClientMain;
+import it.unibs.pajc.lithium.HttpHandler;
+import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.db.om.User;
 import it.unibs.pajc.lithium.gui.AlertUtil;
 import it.unibs.pajc.util.Observer;
@@ -11,7 +14,6 @@ import java.nio.file.Path;
 public class AccountManager {
     private final static String LOGIN_INFO_PATH = "login.lit";
     private static User user;
-
     public final static Observer<User> userUpdated = new Observer<>();
 
     public record LoginInfo(String username, String passwordHash) implements Serializable {
@@ -23,11 +25,12 @@ public class AccountManager {
     }
 
     public static void registerUser(String username, String pswHash) {
-        HttpHandler.post("user/register", username + "," + pswHash);
+        System.out.println(HttpHandler.post("user/register", username + "," + pswHash));
     }
 
     public static boolean authenticateUser(String username, String pswHash) {
         int userId = Integer.parseInt(HttpHandler.post("user/auth", username + "," + pswHash));
+        ClientMain.getConnectionManager().writeMessage("auth;;%s::%s".formatted(username, pswHash));
         if (userId != -1) user = ItemProvider.getItem(userId, User.class);
         return userId != -1;
     }

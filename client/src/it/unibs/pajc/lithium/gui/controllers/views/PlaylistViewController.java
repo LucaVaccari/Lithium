@@ -1,8 +1,6 @@
 package it.unibs.pajc.lithium.gui.controllers.views;
 
-import it.unibs.pajc.lithium.AccountManager;
 import it.unibs.pajc.lithium.ItemProvider;
-import it.unibs.pajc.lithium.PlaybackManager;
 import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.db.om.User;
@@ -11,6 +9,8 @@ import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import it.unibs.pajc.lithium.gui.controllers.PlaybackController;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
+import it.unibs.pajc.lithium.managers.AccountManager;
+import it.unibs.pajc.lithium.managers.PlaybackManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -19,6 +19,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class PlaylistViewController {
     @FXML
@@ -52,7 +53,11 @@ public class PlaylistViewController {
         update();
 
         ManagePlaylistController.playlistUpdate.addListener(playlist -> {
-            if (playlist == null) return;
+            if (playlist == null) {
+                SceneManager.backToMainScene();
+                return;
+            }
+            if (!Objects.equals(this.playlist.getId(), playlist.getId())) return;
             this.playlist = playlist;
             update();
         });

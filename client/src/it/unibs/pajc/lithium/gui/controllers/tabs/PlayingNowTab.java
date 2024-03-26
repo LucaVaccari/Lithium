@@ -1,7 +1,7 @@
 package it.unibs.pajc.lithium.gui.controllers.tabs;
 
 import it.unibs.pajc.lithium.ItemProvider;
-import it.unibs.pajc.lithium.PlaybackManager;
+import it.unibs.pajc.lithium.managers.PlaybackManager;
 import it.unibs.pajc.lithium.db.om.Album;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.CustomComponent;

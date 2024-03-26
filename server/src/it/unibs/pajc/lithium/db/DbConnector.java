@@ -3,6 +3,7 @@ package it.unibs.pajc.lithium.db;
 import it.unibs.pajc.db.Column;
 import it.unibs.pajc.db.Id;
 import it.unibs.pajc.db.SQLiteInterface;
+import it.unibs.pajc.db.Table;
 import it.unibs.pajc.lithium.db.om.Playlist;
 import it.unibs.pajc.lithium.db.om.User;
 import it.unibs.pajc.lithium.db.om.UserSavedPlaylist;
@@ -70,6 +71,13 @@ public class DbConnector implements Closeable {
         else throw new RuntimeException("There's more than one user with the same name");
     }
 
+    /**
+     * Authenticate the user
+     *
+     * @param name    The name of the user
+     * @param pswHash The hash of the user password
+     * @return The id of the user authenticated or -1 if it is not authenticated
+     */
     public int authenticateUser(String name, String pswHash) {
         String queryFilter = "where username = '%s' and pwd_hash = '%s'".formatted(name, pswHash);
         User[] users = dbInf.getObjects(User.class, 5, queryFilter);
@@ -87,6 +95,15 @@ public class DbConnector implements Closeable {
         return dbInf.getObjects(objType, numberOfResults, queryFilter);
     }
 
+    /**
+     * Retrieves an object from the db by searching for its id
+     *
+     * @param id      The id of the object to search
+     * @param objType The type class of the object to search for. It must have the {@link Table} annotation and at least
+     *                one field with the {@link Id} annotation (only the first annotated field is considered}
+     * @param <T>     The type of the object to search
+     * @return The object found or null if it is not found
+     */
     public <T> T getObjectById(int id, Class<T> objType) {
         var idName = getIdName(objType);
         if (idName == null) return null;

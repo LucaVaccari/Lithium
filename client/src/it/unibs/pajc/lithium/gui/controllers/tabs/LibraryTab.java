@@ -1,7 +1,7 @@
 package it.unibs.pajc.lithium.gui.controllers.tabs;
 
 import com.google.gson.JsonSyntaxException;
-import it.unibs.pajc.lithium.AccountManager;
+import it.unibs.pajc.lithium.managers.AccountManager;
 import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.db.om.Album;
 import it.unibs.pajc.lithium.db.om.Artist;

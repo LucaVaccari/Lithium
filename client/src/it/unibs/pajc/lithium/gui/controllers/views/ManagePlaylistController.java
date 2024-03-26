@@ -19,6 +19,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class ManagePlaylistController {
     // TODO delete playlist btn
@@ -68,11 +69,12 @@ public class ManagePlaylistController {
         onSearchTyped(null);
 
         playlistUpdate.addListener(playlist -> Platform.runLater(() -> {
-            this.playlist = playlist;
             if (playlist == null) {
                 SceneManager.backToMainScene();
                 return;
             }
+            if (!Objects.equals(this.playlist.getId(), playlist.getId())) return;
+            this.playlist = playlist;
             fillTrackView();
             trackView.refresh();
             searchTrackView.refresh();

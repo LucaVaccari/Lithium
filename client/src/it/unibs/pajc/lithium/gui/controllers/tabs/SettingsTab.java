@@ -1,6 +1,6 @@
 package it.unibs.pajc.lithium.gui.controllers.tabs;
 
-import it.unibs.pajc.lithium.AccountManager;
+import it.unibs.pajc.lithium.managers.AccountManager;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import javafx.fxml.FXML;

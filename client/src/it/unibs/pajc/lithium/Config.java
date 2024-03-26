@@ -17,7 +17,6 @@ public final class Config {
         try {
             if (Files.exists(Path.of(CONFIG_URL))) properties.load(new FileInputStream(CONFIG_URL));
         } catch (IOException e) {
-            e.printStackTrace();
             AlertUtil.showErrorAlert(e);
         }
     }
