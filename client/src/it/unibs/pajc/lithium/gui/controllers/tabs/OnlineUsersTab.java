@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 public class OnlineUsersTab extends CustomComponent {
     @Override
     protected String fxmlPath() {
-        return "/FXMLs/mainTabs/onlineUsersTab.fxml";
+        return "/FXMLs/mainTabs/partiesTab.fxml";
     }
 
     @FXML
