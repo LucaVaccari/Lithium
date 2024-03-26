@@ -1,4 +1,4 @@
-# TCP protocol specification
+# LCP specification
 
 Every message is made of a command and a body, separated by `;;`
 
@@ -12,11 +12,55 @@ Message: `command;;body`
 
 The messages that the client can receive.
 
+#### partyId
+
+Received after a create request, it communicates the id of the newly created party.
+
+Body: `partyId` (int)
+
+#### partySync
+
+Used to communicate the client the timestamp of the currently playing track in the party.
+
+Body: `timestamp` (double)
+
+#### partyChat
+
+Received when another user sends a chat message.
+
+Body: `message` (string)
+
+#### partyTrack
+
+Received when the party track has changed.
+
+Body: `trackId` (int)
+
+#### hostUpdated
+
+Received when the host of the party has changed.
+
+Body: `userId` (int)
+
+`userId` is the id of the new host
+
+#### userUpdate
+
+Contains a list of all users in a specific party.
+
+Body: `userId1::userId2::userid3...` (list of int)
+
+#### allParties
+
+Contains a list of all available parties.
+
+Body: `partyId1::partyId2::partyId3...` (list of int)
+
 #### error
 
 There was an error on the server (probably due to a client message not well formatted).
 
-Body: `errorMessage`
+Body: `errorMessage` (string)
 
 ## Server
 
@@ -84,3 +128,9 @@ Body: `partyId::message`
 
 `message` is the message to send. It must not contain the sequence `;;` or `::`, or the server will not be able to
 interpret it.
+
+#### allParties
+
+A request to get the id of all the parties.
+
+Body: `ignored` (but must not be empty)

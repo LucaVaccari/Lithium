@@ -7,26 +7,30 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ListeningParty {
-    private final Set<Connection> participants = ConcurrentHashMap.newKeySet();
-    private Connection ownerConnection;
+    private final Set<LcpConnection> participants = ConcurrentHashMap.newKeySet();
+    private LcpConnection ownerConnection;
     private Track currentTrack;
     private double currentTime;
 
-    public ListeningParty(Connection ownerConnection) {
+    public ListeningParty(LcpConnection ownerConnection) {
         this.ownerConnection = ownerConnection;
         participants.add(ownerConnection);
     }
 
-    public void join(Connection connection) {
+    public void join(LcpConnection connection) {
         participants.add(connection);
         connection.writeMessage("partyTrack;;" + currentTrack.getId());
         connection.writeMessage("partySync;;" + currentTime);
+        sendUserUpdate();
     }
 
-    public void leave(Connection connection) {
-        participants.remove(connection);
+    public void leave(LcpConnection connection) {
+        if (participants.contains(connection)) {
+            participants.remove(connection);
+            sendUserUpdate();
+        }
         if (connection.equals(ownerConnection)) {
-            Optional<Connection> ownerCandidate = participants.stream().findFirst();
+            Optional<LcpConnection> ownerCandidate = participants.stream().findFirst();
             ownerCandidate.ifPresent(value -> {
                 ownerConnection = value;
                 broadcast("hostUpdated;;" + ownerConnection.getUser().getId(), connection);
@@ -34,7 +38,7 @@ public class ListeningParty {
         }
     }
 
-    public void sync(double timestamp, Connection connection) {
+    public void sync(double timestamp, LcpConnection connection) {
         if (timestamp > currentTrack.getDuration() + 2 || timestamp < 0) {
             connection.writeMessage(
                     "error;;The timestamp must be greater than 0 and smaller than the duration of the" + " " + "track");
@@ -48,7 +52,7 @@ public class ListeningParty {
         broadcast("partySync;;" + timestamp, connection);
     }
 
-    public void updateTrack(Track track, Connection connection) {
+    public void updateTrack(Track track, LcpConnection connection) {
         if (!connection.equals(ownerConnection)) {
             connection.writeMessage("error;;Only the owner of the party can change the track");
             return;
@@ -58,12 +62,17 @@ public class ListeningParty {
         sync(0, connection);
     }
 
-    public void broadcast(String message, Connection sender) {
+    public void broadcast(String message, LcpConnection sender) {
         if (participants.contains(sender)) {
             sender.writeMessage("error;;You are not part of this party");
             return;
         }
         participants.stream().filter(p -> !p.equals(sender)).forEach(p -> p.writeMessage(message));
+    }
+
+    private void sendUserUpdate() {
+        var body = String.join("::", participants.stream().map(p -> String.valueOf(p.getUser().getId())).toList());
+        participants.forEach(p -> p.writeMessage("userUpdate;;" + body));
     }
 
     public boolean isEmpty() {

@@ -12,10 +12,10 @@ import java.net.Socket;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Connection {
+public class LcpConnection {
     private final Socket socket;
     private final PrintWriter writer;
-    private static final Map<String, NoReturnFunction2<String, Connection>> commands = new ConcurrentHashMap<>();
+    private static final Map<String, NoReturnFunction2<String, LcpConnection>> commands = new ConcurrentHashMap<>();
     private boolean running = true;
 
     private User user;
@@ -38,21 +38,22 @@ public class Connection {
                 return;
             }
             User newUser = ServerMain.getDbConnector().getObjectById(userid, User.class);
-            if (ConnectionReceiver.duplicateUser(newUser)) {
+            if (LcpServer.duplicateUser(newUser)) {
                 connection.writeMessage("error;;User is already authenticated on another socket");
                 return;
             }
             connection.user = newUser;
             System.out.println(connection.user.getUsername() + " authenticated");
         });
-        commands.put("joinParty", PartyManager::joinParty);
-        commands.put("leaveParty", PartyManager::leaveParty);
-        commands.put("syncParty", PartyManager::syncParty);
-        commands.put("partyTrack", PartyManager::updateTrack);
-        commands.put("partyChat", PartyManager::chat);
+        commands.put("joinParty", ServerPartyManager::joinParty);
+        commands.put("leaveParty", ServerPartyManager::leaveParty);
+        commands.put("syncParty", ServerPartyManager::syncParty);
+        commands.put("partyTrack", ServerPartyManager::updateTrack);
+        commands.put("partyChat", ServerPartyManager::chat);
+        commands.put("allParties", ServerPartyManager::allParties);
     }
 
-    public Connection(Socket socket) {
+    public LcpConnection(Socket socket) {
         this.socket = socket;
         try {
             writer = new PrintWriter(socket.getOutputStream(), true);
@@ -90,7 +91,8 @@ public class Connection {
         try {
             running = false;
             System.out.println("Connection removed: " + socket.getInetAddress().getHostAddress());
-            ConnectionReceiver.remove(this);
+            ServerPartyManager.userDisconnected(this);
+            LcpServer.remove(this);
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();

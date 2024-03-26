@@ -1,6 +1,8 @@
 package it.unibs.pajc.lithium.managers;
 
 import it.unibs.pajc.lithium.Config;
+import it.unibs.pajc.lithium.ItemProvider;
+import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.AlertUtil;
 import it.unibs.pajc.util.NoReturnFunction;
 import javafx.application.Platform;
@@ -14,9 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Handles the TCP connection with the server
+ * Handles the LCP connection with the server
  */
-public class ConnectionManager implements Runnable {
+public class LcpManager implements Runnable {
     private final Socket socket;
     private final PrintWriter writer;
     private final BufferedReader reader;
@@ -25,16 +27,19 @@ public class ConnectionManager implements Runnable {
     private static final Map<String, NoReturnFunction<String>> commands = new HashMap<>();
 
     static {
-        // todo partySync
-        // todo partyChat
-        // todo partyTrack
-        // todo partyUsers
+        commands.put("partyId", body -> PartyManager.setId(Integer.parseInt(body)));
+        commands.put("partySync", body -> PartyManager.syncParty(Double.parseDouble(body)));
+        commands.put("partyChat", PartyManager::partyChatReceived);
+        commands.put("partyTrack", body -> PartyManager.setCurrentTrack(ItemProvider.getItem(Integer.parseInt(body),
+                Track.class)));
+        commands.put("userUpdate", PartyManager::userUpdate);
         // todo allParties
         // todo hostUpdated
+        commands.put("hostUpdated", body -> PartyManager.updateHost(Integer.parseInt(body)));
         commands.put("error", m -> Platform.runLater(() -> AlertUtil.showErrorAlert("Error", "Session error", m)));
     }
 
-    public ConnectionManager() {
+    public LcpManager() {
         try {
             socket = new Socket(Config.getServerUrl(), Config.getServerPort());
             writer = new PrintWriter(socket.getOutputStream(), true);

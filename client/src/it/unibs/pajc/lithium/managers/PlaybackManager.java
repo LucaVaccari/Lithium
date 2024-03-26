@@ -42,6 +42,7 @@ public final class PlaybackManager {
         mediaPlayer.setOnReady(() -> {
             mediaPlayer.play();
             System.out.println("Playing track: " + track.getTitle());
+            if (PartyManager.isHost()) PartyManager.setCurrentTrack(track);
             update.invoke(track);
         });
     }

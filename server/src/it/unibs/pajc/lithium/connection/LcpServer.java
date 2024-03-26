@@ -7,13 +7,13 @@ import java.net.ServerSocket;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ConnectionReceiver implements Runnable {
+public class LcpServer implements Runnable {
     private final int port;
     private boolean running = true;
 
-    private static final Set<Connection> connections = ConcurrentHashMap.newKeySet();
+    private static final Set<LcpConnection> connections = ConcurrentHashMap.newKeySet();
 
-    public ConnectionReceiver(int port) {
+    public LcpServer(int port) {
         this.port = port;
     }
 
@@ -21,11 +21,11 @@ public class ConnectionReceiver implements Runnable {
     public void run() {
         System.out.println("Listening for upcoming connections on port: " + port);
 
-        Connection connection = null;
+        LcpConnection connection = null;
         try (var welcomeSocket = new ServerSocket(port)) {
             while (running) {
                 var socket = welcomeSocket.accept();
-                connection = new Connection(socket);
+                connection = new LcpConnection(socket);
                 connections.add(connection);
             }
         } catch (IOException e) {
@@ -34,7 +34,7 @@ public class ConnectionReceiver implements Runnable {
         }
     }
 
-    public static void remove(Connection connection) {
+    public static void remove(LcpConnection connection) {
         connections.remove(connection);
     }
 
@@ -43,7 +43,7 @@ public class ConnectionReceiver implements Runnable {
     }
 
     public void interrupt() {
-        for (Connection conn : connections) {
+        for (LcpConnection conn : connections) {
             conn.interrupt();
         }
         connections.clear();

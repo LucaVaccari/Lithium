@@ -1,7 +1,7 @@
 package it.unibs.pajc.lithium;
 
 import com.google.gson.Gson;
-import it.unibs.pajc.lithium.connection.ConnectionReceiver;
+import it.unibs.pajc.lithium.connection.LcpServer;
 import it.unibs.pajc.lithium.db.DbConnector;
 import it.unibs.pajc.lithium.http.HttpServerManager;
 
@@ -17,7 +17,7 @@ public class ServerMain {
         try {
             dbConnector.connect("jdbc:sqlite:database\\lithium.sqlite");
             HttpServerManager.start(HTTP_PORT);
-            new Thread(new ConnectionReceiver(SOCKET_PORT)).start();
+            new Thread(new LcpServer(SOCKET_PORT)).start();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

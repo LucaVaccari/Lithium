@@ -10,12 +10,12 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Handles all the parties active in the server
  */
-public class PartyManager {
+public class ServerPartyManager {
     private static final Map<Integer, ListeningParty> parties = new ConcurrentHashMap<>();
     private static final Stack<Integer> unusedIds = new Stack<>();
     private static int lastId = 0;
 
-    public static void createParty(Connection ownerConnection) {
+    public static void createParty(LcpConnection ownerConnection) {
         if (notAuth(ownerConnection)) return;
         var id = unusedIds.isEmpty() ? lastId++ : unusedIds.pop();
         var party = new ListeningParty(ownerConnection);
@@ -28,7 +28,7 @@ public class PartyManager {
      * @param body       Must contain either the id of the party to join or the keyword 'new' to create a new one
      * @param connection The connection from which this message arrived
      */
-    public static void joinParty(String body, Connection connection) {
+    public static void joinParty(String body, LcpConnection connection) {
         if (notAuth(connection)) return;
         if (body.equalsIgnoreCase("new")) {
             createParty(connection);
@@ -45,7 +45,7 @@ public class PartyManager {
      * @param body       The id of the party.
      * @param connection The connection from which this message arrived
      */
-    public static void leaveParty(String body, Connection connection) {
+    public static void leaveParty(String body, LcpConnection connection) {
         if (notAuth(connection)) return;
         var partyId = Integer.parseInt(body);
         if (partyNotExists(partyId, connection)) return;
@@ -62,7 +62,7 @@ public class PartyManager {
      * @param body       [partyId]::[timestamp] (partyId int, timestamp double)
      * @param connection The connection from which this message arrived
      */
-    public static void syncParty(String body, Connection connection) {
+    public static void syncParty(String body, LcpConnection connection) {
         if (notAuth(connection)) return;
         var tokens = body.strip().split("::");
         if (tokens.length != 2) {
@@ -82,7 +82,7 @@ public class PartyManager {
      * @param body       [partyId]::[trackId]
      * @param connection The connection from which this message arrived
      */
-    public static void updateTrack(String body, Connection connection) {
+    public static void updateTrack(String body, LcpConnection connection) {
         if (notAuth(connection)) return;
         var tokens = body.strip().split("::");
         if (tokens.length != 2) {
@@ -107,7 +107,7 @@ public class PartyManager {
      * @param body       [partyId]::[message]
      * @param connection The connection from which this message arrived
      */
-    public static void chat(String body, Connection connection) {
+    public static void chat(String body, LcpConnection connection) {
         if (notAuth(connection)) return;
         var tokens = body.strip().split("::");
         if (tokens.length != 2) {
@@ -120,13 +120,24 @@ public class PartyManager {
         parties.get(partyId).broadcast(tokens[1], connection);
     }
 
+    public static void userDisconnected(LcpConnection connection) {
+        for (var id : parties.keySet()) {
+            parties.get(id).leave(connection);
+        }
+    }
+
+    public static void allParties(String ignored, LcpConnection connection) {
+        var body = String.join("::", parties.keySet().stream().map(String::valueOf).toList());
+        connection.writeMessage("allParties;;" + body);
+    }
+
     /**
      * Utility to check if the user is not authenticated
      *
      * @param connection The connection from which a message arrived
      * @return true if the user is not authenticated, false otherwise
      */
-    private static boolean notAuth(Connection connection) {
+    private static boolean notAuth(LcpConnection connection) {
         if (connection.getUser() == null) {
             connection.writeMessage("error;;The user is not authenticated");
             return true;
@@ -141,7 +152,7 @@ public class PartyManager {
      * @param connection The connection from which a message arrived
      * @return true if the party does not exist, false otherwise
      */
-    private static boolean partyNotExists(int partyId, Connection connection) {
+    private static boolean partyNotExists(int partyId, LcpConnection connection) {
         if (!parties.containsKey(partyId)) {
             connection.writeMessage("error;;The specified party does not exist");
             return true;
