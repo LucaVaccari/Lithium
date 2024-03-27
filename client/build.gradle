@@ -18,6 +18,7 @@ dependencies {
     implementation 'com.konghq:unirest-java:3.13.3'
     implementation 'com.google.guava:guava:33.1.0-jre'
     implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    implementation 'io.github.mkpaz:atlantafx-base:2.0.1'
 }
 
 sourceSets {

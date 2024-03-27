@@ -1,58 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
-<fx:root prefHeight="600.0" prefWidth="900.0" type="AnchorPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-    <SplitPane fx:id="inPartyView" dividerPositions="0.5100222717149221" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/21"
+         xmlns:fx="http://javafx.com/fxml/1">
+    <SplitPane fx:id="inPartyView" dividerPositions="0.5100222717149221" prefHeight="160.0" prefWidth="200.0"
+               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+               AnchorPane.topAnchor="0.0">
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-            <StackPane alignment="TOP_LEFT" layoutX="5.0" layoutY="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-            <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" StackPane.alignment="CENTER">
-               <content>
-                      <FlowPane fx:id="usersPane" alignment="CENTER" columnHalignment="CENTER" hgap="7.0" maxHeight="Infinity" maxWidth="Infinity" vgap="7.0" />
-               </content>
-            </ScrollPane>
-                <Button fx:id="leavePartyBtn" mnemonicParsing="false" text="LEAVE" />
+            <StackPane alignment="TOP_LEFT" layoutX="5.0" layoutY="5.0" AnchorPane.bottomAnchor="5.0"
+                       AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="Infinity"
+                            maxWidth="Infinity" StackPane.alignment="CENTER">
+                    <FlowPane fx:id="usersPane" alignment="CENTER" columnHalignment="CENTER" hgap="7.0"
+                              maxHeight="Infinity" maxWidth="Infinity" vgap="7.0"/>
+                </ScrollPane>
+                <Button fx:id="leavePartyBtn" mnemonicParsing="false" text="LEAVE"/>
             </StackPane>
         </AnchorPane>
         <AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0" minWidth="0.0" prefHeight="160.0">
-            <VBox maxHeight="Infinity" maxWidth="Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="Infinity" maxWidth="Infinity" VBox.vgrow="ALWAYS">
-                    <ListView fx:id="messagesListView" maxHeight="Infinity" maxWidth="Infinity" />
+            <VBox maxHeight="Infinity" maxWidth="Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="Infinity"
+                            maxWidth="Infinity" VBox.vgrow="ALWAYS">
+                    <ListView fx:id="messagesListView" maxHeight="Infinity" maxWidth="Infinity"/>
                 </ScrollPane>
                 <HBox alignment="CENTER" maxWidth="Infinity">
-                    <TextField fx:id="messageTxtField" promptText="Message..." HBox.hgrow="ALWAYS" />
-                    <Button fx:id="sendBtn" mnemonicParsing="false" text="Send" />
+                    <TextField fx:id="messageTxtField" promptText="Message..." HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="sendBtn" mnemonicParsing="false" text="Send"/>
                 </HBox>
             </VBox>
         </AnchorPane>
     </SplitPane>
-    <BorderPane fx:id="outOfPartyView" visible="false" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+    <BorderPane fx:id="outOfPartyView" visible="false" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0"
+                AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
         <center>
-            <FlowPane fx:id="allPartiesPane" alignment="CENTER" columnHalignment="CENTER" hgap="10.0" maxHeight="Infinity" maxWidth="Infinity" vgap="10.0" BorderPane.alignment="CENTER" />
+            <FlowPane fx:id="allPartiesPane" alignment="CENTER" columnHalignment="CENTER" hgap="10.0"
+                      maxHeight="Infinity" maxWidth="Infinity" vgap="10.0" BorderPane.alignment="CENTER"/>
         </center>
         <top>
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Available parties" textAlignment="CENTER" BorderPane.alignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Available parties" textAlignment="CENTER"
+                   BorderPane.alignment="CENTER">
                 <font>
-                    <Font name="System Bold" size="24.0" />
+                    <Font name="System Bold" size="24.0"/>
                 </font>
             </Label>
         </top>
         <bottom>
             <Button fx:id="createPartyBtn" mnemonicParsing="false" text="CREATE A PARTY" BorderPane.alignment="CENTER">
                 <font>
-                    <Font size="14.0" />
+                    <Font size="14.0"/>
                 </font>
             </Button>
         </bottom>

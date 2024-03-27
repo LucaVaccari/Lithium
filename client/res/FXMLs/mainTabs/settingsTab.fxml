@@ -3,22 +3,21 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
-<fx:root prefHeight="600.0" prefWidth="900.0" type="AnchorPane" xmlns="http://javafx.com/javafx/21"
-         xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <VBox prefHeight="200.0" prefWidth="100.0" spacing="15.0" AnchorPane.bottomAnchor="15.0"
           AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
-        <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0"
+        <HBox maxHeight="Infinity" maxWidth="Infinity" prefHeight="100.0" prefWidth="200.0"
               spacing="150.0" VBox.vgrow="ALWAYS"/>
-        <HBox layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+        <HBox layoutX="10.0" layoutY="10.0" maxHeight="Infinity" maxWidth="Infinity"
               prefHeight="100.0" prefWidth="200.0" spacing="150.0" VBox.vgrow="ALWAYS"/>
-        <HBox layoutX="10.0" layoutY="110.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+        <HBox layoutX="10.0" layoutY="110.0" maxHeight="Infinity" maxWidth="Infinity"
               prefHeight="100.0" prefWidth="200.0" spacing="150.0" VBox.vgrow="ALWAYS"/>
-        <HBox layoutX="10.0" layoutY="210.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+        <HBox layoutX="10.0" layoutY="210.0" maxHeight="Infinity" maxWidth="Infinity"
               prefHeight="100.0" prefWidth="200.0" spacing="150.0" VBox.vgrow="ALWAYS">
-            <Label fx:id="loggedInAsLbl" alignment="CENTER" maxHeight="1.7976931348623157E308"
-                   maxWidth="1.7976931348623157E308" text="Logged in as" textAlignment="CENTER" wrapText="true"
+            <Label fx:id="loggedInAsLbl" alignment="CENTER" maxHeight="Infinity"
+                   maxWidth="Infinity" text="Logged in as" textAlignment="CENTER" wrapText="true"
                    HBox.hgrow="ALWAYS"/>
-            <Button fx:id="logOutBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+            <Button fx:id="logOutBtn" maxHeight="Infinity" maxWidth="Infinity"
                     mnemonicParsing="false" text="LOG OUT" HBox.hgrow="ALWAYS"/>
         </HBox>
     </VBox>

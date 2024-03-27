@@ -1,5 +1,6 @@
 package it.unibs.pajc.lithium;
 
+import atlantafx.base.theme.NordDark;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.managers.LcpManager;
 import javafx.application.Application;
@@ -26,5 +27,7 @@ public class ClientMain extends Application {
 //            return;
 //        }
         SceneManager.loadScene("/FXMLs/login.fxml", this);
+
+        Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
     }
 }
