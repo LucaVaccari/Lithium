@@ -59,7 +59,6 @@
     - [x] Add to playlist
 - [x] LCP
     - [x] Listening party system
-- [ ] Interface for managing the db
 - [ ] Write HTTP routes specification
 
 ## Database
