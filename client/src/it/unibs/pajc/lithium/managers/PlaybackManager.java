@@ -19,6 +19,7 @@ public final class PlaybackManager {
     private final static LinkedList<Track> trackQueue = new LinkedList<>();
     private final static Stack<Track> previouslyPlayedTracks = new Stack<>();
     private final static Observer<Track> update = new Observer<>();
+    private static Track currentTrack;
 
     private static void playQueue() {
         if (mediaPlayer != null) mediaPlayer.stop();
@@ -38,11 +39,14 @@ public final class PlaybackManager {
         mediaPlayer.setOnEndOfMedia(() -> {
             if (trackQueue.isEmpty()) stopPlayback();
             else playQueue();
+            currentTrack = null;
+            update.invoke(track);
         });
         mediaPlayer.setOnReady(() -> {
             mediaPlayer.play();
             System.out.println("Playing track: " + track.getTitle());
             if (PartyManager.isHost()) PartyManager.sendCurrentTrack(track);
+            currentTrack = track;
             update.invoke(track);
         });
     }
@@ -124,6 +128,7 @@ public final class PlaybackManager {
         pause();
         trackQueue.clear();
         update.invoke(getCurentTrack());
+        currentTrack = null;
     }
 
     /**
@@ -148,8 +153,7 @@ public final class PlaybackManager {
     }
 
     public static Track getCurentTrack() {
-        // TODO fix
-        return previouslyPlayedTracks.isEmpty() ? null : previouslyPlayedTracks.peek();
+        return currentTrack;
     }
 
     public static List<Track> getTrackQueue() {

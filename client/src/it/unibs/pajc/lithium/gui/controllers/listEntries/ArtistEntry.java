@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 
 public class ArtistEntry extends ItemEntry {
-    // todo when follow update view
     @FXML
     private Node root;
     @FXML

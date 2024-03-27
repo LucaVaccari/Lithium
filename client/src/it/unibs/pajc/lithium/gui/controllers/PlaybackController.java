@@ -77,7 +77,7 @@ public class PlaybackController extends CustomComponent {
         if (track == null) currentlyPlayingLbl.setText("Nothing is playing");
         else currentlyPlayingLbl.setText(ItemProvider.getArtistTrackFormatted(track));
         pauseBtn.setText(PlaybackManager.isPlaying() ? "Pause" : "Play");
-        disableButtons(PartyManager.joinedAndNotHost());
+        disableButtons(PartyManager.joinedAndNotHost() || track == null);
     }
 
     private void disableButtons(boolean disable) {

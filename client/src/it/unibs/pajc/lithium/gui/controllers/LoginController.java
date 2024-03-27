@@ -15,7 +15,7 @@ import javafx.scene.layout.HBox;
 import java.nio.charset.StandardCharsets;
 
 public class LoginController {
-    // todo: username max 20 characters
+    public static final int MAX_USERNAME_LENGTH = 20;
     @FXML
     private HBox pswContainer;
     @FXML
@@ -63,6 +63,11 @@ public class LoginController {
 
         if (!username.matches("^[a-zA-Z0-9_]+")) {
             messagesLabel.setText("The username must contains only digits, letters or _");
+            submitBtn.setDisable(true);
+        }
+
+        if (username.length() > MAX_USERNAME_LENGTH) {
+            messagesLabel.setText("The username must be less than 20 characters");
             submitBtn.setDisable(true);
         }
 

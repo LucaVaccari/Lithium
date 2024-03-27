@@ -2,6 +2,7 @@ package it.unibs.pajc.lithium.gui.controllers.tabs;
 
 import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.db.om.Album;
+import it.unibs.pajc.lithium.db.om.Artist;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import it.unibs.pajc.lithium.gui.SceneManager;
@@ -49,13 +50,20 @@ public class PlayingNowTab extends CustomComponent {
             MainSceneController.setSelectedItem(track);
             SceneManager.loadScene("/FXMLs/itemViews/trackView.fxml", this);
         });
-        // TODO click on artist
+
         currentTrackAlbumLbl.setOnMouseClicked(e -> {
             var track = PlaybackManager.getCurentTrack();
             if (track == null) return;
             var album = ItemProvider.getItem(track.getAlbumId(), Album.class);
             MainSceneController.setSelectedItem(album);
             SceneManager.loadScene("/FXMLs/itemViews/albumView.fxml", this);
+        });
+
+        currentTrackArtistLbl.setOnMouseClicked(e -> {
+            if (PlaybackManager.getCurentTrack() == null) return;
+            var artist = ItemProvider.getItem(PlaybackManager.getCurentTrack().getArtistIds()[0], Artist.class);
+            MainSceneController.setSelectedItem(artist);
+            SceneManager.loadScene("/FXMLs/itemViews/artistView.fxml", this);
         });
     }
 
