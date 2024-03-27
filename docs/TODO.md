@@ -1,5 +1,11 @@
 # TODOs
 
+QUICK:
+
+- [ ] settings
+- [ ] upload image
+- [ ] http routes
+
 ## Client
 
 - [ ] Client interface

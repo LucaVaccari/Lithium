@@ -25,7 +25,6 @@ public final class PlaybackManager {
         if (mediaPlayer != null) mediaPlayer.stop();
         if (trackQueue.isEmpty()) return;
         var track = trackQueue.pollFirst();
-        previouslyPlayedTracks.push(track);
         String url = HttpHandler.buildUrl("audio/" + track.getAudioPath());
         mediaPlayer = new MediaPlayer(new Media(url));
         mediaPlayer.setStartTime(Duration.ZERO);
@@ -47,6 +46,7 @@ public final class PlaybackManager {
             System.out.println("Playing track: " + track.getTitle());
             if (PartyManager.isHost()) PartyManager.sendCurrentTrack(track);
             currentTrack = track;
+            previouslyPlayedTracks.push(track);
             update.invoke(track);
         });
     }
@@ -74,7 +74,7 @@ public final class PlaybackManager {
     }
 
     public static void addToQueue(Track track) {
-        if (trackQueue.isEmpty()) playImmediately(track);
+        if (currentTrack == null) playImmediately(track);
         else trackQueue.addLast(track);
         update.invoke(getCurentTrack());
     }
@@ -105,6 +105,7 @@ public final class PlaybackManager {
 
     public static void previousTrack() {
         if (previouslyPlayedTracks.isEmpty()) return;
+        playNext(previouslyPlayedTracks.pop());
         playImmediately(previouslyPlayedTracks.pop());
     }
 

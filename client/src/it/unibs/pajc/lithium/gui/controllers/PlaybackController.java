@@ -37,7 +37,6 @@ public class PlaybackController extends CustomComponent {
     @FXML
     private void initialize() {
         update(PlaybackManager.getCurentTrack());
-        disableButtons(true);
         backBtn.setOnAction(ignored -> PlaybackManager.previousTrack());
         pauseBtn.setOnAction(ignored -> PlaybackManager.togglePlay());
         forwardBtn.setOnAction(ignored -> PlaybackManager.nextTrack());
@@ -55,7 +54,6 @@ public class PlaybackController extends CustomComponent {
         PartyManager.partyJoined.addListener(partyId -> disableButtons(PartyManager.joinedAndNotHost()));
         PartyManager.hostUpdate.addListener(
                 hostId -> disableButtons(!Objects.equals(AccountManager.getUser().getId(), hostId)));
-        PlaybackManager.getUpdate().addListener(track -> Platform.runLater(() -> disableButtons(track == null)));
 
         if (timer != null) return;
         timer = new AnimationTimer() {
@@ -77,7 +75,8 @@ public class PlaybackController extends CustomComponent {
         if (track == null) currentlyPlayingLbl.setText("Nothing is playing");
         else currentlyPlayingLbl.setText(ItemProvider.getArtistTrackFormatted(track));
         pauseBtn.setText(PlaybackManager.isPlaying() ? "Pause" : "Play");
-        disableButtons(PartyManager.joinedAndNotHost() || track == null);
+        if (PartyManager.joinedAndNotHost() || track == null) disableButtons(true);
+        if (!PartyManager.anyPartyJoined() && track != null) disableButtons(false);
     }
 
     private void disableButtons(boolean disable) {
