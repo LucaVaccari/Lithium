@@ -73,6 +73,6 @@ public class ArtistViewController {
     }
 
     private boolean isFollowed() {
-        return Arrays.asList(AccountManager.getUser().getFollowedArtistsIds()).contains(artist.getId());
+        return Arrays.asList(AccountManager.getUser().getFollowedArtistIds()).contains(artist.getId());
     }
 }

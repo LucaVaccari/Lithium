@@ -21,7 +21,7 @@
                 <PlayingNowTab/>
             </Tab>
             <Tab text="Online users">
-                <OnlineUsersTab/>
+                <PartiesTab/>
             </Tab>
             <Tab text="Settings">
                 <SettingsTab/>

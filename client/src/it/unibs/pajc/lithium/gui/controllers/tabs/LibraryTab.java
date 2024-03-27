@@ -61,7 +61,7 @@ public class LibraryTab extends CustomComponent {
     }
 
     private void updateAlbumList() throws UnirestException, JsonSyntaxException {
-        var albums = ItemProvider.getItems(AccountManager.getUser().getSavedAlbumsIds(), Album.class);
+        var albums = ItemProvider.getItems(AccountManager.getUser().getSavedAlbumIds(), Album.class);
         if (albums == null) {
             System.err.println("Null albums in search tab");
             return;
@@ -73,7 +73,7 @@ public class LibraryTab extends CustomComponent {
     }
 
     private void updateArtistList() throws UnirestException, JsonSyntaxException {
-        var artists = ItemProvider.getItems(AccountManager.getUser().getFollowedArtistsIds(), Artist.class);
+        var artists = ItemProvider.getItems(AccountManager.getUser().getFollowedArtistIds(), Artist.class);
         if (artists == null) {
             System.err.println("Null items in search tab");
             return;
@@ -85,7 +85,7 @@ public class LibraryTab extends CustomComponent {
     }
 
     private void updatePlaylistList() throws UnirestException, JsonSyntaxException {
-        var playlists = ItemProvider.getItems(AccountManager.getUser().getSavedPlaylistsIds(), Playlist.class);
+        var playlists = ItemProvider.getItems(AccountManager.getUser().getSavedPlaylistIds(), Playlist.class);
         if (playlists == null) {
             System.err.println("Null items in search tab");
             return;

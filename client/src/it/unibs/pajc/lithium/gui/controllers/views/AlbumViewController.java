@@ -77,6 +77,6 @@ public class AlbumViewController {
     }
 
     private boolean isSaved() {
-        return Arrays.asList(AccountManager.getUser().getSavedAlbumsIds()).contains(album.getId());
+        return Arrays.asList(AccountManager.getUser().getSavedAlbumIds()).contains(album.getId());
     }
 }

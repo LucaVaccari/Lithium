@@ -105,7 +105,7 @@ public class PlaylistViewController {
     }
 
     private boolean isSaved() {
-        return Arrays.asList(AccountManager.getUser().getSavedPlaylistsIds()).contains(playlist.getId());
+        return Arrays.asList(AccountManager.getUser().getSavedPlaylistIds()).contains(playlist.getId());
     }
 
     public void onManageBtn(ActionEvent ignored) {

@@ -14,7 +14,7 @@ The messages that the client can receive.
 
 #### partyId
 
-Received after a create request, it communicates the id of the newly created party.
+Received after a 'create' request, it communicates the id of the newly created party.
 
 Body: `partyId` (int)
 
@@ -36,6 +36,12 @@ Received when the party track has changed.
 
 Body: `trackId` (int)
 
+#### pause
+
+Received when the host paused/unpaused the playback.
+
+Body: `pause` `|` `unpause`
+
 #### hostUpdated
 
 Received when the host of the party has changed.
@@ -54,7 +60,7 @@ Body: `userId1::userId2::userid3...` (list of int)
 
 Contains a list of all available parties.
 
-Body: `partyId1::partyId2::partyId3...` (list of int)
+Body: `partyId1,,trackId1,,ownerId1::partyId2,,trackId2,,ownerId2::partyId3,,...` (list of int)
 
 #### error
 
@@ -119,6 +125,12 @@ Only the host of the party can send this message.
 Body: `partyId::trackId`
 
 `trackId` is the id of the new track
+
+#### pause
+
+Received when the host paused/unpaused the playback.
+
+Body: `partyId::pause|unpause`
 
 #### partyChat
 

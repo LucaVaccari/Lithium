@@ -49,6 +49,7 @@ public class LcpConnection {
         commands.put("leaveParty", ServerPartyManager::leaveParty);
         commands.put("syncParty", ServerPartyManager::syncParty);
         commands.put("partyTrack", ServerPartyManager::updateTrack);
+        commands.put("pause", ServerPartyManager::pause);
         commands.put("partyChat", ServerPartyManager::chat);
         commands.put("allParties", ServerPartyManager::allParties);
     }

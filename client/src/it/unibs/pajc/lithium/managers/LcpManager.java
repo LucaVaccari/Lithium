@@ -30,13 +30,22 @@ public class LcpManager implements Runnable {
         commands.put("partyId", body -> PartyManager.setId(Integer.parseInt(body)));
         commands.put("partySync", body -> PartyManager.syncParty(Double.parseDouble(body)));
         commands.put("partyChat", PartyManager::partyChatReceived);
-        commands.put("partyTrack", body -> PartyManager.setCurrentTrack(ItemProvider.getItem(Integer.parseInt(body),
-                Track.class)));
+        commands.put("partyTrack",
+                body -> PartyManager.setCurrentTrack(ItemProvider.getItem(Integer.parseInt(body), Track.class)));
+        commands.put("pause", body -> {
+            switch (body) {
+                case "pause" -> PartyManager.pause(true);
+                case "unpause" -> PartyManager.pause(false);
+                default -> System.err.println("Unexpected lcp pause msg body: " + body);
+            }
+        });
         commands.put("userUpdate", PartyManager::userUpdate);
-        // todo allParties
+        commands.put("allParties", PartyManager::partiesUpdate);
         // todo hostUpdated
         commands.put("hostUpdated", body -> PartyManager.updateHost(Integer.parseInt(body)));
         commands.put("error", m -> Platform.runLater(() -> AlertUtil.showErrorAlert("Error", "Session error", m)));
+
+        // todo block playback when in party
     }
 
     public LcpManager() {

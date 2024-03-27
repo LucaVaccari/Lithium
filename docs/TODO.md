@@ -13,7 +13,8 @@
         - [x] Search query
         - [ ] Right click context menus
     - [ ] Settings tab
-        - [ ] Server address
+        - [ ] Server address (HTTP and LCP hosts and ports)
+        - [ ] ProPic img upload
         - [x] Log out
         - [ ] Save settings in file
     - [ ] detail views
@@ -24,7 +25,8 @@
         - [ ] artist details
         - [x] playlist details
             - [x] manage playlist btn
-        - [x] playlist management
+        - [ ] playlist management
+            - [ ] cover image upload
     - [ ] Playback controls
         - [x] song title
         - [x] back, pause, forward
@@ -49,18 +51,20 @@
         - [x] Read
         - [x] Update
         - [x] Delete
-- [ ] Interface for managing the db
 - [x] Define and implement HTTP contexts
     - [x] Client authentication
     - [x] Search queries
     - [x] Streaming request
     - [x] User save item
     - [x] Add to playlist
-- [ ] online user management
-    - [ ] create websocket
+- [x] LCP
+    - [x] Listening party system
+- [ ] Interface for managing the db
+- [ ] Write HTTP routes specification
 
 ## Database
 
 - [x] define db structure
 - [x] write sql file for db creation
 - [x] write queries for filling the db with test samples
+- [ ] add schema to db

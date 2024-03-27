@@ -80,16 +80,19 @@ public final class PlaybackManager {
     }
 
     public static void togglePlay() {
-        if (mediaPlayer != null) {
-            MediaPlayer.Status status = mediaPlayer.getStatus();
-            if (status.equals(MediaPlayer.Status.PAUSED)) mediaPlayer.play();
-            else if (status.equals(MediaPlayer.Status.PLAYING)) mediaPlayer.pause();
-            else System.out.println("Current status: " + status);
-        }
+        if (mediaPlayer == null) return;
+        MediaPlayer.Status status = mediaPlayer.getStatus();
+        if (status.equals(MediaPlayer.Status.PAUSED)) mediaPlayer.play();
+        else if (status.equals(MediaPlayer.Status.PLAYING)) mediaPlayer.pause();
+        else System.out.println("Current status: " + status);
     }
 
     public static void pause() {
         if (mediaPlayer != null) mediaPlayer.pause();
+    }
+
+    public static void play() {
+        if (mediaPlayer != null) mediaPlayer.play();
     }
 
     public static void previousTrack() {

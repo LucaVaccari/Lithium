@@ -20,6 +20,7 @@ public class ServerPartyManager {
         var id = unusedIds.isEmpty() ? lastId++ : unusedIds.pop();
         var party = new ListeningParty(ownerConnection);
         parties.put(id, party);
+        sendAllPartiesUpdate(id);
     }
 
     /**
@@ -53,6 +54,7 @@ public class ServerPartyManager {
         if (parties.get(partyId).isEmpty()) {
             parties.remove(partyId);
             unusedIds.add(partyId);
+            sendAllPartiesUpdate(partyId);
         }
     }
 
@@ -101,6 +103,24 @@ public class ServerPartyManager {
         parties.get(partyId).updateTrack(track, connection);
     }
 
+    public static void pause(String body, LcpConnection connection) {
+        if (notAuth(connection)) return;
+        var tokens = body.strip().split("::");
+        if (tokens.length != 2) {
+            connection.writeMessage(
+                    "error;;The body of the message must be formed in the following way: " + "<partyId>::<pause" +
+                            "|unpause>");
+            return;
+        }
+        var partyId = Integer.parseInt(tokens[0]);
+        if (partyNotExists(partyId, connection)) return;
+        switch (tokens[1]) {
+            case "pause" -> parties.get(partyId).pause(true, connection);
+            case "unpause" -> parties.get(partyId).pause(false, connection);
+            default -> connection.writeMessage("error;;Invalid message. It can be only 'pause' or 'unpause'");
+        }
+    }
+
     /**
      * Sends a chat message to all the users in the party, except for the message sender
      *
@@ -127,8 +147,18 @@ public class ServerPartyManager {
     }
 
     public static void allParties(String ignored, LcpConnection connection) {
-        var body = String.join("::", parties.keySet().stream().map(String::valueOf).toList());
+        var elements = parties.keySet().stream().map(partyId -> {
+            var party = parties.get(partyId);
+            return "%d,,%d,,%d".formatted(partyId, party.getCurrentTrack().getId(), party.getOwner().getId());
+        }).toList();
+        var body = String.join("::", elements);
         connection.writeMessage("allParties;;" + body);
+    }
+
+    private static void sendAllPartiesUpdate(int id) {
+        for (var partyId : parties.keySet().stream().filter(i -> i != id).toList()) {
+            parties.get(partyId).getParticipants().forEach(c -> allParties("", c));
+        }
     }
 
     /**

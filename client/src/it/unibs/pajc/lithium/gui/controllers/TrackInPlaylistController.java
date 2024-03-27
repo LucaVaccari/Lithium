@@ -32,7 +32,7 @@ public class TrackInPlaylistController {
     @FXML
     private void initialize() {
         track = (Track) MainSceneController.getSelectedItem();
-        var playlistIds = AccountManager.getUser().getSavedPlaylistsIds();
+        var playlistIds = AccountManager.getUser().getSavedPlaylistIds();
         playlists = ItemProvider.getItems(playlistIds, Playlist.class);
 
         Arrays.stream(playlists).filter(Objects::nonNull).forEach(playlist -> {

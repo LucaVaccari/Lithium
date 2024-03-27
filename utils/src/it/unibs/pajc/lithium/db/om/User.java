@@ -21,11 +21,11 @@ public class User implements Item, Serializable {
     @Column(name = "profile_pic_path")
     private String profilePicPath;
     @ForeignKey(otherTableName = "user_saved_album", otherTableColumnName = "album_id")
-    private Integer[] savedAlbumsIds;
+    private Integer[] savedAlbumIds;
     @ForeignKey(otherTableName = "user_saved_playlist", otherTableColumnName = "playlist_id")
-    private Integer[] savedPlaylistsIds;
+    private Integer[] savedPlaylistIds;
     @ForeignKey(otherTableName = "artist_follower", otherTableColumnName = "artist_id")
-    private Integer[] followedArtistsIds;
+    private Integer[] followedArtistIds;
 
     public User() {
     }
@@ -43,24 +43,28 @@ public class User implements Item, Serializable {
         return username;
     }
 
-    public Integer[] getSavedAlbumsIds() {
-        return savedAlbumsIds;
+    public String getProfilePicPath() {
+        return profilePicPath;
     }
 
-    public Integer[] getSavedPlaylistsIds() {
-        return savedPlaylistsIds;
+    public Integer[] getSavedAlbumIds() {
+        return savedAlbumIds;
     }
 
-    public Integer[] getFollowedArtistsIds() {
-        return followedArtistsIds;
+    public Integer[] getSavedPlaylistIds() {
+        return savedPlaylistIds;
+    }
+
+    public Integer[] getFollowedArtistIds() {
+        return followedArtistIds;
     }
 
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", username='" + username + '\'' + ", pwdHash='" + pwdHash + '\'' +
-                ", profilePicPath='" + profilePicPath + '\'' + ", savedAlbumsIds=" + Arrays.toString(savedAlbumsIds) +
-                ", savedPlaylistsIds=" + Arrays.toString(savedPlaylistsIds) + ", followedArtistsIds=" +
-                Arrays.toString(followedArtistsIds) + '}';
+                ", profilePicPath='" + profilePicPath + '\'' + ", savedAlbumIds=" + Arrays.toString(savedAlbumIds) +
+                ", savedPlaylistIds=" + Arrays.toString(savedPlaylistIds) + ", followedArtistIds=" +
+                Arrays.toString(followedArtistIds) + '}';
     }
 
     @Override

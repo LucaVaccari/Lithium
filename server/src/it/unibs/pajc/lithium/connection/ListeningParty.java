@@ -1,7 +1,9 @@
 package it.unibs.pajc.lithium.connection;
 
 import it.unibs.pajc.lithium.db.om.Track;
+import it.unibs.pajc.lithium.db.om.User;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -62,6 +64,10 @@ public class ListeningParty {
         sync(0, connection);
     }
 
+    public void pause(boolean pause, LcpConnection connection) {
+        broadcast("pause;;" + (pause ? "pause" : "unpause"), connection);
+    }
+
     public void broadcast(String message, LcpConnection sender) {
         if (participants.contains(sender)) {
             sender.writeMessage("error;;You are not part of this party");
@@ -77,5 +83,17 @@ public class ListeningParty {
 
     public boolean isEmpty() {
         return participants.isEmpty();
+    }
+
+    public Set<LcpConnection> getParticipants() {
+        return Collections.unmodifiableSet(participants);
+    }
+
+    public Track getCurrentTrack() {
+        return currentTrack;
+    }
+
+    public User getOwner() {
+        return ownerConnection.getUser();
     }
 }
