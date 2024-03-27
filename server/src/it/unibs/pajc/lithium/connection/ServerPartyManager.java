@@ -101,6 +101,7 @@ public class ServerPartyManager {
             return;
         }
         parties.get(partyId).updateTrack(track, connection);
+        sendAllPartiesUpdate();
     }
 
     public static void pause(String body, LcpConnection connection) {

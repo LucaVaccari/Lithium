@@ -58,7 +58,7 @@ public class PlaybackController extends CustomComponent {
                 Track track = PlaybackManager.getCurentTrack();
                 if (track == null) return;
                 if (!sliderChanging) progressSlider.setValue(PlaybackManager.getCurrentTime());
-                int currentTime = PlaybackManager.getCurrentTime();
+                int currentTime = (int) PlaybackManager.getCurrentTime();
                 progressLbl.setText("%02d:%02d".formatted(currentTime / 60, currentTime % 60));
             }
         };

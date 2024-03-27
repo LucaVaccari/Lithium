@@ -49,6 +49,22 @@ public class PartyManager {
      */
     public static final Observer<Integer> partyJoined = new Observer<>();
 
+    static {
+        new Thread(() -> {
+            while (true) {
+                if (joinedAndHost()) {
+                    sendSync(PlaybackManager.getCurrentTime());
+                    sendPause(!PlaybackManager.isPlaying());
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
+    }
+
     public static void requestAllParties() {
         getConnectionManager().writeMessage("allParties;;ignored");
     }
@@ -71,8 +87,11 @@ public class PartyManager {
         if (anyPartyJoined()) sendLeave();
         isHost = true;
         getConnectionManager().writeMessage("joinParty;;new");
-        if (PlaybackManager.getCurentTrack() != null) sendCurrentTrack(PlaybackManager.getCurentTrack());
-        sendSyncParty(PlaybackManager.getCurrentTime());
+        if (PlaybackManager.getCurentTrack() != null) {
+            sendCurrentTrack(PlaybackManager.getCurentTrack());
+            sendPause(false);
+        }
+        sendSync(PlaybackManager.getCurrentTime());
     }
 
     /**
@@ -101,7 +120,7 @@ public class PartyManager {
      *
      * @param timestamp The current playback time
      */
-    public static void sendSyncParty(double timestamp) {
+    public static void sendSync(double timestamp) {
         if (!anyPartyJoined()) return;
         if (isHost) getConnectionManager().writeMessage("syncParty;;%d::%f".formatted(id, timestamp));
     }
@@ -109,11 +128,11 @@ public class PartyManager {
     /**
      * Receives a request to sync the playback.
      *
-     * @param timestamp The current playback time
+     * @param timestamp The current playback time in seconds
      */
     public static void receiveSync(double timestamp) {
         if (!anyPartyJoined()) return;
-        if (!isHost) PlaybackManager.seek(timestamp);
+        if (!isHost && Math.abs(timestamp - PlaybackManager.getCurrentTime()) > 1) PlaybackManager.seek(timestamp);
     }
 
     /**
@@ -133,7 +152,7 @@ public class PartyManager {
      */
     public static void receiveCurrentTrack(Track track) {
         if (!anyPartyJoined()) return;
-        if (isHost) PlaybackManager.playImmediately(track);
+        if (!isHost) PlaybackManager.playImmediately(track);
     }
 
     /**
@@ -153,6 +172,7 @@ public class PartyManager {
      */
     public static void receivePause(boolean pause) {
         if (!anyPartyJoined() || isHost) return;
+        System.out.println("Pause received");
         if (pause) PlaybackManager.pause();
         else PlaybackManager.play();
     }
@@ -202,6 +222,10 @@ public class PartyManager {
 
     public static void setId(int id) {
         PartyManager.id = id;
+        if (PlaybackManager.getCurentTrack() != null && isHost) {
+            sendCurrentTrack(PlaybackManager.getCurentTrack());
+            sendPause(false);
+        }
         partyJoined.invoke(id);
     }
 
@@ -215,5 +239,9 @@ public class PartyManager {
 
     public static int getHostId() {
         return hostId;
+    }
+
+    public static boolean joinedAndHost() {
+        return anyPartyJoined() && isHost();
     }
 }

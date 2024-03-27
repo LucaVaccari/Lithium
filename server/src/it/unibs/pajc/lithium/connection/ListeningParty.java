@@ -13,6 +13,7 @@ public class ListeningParty {
     private LcpConnection hostConnection;
     private Track currentTrack;
     private double currentTime;
+    private boolean paused;
 
     public ListeningParty(LcpConnection hostConnection) {
         this.hostConnection = hostConnection;
@@ -27,6 +28,7 @@ public class ListeningParty {
         connection.writeMessage("partySync;;" + currentTime);
         sendUserUpdate();
         connection.writeMessage("host;;" + hostConnection.getUser().getId());
+        connection.writeMessage("pause;;" + (paused ? "pause" : "unpause"));
     }
 
     public void leave(LcpConnection connection) {
@@ -50,7 +52,7 @@ public class ListeningParty {
         }
         if (timestamp > currentTrack.getDuration() + 2 || timestamp < 0) {
             connection.writeMessage(
-                    "error;;The timestamp must be greater than 0 and smaller than the duration of the" + " " + "track");
+                    "error;;The timestamp must be greater than 0 and smaller than the duration of the track");
             return;
         }
         if (!connection.equals(hostConnection)) {
@@ -72,6 +74,7 @@ public class ListeningParty {
     }
 
     public void pause(boolean pause, LcpConnection connection) {
+        this.paused = pause;
         broadcast("pause;;" + (pause ? "pause" : "unpause"), connection, true);
     }
 

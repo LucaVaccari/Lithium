@@ -90,13 +90,13 @@ public final class PlaybackManager {
     public static void pause() {
         if (mediaPlayer == null) return;
         mediaPlayer.pause();
-        PartyManager.sendPause(true);
+        if (PartyManager.isHost()) PartyManager.sendPause(true);
     }
 
     public static void play() {
         if (mediaPlayer == null) return;
         mediaPlayer.play();
-        PartyManager.sendPause(false);
+        if (PartyManager.isHost()) PartyManager.sendPause(false);
     }
 
     public static void previousTrack() {
@@ -115,10 +115,9 @@ public final class PlaybackManager {
 
     public static void seek(double time) {
         if (mediaPlayer == null) return;
-        if (PartyManager.anyPartyJoined() && !PartyManager.isHost()) return;
         var seekDuration = Duration.seconds(time);
         Platform.runLater(() -> mediaPlayer.seek(mediaPlayer.getStartTime().add(seekDuration)));
-        if (PartyManager.anyPartyJoined() && PartyManager.isHost()) PartyManager.sendSyncParty(time);
+        if (PartyManager.joinedAndHost()) PartyManager.sendSync(time);
     }
 
     public static void stopPlayback() {
@@ -127,7 +126,10 @@ public final class PlaybackManager {
         update.invoke(getCurentTrack());
     }
 
-    public static int getCurrentTime() {
+    /**
+     * @return the current playback time in seconds
+     */
+    public static double getCurrentTime() {
         return mediaPlayer != null ? (int) mediaPlayer.getCurrentTime().toSeconds() : 0;
     }
 
