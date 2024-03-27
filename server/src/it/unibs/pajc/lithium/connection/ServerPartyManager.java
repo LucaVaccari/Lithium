@@ -1,5 +1,6 @@
 package it.unibs.pajc.lithium.connection;
 
+import it.unibs.pajc.lithium.Logger;
 import it.unibs.pajc.lithium.ServerMain;
 import it.unibs.pajc.lithium.db.om.Track;
 
@@ -21,6 +22,8 @@ public class ServerPartyManager {
         var party = new ListeningParty(ownerConnection);
         parties.put(id, party);
         sendAllPartiesUpdate(id);
+        ownerConnection.writeMessage("partyId;;" + id);
+        Logger.log("Party created: " + id);
     }
 
     /**
@@ -55,6 +58,7 @@ public class ServerPartyManager {
             parties.remove(partyId);
             unusedIds.add(partyId);
             sendAllPartiesUpdate(partyId);
+            Logger.log("Party removed: " + partyId);
         }
     }
 
@@ -149,12 +153,20 @@ public class ServerPartyManager {
     public static void allParties(String ignored, LcpConnection connection) {
         var elements = parties.keySet().stream().map(partyId -> {
             var party = parties.get(partyId);
-            return "%d,,%d,,%d".formatted(partyId, party.getCurrentTrack().getId(), party.getOwner().getId());
+            var currentTrack = party.getCurrentTrack();
+            return "%d,,%d,,%d".formatted(partyId, currentTrack != null ? currentTrack.getId() : -1,
+                    party.getOwner().getId());
         }).toList();
         var body = String.join("::", elements);
+        if (body.isEmpty()) body = "null";
         connection.writeMessage("allParties;;" + body);
     }
 
+    /**
+     * Send an allParties update to all parties but the specified
+     *
+     * @param id The id of the party not to send the message to
+     */
     private static void sendAllPartiesUpdate(int id) {
         for (var partyId : parties.keySet().stream().filter(i -> i != id).toList()) {
             parties.get(partyId).getParticipants().forEach(c -> allParties("", c));

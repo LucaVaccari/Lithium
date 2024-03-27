@@ -9,12 +9,12 @@
                AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                AnchorPane.topAnchor="0.0">
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-            <Button fx:id="leavePartyBtn" mnemonicParsing="false" text="LEAVE" AnchorPane.leftAnchor="5.0"
-                    AnchorPane.topAnchor="5.0"/>
-            <FlowPane fx:id="usersPane" alignment="CENTER" columnHalignment="CENTER" hgap="7.0"
-                      maxHeight="Infinity" maxWidth="Infinity" vgap="7.0"
-                      AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0"
-                      AnchorPane.topAnchor="10.0"/>
+            <StackPane alignment="TOP_LEFT" layoutX="5.0" layoutY="5.0" AnchorPane.bottomAnchor="5.0"
+                       AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                <FlowPane fx:id="usersPane" alignment="CENTER" columnHalignment="CENTER" hgap="7.0" maxHeight="Infinity"
+                          maxWidth="Infinity" vgap="7.0"/>
+                <Button fx:id="leavePartyBtn" mnemonicParsing="false" text="LEAVE"/>
+            </StackPane>
         </AnchorPane>
         <AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0" minWidth="0.0" prefHeight="160.0">
             <VBox maxHeight="Infinity" maxWidth="Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
@@ -34,8 +34,7 @@
                 AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
         <center>
             <FlowPane fx:id="allPartiesPane" alignment="CENTER" columnHalignment="CENTER" hgap="10.0"
-                      maxHeight="Infinity" maxWidth="Infinity" vgap="10.0"
-                      BorderPane.alignment="CENTER"/>
+                      maxHeight="Infinity" maxWidth="Infinity" vgap="10.0" BorderPane.alignment="CENTER"/>
         </center>
         <top>
             <Label alignment="CENTER" contentDisplay="CENTER" text="Available parties" textAlignment="CENTER"

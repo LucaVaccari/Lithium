@@ -1,13 +1,13 @@
 package it.unibs.pajc.lithium.gui.controllers.tabs;
 
 import it.unibs.pajc.lithium.ItemProvider;
-import it.unibs.pajc.lithium.managers.PlaybackManager;
 import it.unibs.pajc.lithium.db.om.Album;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
+import it.unibs.pajc.lithium.managers.PlaybackManager;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -19,6 +19,7 @@ import javafx.scene.layout.HBox;
 import java.util.List;
 
 public class PlayingNowTab extends CustomComponent {
+    // todo disable queue when in party
     @FXML
     private ImageView currentTrackImgCover;
     @FXML

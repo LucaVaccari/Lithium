@@ -40,11 +40,18 @@ public class PartyManager {
      */
     public static final Observer<Integer> hostUpdate = new Observer<>();
 
+    /**
+     * Event invoked when a party is joined or left (in the last case, the id is -1).
+     * Contains the id of the party (or -1).
+     */
+    public static final Observer<Integer> partyJoined = new Observer<>();
+
     public static void requestAllParties() {
         getConnectionManager().writeMessage("allParties;;ignored");
     }
 
     public static void partiesUpdate(String body) {
+        if (body.equals("null")) return;
         var parties = Arrays.stream(body.strip().split("::"))
                 .map(e -> Arrays.stream(e.strip().split(",,")).map(Integer::parseInt).toArray(Integer[]::new)).toList();
         partiesUpdate.invoke(Set.copyOf(parties));
@@ -77,7 +84,7 @@ public class PartyManager {
     public static void leaveParty() {
         if (anyPartyJoined()) {
             getConnectionManager().writeMessage("leaveParty;;" + id);
-            id = -1;
+            setId(-1);
         }
     }
 
@@ -157,6 +164,7 @@ public class PartyManager {
 
     public static void setId(int id) {
         PartyManager.id = id;
+        partyJoined.invoke(id);
     }
 
     public static int getId() {

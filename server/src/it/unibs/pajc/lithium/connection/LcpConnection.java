@@ -1,5 +1,6 @@
 package it.unibs.pajc.lithium.connection;
 
+import it.unibs.pajc.lithium.Logger;
 import it.unibs.pajc.lithium.ServerMain;
 import it.unibs.pajc.lithium.db.om.User;
 import it.unibs.pajc.util.NoReturnFunction2;
@@ -91,7 +92,7 @@ public class LcpConnection {
     public void interrupt() {
         try {
             running = false;
-            System.out.println("Connection removed: " + socket.getInetAddress().getHostAddress());
+            Logger.log("Connection removed: " + socket.getInetAddress().getHostAddress());
             ServerPartyManager.userDisconnected(this);
             LcpServer.remove(this);
             socket.close();

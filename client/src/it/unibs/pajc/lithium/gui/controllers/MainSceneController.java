@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 
 public class MainSceneController {
+    // todo disable tab when not playing anything
     @FXML
     private Tab playingNowTab;
 

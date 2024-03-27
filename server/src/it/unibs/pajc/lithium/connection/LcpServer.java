@@ -1,5 +1,6 @@
 package it.unibs.pajc.lithium.connection;
 
+import it.unibs.pajc.lithium.Logger;
 import it.unibs.pajc.lithium.db.om.User;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class LcpServer implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Listening for upcoming connections on port: " + port);
+        Logger.log("Listening for upcoming connections on port: " + port);
 
         LcpConnection connection = null;
         try (var welcomeSocket = new ServerSocket(port)) {

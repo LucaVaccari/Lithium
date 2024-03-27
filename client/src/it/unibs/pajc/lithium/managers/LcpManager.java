@@ -43,7 +43,7 @@ public class LcpManager implements Runnable {
         commands.put("allParties", PartyManager::partiesUpdate);
         // todo hostUpdated
         commands.put("hostUpdated", body -> PartyManager.updateHost(Integer.parseInt(body)));
-        commands.put("error", m -> Platform.runLater(() -> AlertUtil.showErrorAlert("Error", "Session error", m)));
+        commands.put("error", m -> Platform.runLater(() -> AlertUtil.showErrorAlert("Error", "LCP error", m)));
 
         // todo block playback when in party
     }
@@ -65,8 +65,9 @@ public class LcpManager implements Runnable {
             try {
                 var input = reader.readLine();
                 var inputTokens = input.strip().split(";;");
-                if (inputTokens.length > 2 || inputTokens.length == 0) {
-                    writeMessage("error;;The message must be formed in the following way: <command>;;<body>");
+                if (inputTokens.length != 2) {
+                    System.err.println(
+                            "The message must be formed in the following way: <command>;;<body>. Message: " + input);
                     continue;
                 }
                 commands.get(inputTokens[0]).apply(inputTokens[1]);

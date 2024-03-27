@@ -1,6 +1,7 @@
 package it.unibs.pajc.lithium.http;
 
 import com.sun.net.httpserver.HttpServer;
+import it.unibs.pajc.lithium.Logger;
 import it.unibs.pajc.lithium.ServerMain;
 import it.unibs.pajc.lithium.db.om.*;
 
@@ -33,7 +34,7 @@ public final class HttpServerManager {
         server.createContext("/", HttpRoutes::defaultRoute);
 
         server.start();
-        System.out.println("Http server listening on port: " + port);
+        Logger.log("Http server listening on port: " + port);
     }
 
     private HttpServerManager() {

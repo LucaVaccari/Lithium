@@ -145,4 +145,8 @@ public final class ItemProvider {
 
     private ItemProvider() {
     }
+
+    public static String getArtistTrackFormatted(Track track) {
+        return "%s - %s".formatted(getArtistNamesFormatted(track.getArtistIds()), track.getTitle());
+    }
 }

@@ -1,9 +1,9 @@
 package it.unibs.pajc.lithium.gui.controllers;
 
 import it.unibs.pajc.lithium.ItemProvider;
-import it.unibs.pajc.lithium.managers.PlaybackManager;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.CustomComponent;
+import it.unibs.pajc.lithium.managers.PlaybackManager;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -62,8 +62,7 @@ public class PlaybackController extends CustomComponent {
         progressSlider.setMin(0);
         progressSlider.setMax(PlaybackManager.getMaxTime());
         if (track == null) currentlyPlayingLbl.setText("Nothing is playing");
-        else currentlyPlayingLbl.setText(
-                "%s - %s".formatted(ItemProvider.getArtistNamesFormatted(track.getArtistIds()), track.getTitle()));
+        else currentlyPlayingLbl.setText(ItemProvider.getArtistTrackFormatted(track));
         pauseBtn.setText(PlaybackManager.isPlaying() ? "Pause" : "Play");
     }
 

@@ -8,6 +8,8 @@ Message: `command;;body`
 
 `|`: or
 
+`""`: string literal
+
 ## Client
 
 The messages that the client can receive.
@@ -60,7 +62,9 @@ Body: `userId1::userId2::userid3...` (list of int)
 
 Contains a list of all available parties.
 
-Body: `partyId1,,trackId1,,ownerId1::partyId2,,trackId2,,ownerId2::partyId3,,...` (list of int)
+Body: `partyId1,,trackId1,,ownerId1::partyId2,,trackId2,,ownerId2::partyId3,,...|"null"` (list of int)
+
+`"null"` indicates that there are no parties.
 
 #### error
 
@@ -90,8 +94,6 @@ Body: `username::passwordHash`
 ### Party commands
 
 `partyId`: the id of a party
-
-`""`: string literal
 
 #### joinParty
 

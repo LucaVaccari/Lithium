@@ -1,5 +1,7 @@
 package it.unibs.pajc.db;
 
+import it.unibs.pajc.lithium.Logger;
+
 import java.io.Closeable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -27,7 +29,7 @@ public class SQLiteInterface implements Closeable {
     public void connect(String dbUrl) {
         try {
             connection = DriverManager.getConnection(dbUrl);
-            System.out.println("Connection to db established");
+            Logger.log("Connection to db established");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -36,7 +38,7 @@ public class SQLiteInterface implements Closeable {
     @Override
     public void close() {
         try {
-            System.out.println("Connection to db interrupted");
+            Logger.log("Connection to db interrupted");
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
