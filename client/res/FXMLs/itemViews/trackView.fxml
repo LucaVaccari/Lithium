@@ -53,11 +53,11 @@
                 </Label>
                 <Pane prefHeight="35.0" prefWidth="338.0"/>
                 <FlowPane alignment="CENTER" maxWidth="Infinity">
-                    <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#onPlayNowBtn"
+                    <Button fx:id="playNowBtn" maxWidth="Infinity" mnemonicParsing="false" onAction="#onPlayNowBtn"
                             prefHeight="20" text="PLAY NOW" HBox.hgrow="ALWAYS"/>
-                    <Button layoutX="145.0" layoutY="10.0" maxWidth="Infinity" mnemonicParsing="false"
+                    <Button fx:id="playNextBtn" layoutX="145.0" layoutY="10.0" maxWidth="Infinity" mnemonicParsing="false"
                             onAction="#onPlayNextBtn" prefHeight="20" text="PLAY NEXT"/>
-                    <Button layoutX="184.0" layoutY="10.0" maxWidth="Infinity" mnemonicParsing="false"
+                    <Button fx:id="addToQueueBtn" layoutX="184.0" layoutY="10.0" maxWidth="Infinity" mnemonicParsing="false"
                             onAction="#onAddToQueueBtn" prefHeight="20" text="ADD TO QUEUE"/>
                     <Button maxWidth="Infinity" mnemonicParsing="false"
                             onAction="#addToPlaylist" prefHeight="20" text="ADD TO PLAYLIST"/>

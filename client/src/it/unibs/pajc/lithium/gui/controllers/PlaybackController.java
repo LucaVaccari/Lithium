@@ -15,7 +15,7 @@ import javafx.scene.control.Slider;
 import java.util.Objects;
 
 public class PlaybackController extends CustomComponent {
-    // todo disable buttons when in party
+    // todo disable buttons when nothing is in playback
     @FXML
     private Button backBtn;
     @FXML

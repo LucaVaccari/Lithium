@@ -1,17 +1,22 @@
 package it.unibs.pajc.lithium.gui.controllers.views;
 
 import it.unibs.pajc.lithium.ItemProvider;
-import it.unibs.pajc.lithium.managers.PlaybackManager;
 import it.unibs.pajc.lithium.db.om.Album;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.SceneManager;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import it.unibs.pajc.lithium.gui.controllers.PlaybackController;
+import it.unibs.pajc.lithium.managers.AccountManager;
+import it.unibs.pajc.lithium.managers.PartyManager;
+import it.unibs.pajc.lithium.managers.PlaybackManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+
+import java.util.Objects;
 
 public class TrackViewController {
     // TODO: make album clickable
@@ -27,6 +32,12 @@ public class TrackViewController {
     private Label releaseDateLbl;
     @FXML
     private Label genreListLbl;
+    @FXML
+    private Button playNowBtn;
+    @FXML
+    private Button playNextBtn;
+    @FXML
+    private Button addToQueueBtn;
     @FXML
     private ImageView coverImg;
     @FXML
@@ -46,6 +57,18 @@ public class TrackViewController {
         releaseDateLbl.setText("Released on " + album.getReleaseDate());
         genreListLbl.setText(ItemProvider.getGenresFormatted(track.getGenreIds()));
         coverImg.setImage(ItemProvider.getImage(album.getImgPath()));
+
+        updateHost(PartyManager.anyPartyJoined() && !PartyManager.isHost());
+        PartyManager.partyJoined.addListener(
+                partyId -> updateHost(PartyManager.anyPartyJoined() && !PartyManager.isHost()));
+        PartyManager.hostUpdate.addListener(
+                hostId -> updateHost(!Objects.equals(AccountManager.getUser().getId(), hostId)));
+    }
+
+    private void updateHost(boolean inPartyAndNotHost) {
+        playNowBtn.setDisable(inPartyAndNotHost);
+        playNextBtn.setDisable(inPartyAndNotHost);
+        addToQueueBtn.setDisable(inPartyAndNotHost);
     }
 
     public void onAlbumMouseClicked(MouseEvent ignored) {

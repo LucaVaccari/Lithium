@@ -45,12 +45,12 @@
                 <Pane prefHeight="15.0" prefWidth="338.0"/>
                 <FlowPane alignment="CENTER" maxWidth="Infinity" prefHeight="29.0" prefWidth="338.0"
                           HBox.hgrow="ALWAYS">
-                    <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#onPlayNowBtn"
+                    <Button fx:id="playNowBtn" maxWidth="Infinity" mnemonicParsing="false" onAction="#onPlayNowBtn"
                             prefHeight="20" text="PLAY NOW" HBox.hgrow="ALWAYS"/>
-                    <Button layoutX="145.0" layoutY="10.0" maxWidth="Infinity" mnemonicParsing="false"
+                    <Button fx:id="playNextBtn" layoutX="145.0" layoutY="10.0" maxWidth="Infinity" mnemonicParsing="false"
                             onAction="#onPlayNextBtn" prefHeight="20" text="PLAY NEXT"
                             HBox.hgrow="ALWAYS"/>
-                    <Button layoutX="184.0" layoutY="10.0" maxWidth="Infinity" mnemonicParsing="false"
+                    <Button fx:id="addToQueueBtn" layoutX="184.0" layoutY="10.0" maxWidth="Infinity" mnemonicParsing="false"
                             onAction="#onAddToQueueBtn" prefHeight="20" text="ADD TO QUEUE"
                             HBox.hgrow="ALWAYS"/>
                     <Button fx:id="saveBtn" maxWidth="Infinity" mnemonicParsing="false"

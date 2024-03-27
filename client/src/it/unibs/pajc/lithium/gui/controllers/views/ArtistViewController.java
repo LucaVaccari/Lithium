@@ -1,13 +1,14 @@
 package it.unibs.pajc.lithium.gui.controllers.views;
 
-import it.unibs.pajc.lithium.managers.AccountManager;
 import it.unibs.pajc.lithium.ItemProvider;
-import it.unibs.pajc.lithium.managers.PlaybackManager;
 import it.unibs.pajc.lithium.db.om.Artist;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import it.unibs.pajc.lithium.gui.controllers.PlaybackController;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
+import it.unibs.pajc.lithium.managers.AccountManager;
+import it.unibs.pajc.lithium.managers.PartyManager;
+import it.unibs.pajc.lithium.managers.PlaybackManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,6 +17,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class ArtistViewController {
     @FXML
@@ -28,6 +30,12 @@ public class ArtistViewController {
     private ImageView proPicImg;
     @FXML
     private ListView<TrackEntry> trackContainer;
+    @FXML
+    private Button playNowBtn;
+    @FXML
+    private Button playNextBtn;
+    @FXML
+    private Button addToQueueBtn;
     @FXML
     private Button followBtn;
     @FXML
@@ -47,6 +55,18 @@ public class ArtistViewController {
         // TODO genres
 
         followBtn.setText(isFollowed() ? "UNFOLLOW" : "FOLLOW");
+
+        updateHost(PartyManager.anyPartyJoined() && !PartyManager.isHost());
+        PartyManager.partyJoined.addListener(
+                partyId -> updateHost(PartyManager.anyPartyJoined() && !PartyManager.isHost()));
+        PartyManager.hostUpdate.addListener(
+                hostId -> updateHost(!Objects.equals(AccountManager.getUser().getId(), hostId)));
+    }
+
+    private void updateHost(boolean inPartyAndNotHost) {
+        playNowBtn.setDisable(inPartyAndNotHost);
+        playNextBtn.setDisable(inPartyAndNotHost);
+        addToQueueBtn.setDisable(inPartyAndNotHost);
     }
 
     public void onPlayNowBtn(ActionEvent ignored) {

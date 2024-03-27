@@ -10,6 +10,7 @@ import it.unibs.pajc.lithium.gui.controllers.MainSceneController;
 import it.unibs.pajc.lithium.gui.controllers.PlaybackController;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.TrackEntry;
 import it.unibs.pajc.lithium.managers.AccountManager;
+import it.unibs.pajc.lithium.managers.PartyManager;
 import it.unibs.pajc.lithium.managers.PlaybackManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,6 +31,12 @@ public class PlaylistViewController {
     private Label creationDateLbl;
     @FXML
     private Label genreLbl;
+    @FXML
+    private Button playNowBtn;
+    @FXML
+    private Button playNextBtn;
+    @FXML
+    private Button addToQueueBtn;
     @FXML
     private Button saveBtn;
     @FXML
@@ -61,6 +68,11 @@ public class PlaylistViewController {
             this.playlist = playlist;
             update();
         });
+
+        PartyManager.partyJoined.addListener(
+                partyId -> updateHost(PartyManager.anyPartyJoined() && !PartyManager.isHost()));
+        PartyManager.hostUpdate.addListener(
+                hostId -> updateHost(!Objects.equals(AccountManager.getUser().getId(), hostId)));
     }
 
     private void update() {
@@ -79,6 +91,14 @@ public class PlaylistViewController {
         boolean ownedPlaylist = playlist.getOwnerId().equals(AccountManager.getUser().getId());
         saveBtn.setDisable(ownedPlaylist);
         manageBtn.setDisable(!ownedPlaylist);
+
+        updateHost(PartyManager.anyPartyJoined() && !PartyManager.isHost());
+    }
+
+    private void updateHost(boolean inPartyAndNotHost) {
+        playNowBtn.setDisable(inPartyAndNotHost);
+        playNextBtn.setDisable(inPartyAndNotHost);
+        addToQueueBtn.setDisable(inPartyAndNotHost);
     }
 
     public void onPlayNowBtn(ActionEvent ignored) {
