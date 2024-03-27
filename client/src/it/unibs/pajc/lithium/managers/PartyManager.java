@@ -244,4 +244,8 @@ public class PartyManager {
     public static boolean joinedAndHost() {
         return anyPartyJoined() && isHost();
     }
+
+    public static boolean joinedAndNotHost() {
+        return anyPartyJoined() && !isHost();
+    }
 }

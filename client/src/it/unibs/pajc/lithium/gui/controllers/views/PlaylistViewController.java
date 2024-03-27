@@ -69,8 +69,7 @@ public class PlaylistViewController {
             update();
         });
 
-        PartyManager.partyJoined.addListener(
-                partyId -> updateHost(PartyManager.anyPartyJoined() && !PartyManager.isHost()));
+        PartyManager.partyJoined.addListener(partyId -> updateHost(PartyManager.joinedAndNotHost()));
         PartyManager.hostUpdate.addListener(
                 hostId -> updateHost(!Objects.equals(AccountManager.getUser().getId(), hostId)));
     }
@@ -92,7 +91,7 @@ public class PlaylistViewController {
         saveBtn.setDisable(ownedPlaylist);
         manageBtn.setDisable(!ownedPlaylist);
 
-        updateHost(PartyManager.anyPartyJoined() && !PartyManager.isHost());
+        updateHost(PartyManager.joinedAndNotHost());
     }
 
     private void updateHost(boolean inPartyAndNotHost) {

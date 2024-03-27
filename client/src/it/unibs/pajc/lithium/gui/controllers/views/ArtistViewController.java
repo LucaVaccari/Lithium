@@ -56,9 +56,8 @@ public class ArtistViewController {
 
         followBtn.setText(isFollowed() ? "UNFOLLOW" : "FOLLOW");
 
-        updateHost(PartyManager.anyPartyJoined() && !PartyManager.isHost());
-        PartyManager.partyJoined.addListener(
-                partyId -> updateHost(PartyManager.anyPartyJoined() && !PartyManager.isHost()));
+        updateHost(PartyManager.joinedAndNotHost());
+        PartyManager.partyJoined.addListener(partyId -> updateHost(PartyManager.joinedAndNotHost()));
         PartyManager.hostUpdate.addListener(
                 hostId -> updateHost(!Objects.equals(AccountManager.getUser().getId(), hostId)));
     }

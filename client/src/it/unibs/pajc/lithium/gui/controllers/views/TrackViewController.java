@@ -58,9 +58,8 @@ public class TrackViewController {
         genreListLbl.setText(ItemProvider.getGenresFormatted(track.getGenreIds()));
         coverImg.setImage(ItemProvider.getImage(album.getImgPath()));
 
-        updateHost(PartyManager.anyPartyJoined() && !PartyManager.isHost());
-        PartyManager.partyJoined.addListener(
-                partyId -> updateHost(PartyManager.anyPartyJoined() && !PartyManager.isHost()));
+        updateHost(PartyManager.joinedAndNotHost());
+        PartyManager.partyJoined.addListener(partyId -> updateHost(PartyManager.joinedAndNotHost()));
         PartyManager.hostUpdate.addListener(
                 hostId -> updateHost(!Objects.equals(AccountManager.getUser().getId(), hostId)));
     }

@@ -60,9 +60,8 @@ public class AlbumViewController {
         trackContainer.getItems().sort(Comparator.comparingInt(t -> t.getTrack().getNumber()));
         saveBtn.setText(isSaved() ? "UNSAVE" : "SAVE");
 
-        updateHost(PartyManager.anyPartyJoined() && !PartyManager.isHost());
-        PartyManager.partyJoined.addListener(
-                partyId -> updateHost(PartyManager.anyPartyJoined() && !PartyManager.isHost()));
+        updateHost(PartyManager.joinedAndNotHost());
+        PartyManager.partyJoined.addListener(partyId -> updateHost(PartyManager.joinedAndNotHost()));
         PartyManager.hostUpdate.addListener(
                 hostId -> updateHost(!Objects.equals(AccountManager.getUser().getId(), hostId)));
     }

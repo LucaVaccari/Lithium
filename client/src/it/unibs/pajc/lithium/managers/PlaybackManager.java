@@ -158,4 +158,9 @@ public final class PlaybackManager {
 
     private PlaybackManager() {
     }
+
+    public static void setVolume(double value) {
+        if (mediaPlayer == null) return;
+        mediaPlayer.setVolume(value);
+    }
 }

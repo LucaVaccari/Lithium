@@ -27,17 +27,17 @@
             - [x] manage playlist btn
         - [ ] playlist management
             - [ ] cover image upload
-    - [ ] Playback controls
+    - [x] Playback controls
         - [x] song title
         - [x] back, pause, forward
         - [x] slider
         - [x] timestamp
-        - [ ] volume slider
+        - [x] volume slider
 - [x] Save login info
 - [x] Cache items and images
 - [ ] Tooltips
 - [ ] Async loading
-- [ ] Theme (AtlantaFX)
+- [x] Theme (AtlantaFX)
 
 ## Server
 

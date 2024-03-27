@@ -4,13 +4,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.*?>
-<fx:root maxWidth="Infinity" prefHeight="0.0" prefWidth="900.0" type="AnchorPane"
-         xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-    <VBox alignment="CENTER_LEFT" maxHeight="Infinity" maxWidth="Infinity"
-          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-          AnchorPane.topAnchor="0.0">
-        <Label fx:id="currentlyPlayingLbl" maxHeight="Infinity" maxWidth="Infinity"
-               text="-" wrapText="true" VBox.vgrow="ALWAYS">
+<fx:root maxWidth="Infinity" prefHeight="0.0" prefWidth="900.0" type="AnchorPane" xmlns="http://javafx.com/javafx/21"
+         xmlns:fx="http://javafx.com/fxml/1">
+    <VBox alignment="CENTER_LEFT" maxHeight="Infinity" maxWidth="Infinity" AnchorPane.bottomAnchor="0.0"
+          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Label fx:id="currentlyPlayingLbl" maxHeight="Infinity" maxWidth="Infinity" text="-" wrapText="true"
+               VBox.vgrow="ALWAYS">
             <padding>
                 <Insets left="15.0"/>
             </padding>
@@ -23,16 +22,17 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
             </padding>
             <Button fx:id="backBtn" alignment="CENTER" contentDisplay="CENTER" maxHeight="Infinity"
-                    mnemonicParsing="false" prefHeight="0.0" text="Back" HBox.hgrow="ALWAYS"/>
+                    mnemonicParsing="false" prefHeight="0.0" text="&lt;-" HBox.hgrow="ALWAYS"/>
             <Button fx:id="pauseBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0"
-                    maxHeight="Infinity" mnemonicParsing="false" prefHeight="0.0"
-                    text="Pause" HBox.hgrow="ALWAYS"/>
+                    maxHeight="Infinity" mnemonicParsing="false" prefHeight="0.0" text="Pause" HBox.hgrow="ALWAYS"/>
             <Button fx:id="forwardBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="51.0" layoutY="10.0"
-                    maxHeight="Infinity" mnemonicParsing="false" prefHeight="0.0"
-                    text="Forward" HBox.hgrow="ALWAYS"/>
-            <Slider fx:id="progressSlider" maxHeight="Infinity" maxWidth="Infinity"
-                    prefHeight="0.0" prefWidth="393.0" HBox.hgrow="ALWAYS"/>
-            <Label fx:id="progressLbl" prefHeight="0.0" text="00:00"/>
+                    maxHeight="Infinity" mnemonicParsing="false" prefHeight="0.0" text="-&gt;" HBox.hgrow="ALWAYS"/>
+            <Slider fx:id="progressSlider" maxHeight="Infinity" maxWidth="Infinity" prefHeight="0.0" prefWidth="393.0"
+                    showTickMarks="true" HBox.hgrow="ALWAYS"/>
+            <Label fx:id="progressLbl" prefHeight="0.0" text="00:00" HBox.hgrow="ALWAYS"/>
+            <Label text="Vol."/>
+            <Slider fx:id="volumeSlider" blockIncrement="5.0" maxHeight="Infinity" showTickLabels="true"
+                    showTickMarks="true" value="75.0"/>
         </HBox>
     </VBox>
 </fx:root>

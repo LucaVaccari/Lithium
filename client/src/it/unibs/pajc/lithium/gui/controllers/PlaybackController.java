@@ -7,6 +7,7 @@ import it.unibs.pajc.lithium.managers.AccountManager;
 import it.unibs.pajc.lithium.managers.PartyManager;
 import it.unibs.pajc.lithium.managers.PlaybackManager;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,7 +16,8 @@ import javafx.scene.control.Slider;
 import java.util.Objects;
 
 public class PlaybackController extends CustomComponent {
-    // todo disable buttons when nothing is in playback
+    @FXML
+    private Label currentlyPlayingLbl;
     @FXML
     private Button backBtn;
     @FXML
@@ -27,7 +29,7 @@ public class PlaybackController extends CustomComponent {
     @FXML
     private Label progressLbl;
     @FXML
-    private Label currentlyPlayingLbl;
+    private Slider volumeSlider;
 
     private AnimationTimer timer;
     private boolean sliderChanging;
@@ -35,6 +37,7 @@ public class PlaybackController extends CustomComponent {
     @FXML
     private void initialize() {
         update(PlaybackManager.getCurentTrack());
+        disableButtons(true);
         backBtn.setOnAction(ignored -> PlaybackManager.previousTrack());
         pauseBtn.setOnAction(ignored -> PlaybackManager.togglePlay());
         forwardBtn.setOnAction(ignored -> PlaybackManager.nextTrack());
@@ -45,11 +48,14 @@ public class PlaybackController extends CustomComponent {
                 PlaybackManager.seek(newVal.doubleValue());
             }
         });
+        volumeSlider.valueProperty().addListener((ob, oldVal, newVal) -> {
+            PlaybackManager.setVolume(newVal.doubleValue() / 100);
+        });
         PlaybackManager.getUpdate().addListener(this::update);
-        PartyManager.partyJoined.addListener(
-                partyId -> updateHost(PartyManager.anyPartyJoined() && !PartyManager.isHost()));
+        PartyManager.partyJoined.addListener(partyId -> disableButtons(PartyManager.joinedAndNotHost()));
         PartyManager.hostUpdate.addListener(
-                hostId -> updateHost(!Objects.equals(AccountManager.getUser().getId(), hostId)));
+                hostId -> disableButtons(!Objects.equals(AccountManager.getUser().getId(), hostId)));
+        PlaybackManager.getUpdate().addListener(track -> Platform.runLater(() -> disableButtons(track == null)));
 
         if (timer != null) return;
         timer = new AnimationTimer() {
@@ -71,14 +77,14 @@ public class PlaybackController extends CustomComponent {
         if (track == null) currentlyPlayingLbl.setText("Nothing is playing");
         else currentlyPlayingLbl.setText(ItemProvider.getArtistTrackFormatted(track));
         pauseBtn.setText(PlaybackManager.isPlaying() ? "Pause" : "Play");
-        updateHost(PartyManager.anyPartyJoined() && !PartyManager.isHost());
+        disableButtons(PartyManager.joinedAndNotHost());
     }
 
-    private void updateHost(boolean inPartyAndNotHost) {
-        backBtn.setDisable(inPartyAndNotHost);
-        pauseBtn.setDisable(inPartyAndNotHost);
-        forwardBtn.setDisable(inPartyAndNotHost);
-        progressSlider.setDisable(inPartyAndNotHost);
+    private void disableButtons(boolean disable) {
+        backBtn.setDisable(disable);
+        pauseBtn.setDisable(disable);
+        forwardBtn.setDisable(disable);
+        progressSlider.setDisable(disable);
     }
 
     @Override
