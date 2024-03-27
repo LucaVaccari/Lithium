@@ -32,7 +32,7 @@ public class LcpServer implements Runnable {
             }
         } catch (IOException e) {
             connections.remove(connection);
-            e.printStackTrace();
+            Logger.logError(this, e);
         }
     }
 

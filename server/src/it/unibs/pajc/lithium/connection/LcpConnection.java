@@ -101,7 +101,7 @@ public class LcpConnection {
             LcpServer.remove(this);
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.logError(this, e);
         }
     }
 }

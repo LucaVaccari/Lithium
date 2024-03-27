@@ -19,7 +19,7 @@ public class ServerMain {
             HttpServerManager.start(HTTP_PORT);
             new Thread(new LcpServer(SOCKET_PORT)).start();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Logger.logError(null, e);
         }
     }
 

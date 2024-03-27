@@ -9,7 +9,6 @@ import kong.unirest.UnirestException;
  * Utility class providing methods for sending HTTP messages
  */
 public class HttpHandler {
-    // todo Unirest.config().defaultBaseUrl("http://...");
     private final static String URL;
 
     static {

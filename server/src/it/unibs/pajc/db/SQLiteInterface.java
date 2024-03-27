@@ -31,7 +31,7 @@ public class SQLiteInterface implements Closeable {
             connection = DriverManager.getConnection(dbUrl);
             Logger.log("Connection to db established");
         } catch (SQLException e) {
-            e.printStackTrace();
+            Logger.logError(this, e);
         }
     }
 
@@ -41,7 +41,7 @@ public class SQLiteInterface implements Closeable {
             Logger.log("Connection to db interrupted");
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Logger.logError(this, e);
         }
     }
 
@@ -95,7 +95,7 @@ public class SQLiteInterface implements Closeable {
             statement.executeUpdate(sqlBuilder.toString());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.logError(this, e);
         }
     }
 
@@ -188,7 +188,7 @@ public class SQLiteInterface implements Closeable {
             }
             return objects.toArray((T[]) Array.newInstance(objType, objects.size()));
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.logError(this, e);
             return (T[]) Array.newInstance(objType, 0);
         }
     }
@@ -211,7 +211,7 @@ public class SQLiteInterface implements Closeable {
             var resultSet = genericGetQuery(new String[]{"COUNT(*) AS n"}, tableName, optionalQuery);
             return resultSet.getInt("n");
         } catch (SQLException e) {
-            e.printStackTrace();
+            Logger.logError(this, e);
             return -1;
         }
     }
@@ -241,7 +241,7 @@ public class SQLiteInterface implements Closeable {
 
             statement.executeUpdate(sqlBuilder.toString());
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.logError(this, e);
         }
     }
     // DELETE
@@ -277,7 +277,7 @@ public class SQLiteInterface implements Closeable {
 
             statement.executeUpdate(sqlBuilder.toString());
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.logError(this, e);
         }
     }
 }

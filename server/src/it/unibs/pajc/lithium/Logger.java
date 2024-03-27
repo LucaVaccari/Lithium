@@ -5,8 +5,8 @@ public final class Logger {
         System.out.println(msg);
     }
 
-    public static void logError(String msg) {
-        System.err.println(msg);
+    public static void logError(Object caller, Exception e) {
+        String name = caller != null ? caller.getClass().getName() : "null";
+        System.err.println(name + ": " + e.getMessage());
     }
-    // TODO replace all printStackTrack with logError
 }
