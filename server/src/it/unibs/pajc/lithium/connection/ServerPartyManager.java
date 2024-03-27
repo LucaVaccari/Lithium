@@ -9,7 +9,8 @@ import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Handles all the parties active in the server
+ * Handles all the parties active in the server.
+ * If a message is directed to everyone it is sent here, otherwise it is sent in {@link ListeningParty}.
  */
 public class ServerPartyManager {
     private static final Map<Integer, ListeningParty> parties = new ConcurrentHashMap<>();
@@ -108,7 +109,7 @@ public class ServerPartyManager {
         if (tokens.length != 2) {
             connection.writeMessage(
                     "error;;The body of the message must be formed in the following way: " + "<partyId>::<pause" +
-                            "|unpause>");
+                            "|unpause>. message: " + body);
             return;
         }
         var partyId = Integer.parseInt(tokens[0]);
@@ -136,7 +137,8 @@ public class ServerPartyManager {
         }
         var partyId = Integer.parseInt(tokens[0]);
         if (partyNotExists(partyId, connection)) return;
-        parties.get(partyId).broadcast(tokens[1], connection);
+        parties.get(partyId)
+                .broadcast("partyChat;;%d::%s".formatted(connection.getUser().getId(), tokens[1]), connection, true);
     }
 
     public static void userDisconnected(LcpConnection connection) {

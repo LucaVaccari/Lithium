@@ -4,7 +4,6 @@ import it.unibs.pajc.lithium.Logger;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.db.om.User;
 
-import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,7 +38,7 @@ public class ListeningParty {
             Optional<LcpConnection> ownerCandidate = participants.stream().findFirst();
             ownerCandidate.ifPresent(value -> {
                 hostConnection = value;
-                broadcast("host;;" + hostConnection.getUser().getId(), connection);
+                broadcast("host;;" + value.getUser().getId(), connection, true);
             });
         }
     }
@@ -59,7 +58,7 @@ public class ListeningParty {
             return;
         }
         currentTime = timestamp;
-        broadcast("partySync;;" + timestamp, connection);
+        broadcast("partySync;;" + timestamp, connection, true);
     }
 
     public void updateTrack(Track track, LcpConnection connection) {
@@ -68,20 +67,16 @@ public class ListeningParty {
             return;
         }
         currentTrack = track;
-        broadcast("partyTrack;;" + track.getId(), connection);
+        broadcast("partyTrack;;" + track.getId(), connection, true);
         sync(0, connection);
     }
 
     public void pause(boolean pause, LcpConnection connection) {
-        broadcast("pause;;" + (pause ? "pause" : "unpause"), connection);
+        broadcast("pause;;" + (pause ? "pause" : "unpause"), connection, true);
     }
 
-    public void broadcast(String message, LcpConnection sender) {
-        if (participants.contains(sender)) {
-            sender.writeMessage("error;;You are not part of this party");
-            return;
-        }
-        participants.stream().filter(p -> !p.equals(sender)).forEach(p -> p.writeMessage(message));
+    public void broadcast(String message, LcpConnection sender, boolean ignoreSender) {
+        participants.stream().filter(p -> !p.equals(sender) && ignoreSender).forEach(p -> p.writeMessage(message));
     }
 
     private void sendUserUpdate() {
@@ -91,10 +86,6 @@ public class ListeningParty {
 
     public boolean isEmpty() {
         return participants.isEmpty();
-    }
-
-    public Set<LcpConnection> getParticipants() {
-        return Collections.unmodifiableSet(participants);
     }
 
     public Track getCurrentTrack() {

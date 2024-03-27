@@ -42,7 +42,7 @@ public final class PlaybackManager {
         mediaPlayer.setOnReady(() -> {
             mediaPlayer.play();
             System.out.println("Playing track: " + track.getTitle());
-            if (PartyManager.isHost()) PartyManager.setCurrentTrack(track);
+            if (PartyManager.isHost()) PartyManager.sendCurrentTrack(track);
             update.invoke(track);
         });
     }
@@ -82,17 +82,21 @@ public final class PlaybackManager {
     public static void togglePlay() {
         if (mediaPlayer == null) return;
         MediaPlayer.Status status = mediaPlayer.getStatus();
-        if (status.equals(MediaPlayer.Status.PAUSED)) mediaPlayer.play();
-        else if (status.equals(MediaPlayer.Status.PLAYING)) mediaPlayer.pause();
+        if (status.equals(MediaPlayer.Status.PAUSED)) play();
+        else if (status.equals(MediaPlayer.Status.PLAYING)) pause();
         else System.out.println("Current status: " + status);
     }
 
     public static void pause() {
-        if (mediaPlayer != null) mediaPlayer.pause();
+        if (mediaPlayer == null) return;
+        mediaPlayer.pause();
+        PartyManager.sendPause(true);
     }
 
     public static void play() {
-        if (mediaPlayer != null) mediaPlayer.play();
+        if (mediaPlayer == null) return;
+        mediaPlayer.play();
+        PartyManager.sendPause(false);
     }
 
     public static void previousTrack() {
@@ -111,8 +115,10 @@ public final class PlaybackManager {
 
     public static void seek(double time) {
         if (mediaPlayer == null) return;
+        if (PartyManager.anyPartyJoined() && !PartyManager.isHost()) return;
         var seekDuration = Duration.seconds(time);
         Platform.runLater(() -> mediaPlayer.seek(mediaPlayer.getStartTime().add(seekDuration)));
+        if (PartyManager.anyPartyJoined() && PartyManager.isHost()) PartyManager.sendSyncParty(time);
     }
 
     public static void stopPlayback() {

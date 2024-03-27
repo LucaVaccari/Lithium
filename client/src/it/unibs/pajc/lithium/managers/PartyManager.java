@@ -4,6 +4,7 @@ import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.db.om.User;
 import it.unibs.pajc.util.Observer;
+import it.unibs.pajc.util.Observer2;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,9 +36,10 @@ public class PartyManager {
     /**
      * Event invoked when a chat message is received. Contains the message received.
      */
-    public static final Observer<String> messageReceived = new Observer<>();
+    public static final Observer2<Integer, String> messageReceived = new Observer2<>();
     /**
      * Event invoked when the host of the active party has changed.
+     * Contains the id of the new host
      */
     public static final Observer<Integer> hostUpdate = new Observer<>();
 
@@ -52,7 +54,10 @@ public class PartyManager {
     }
 
     public static void partiesUpdate(String body) {
-        if (body.equals("null")) return;
+        if (body.equals("null")) {
+            partiesUpdate.invoke(new HashSet<>());
+            return;
+        }
         var parties = Arrays.stream(body.strip().split("::"))
                 .map(e -> Arrays.stream(e.strip().split(",,")).map(Integer::parseInt).toArray(Integer[]::new)).toList();
         partiesUpdate.invoke(Set.copyOf(parties));
@@ -62,19 +67,21 @@ public class PartyManager {
      * Send only.
      * Sends a request to create a new party.
      */
-    public static void createParty() {
-        if (anyPartyJoined()) leaveParty();
+    public static void sendCreateParty() {
+        if (anyPartyJoined()) sendLeave();
         isHost = true;
         getConnectionManager().writeMessage("joinParty;;new");
+        if (PlaybackManager.getCurentTrack() != null) sendCurrentTrack(PlaybackManager.getCurentTrack());
+        sendSyncParty(PlaybackManager.getCurrentTime());
     }
 
     /**
-     * Send only. Sends a request to join an existing party.
+     * Sends a request to join an existing party.
      *
      * @param id The id of the party to join.
      */
-    public static void joinParty(int id) {
-        if (anyPartyJoined()) leaveParty();
+    public static void sendJoin(int id) {
+        if (anyPartyJoined()) sendLeave();
         setId(id);
         getConnectionManager().writeMessage("joinParty;;" + id);
     }
@@ -82,7 +89,7 @@ public class PartyManager {
     /**
      * Sends a request to leave a party.
      */
-    public static void leaveParty() {
+    public static void sendLeave() {
         if (anyPartyJoined()) {
             getConnectionManager().writeMessage("leaveParty;;" + id);
             setId(-1);
@@ -90,36 +97,63 @@ public class PartyManager {
     }
 
     /**
-     * Sends/receives (based on app state) a request to sync the playback.
+     * Sends a request to sync the playback.
      *
      * @param timestamp The current playback time
      */
-    public static void syncParty(double timestamp) {
+    public static void sendSyncParty(double timestamp) {
         if (!anyPartyJoined()) return;
         if (isHost) getConnectionManager().writeMessage("syncParty;;%d::%f".formatted(id, timestamp));
-        else PlaybackManager.seek(timestamp);
     }
 
     /**
-     * Sends/receives (based on app state) a request to set a new track
+     * Receives a request to sync the playback.
+     *
+     * @param timestamp The current playback time
+     */
+    public static void receiveSync(double timestamp) {
+        if (!anyPartyJoined()) return;
+        if (!isHost) PlaybackManager.seek(timestamp);
+    }
+
+    /**
+     * Sends a request to set a new track
      *
      * @param track The new track
      */
-    public static void setCurrentTrack(Track track) {
+    public static void sendCurrentTrack(Track track) {
         if (!anyPartyJoined()) return;
         if (isHost) getConnectionManager().writeMessage("partyTrack;;%d::%d".formatted(id, track.getId()));
-        else PlaybackManager.playImmediately(track);
     }
 
     /**
-     * Sends/receives (based on app state a request to play/pause the playback
+     * Receives a request to set a new track
+     *
+     * @param track The new track
+     */
+    public static void receiveCurrentTrack(Track track) {
+        if (!anyPartyJoined()) return;
+        if (isHost) PlaybackManager.playImmediately(track);
+    }
+
+    /**
+     * Sends a request to play/pause the playback
      *
      * @param pause true for pausing the playback, false for resuming it
      */
-    public static void pause(boolean pause) {
+    public static void sendPause(boolean pause) {
         if (!anyPartyJoined()) return;
-        if (isHost) getConnectionManager().writeMessage("pause;;" + (pause ? "pause" : "unpause"));
-        else if (pause) PlaybackManager.pause();
+        if (isHost) getConnectionManager().writeMessage("pause;;%d::%s".formatted(id, pause ? "pause" : "unpause"));
+    }
+
+    /**
+     * Receives a request to play/pause the playback
+     *
+     * @param pause true for pausing the playback, false for resuming it
+     */
+    public static void receivePause(boolean pause) {
+        if (!anyPartyJoined() || isHost) return;
+        if (pause) PlaybackManager.pause();
         else PlaybackManager.play();
     }
 
@@ -140,10 +174,12 @@ public class PartyManager {
      * @param message The message received
      */
     public static void partyChatReceived(String message) {
-        messageReceived.invoke(message);
+        if (!anyPartyJoined()) return;
+        var tokens = message.strip().split("::");
+        messageReceived.invoke(Integer.parseInt(tokens[0]), tokens[1]);
     }
 
-    public static void userUpdate(String body) {
+    public static void receiveUserUpdate(String body) {
         participants.clear();
         var tokens = body.strip().split("::");
         for (String token : tokens) {
@@ -154,7 +190,7 @@ public class PartyManager {
         participantsUpdate.invoke(Collections.unmodifiableSet(participants));
     }
 
-    public static void updateHost(int hostId) {
+    public static void receiveHostUpdate(int hostId) {
         isHost = AccountManager.getUser().getId() == hostId;
         PartyManager.hostId = hostId;
         hostUpdate.invoke(hostId);

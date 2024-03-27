@@ -6,6 +6,7 @@ import it.unibs.pajc.lithium.db.om.User;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.PartyEntry;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.UserEntry;
+import it.unibs.pajc.lithium.managers.AccountManager;
 import it.unibs.pajc.lithium.managers.PartyManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -44,24 +45,22 @@ public class PartiesTab extends CustomComponent {
         reset();
         PartyManager.requestAllParties();
 
-        createPartyBtn.setOnAction(e -> PartyManager.createParty());
+        createPartyBtn.setOnAction(e -> PartyManager.sendCreateParty());
         leavePartyBtn.setOnAction(e -> {
-            PartyManager.leaveParty();
+            PartyManager.sendLeave();
             reset();
         });
         messageTxtField.setOnAction(this::sendMsg);
         sendBtn.setOnAction(this::sendMsg);
 
-        PartyManager.partyJoined.addListener(id -> {
-            Platform.runLater(() -> {
-                if (id == -1) reset();
-                else {
-                    inPartyView.setVisible(true);
-                    outOfPartyView.setVisible(false);
-                }
-            });
-        });
-        PartyManager.messageReceived.addListener(msg -> Platform.runLater(() -> receiveMessage(msg)));
+        PartyManager.partyJoined.addListener(id -> Platform.runLater(() -> {
+            if (id == -1) reset();
+            else {
+                inPartyView.setVisible(true);
+                outOfPartyView.setVisible(false);
+            }
+        }));
+        PartyManager.messageReceived.addListener((userId, msg) -> Platform.runLater(() -> receiveMessage(userId, msg)));
         PartyManager.partiesUpdate.addListener(parties -> Platform.runLater(() -> fillActiveParties(parties)));
         PartyManager.participantsUpdate.addListener(users -> Platform.runLater(() -> fillParticipants(users)));
     }
@@ -75,6 +74,7 @@ public class PartiesTab extends CustomComponent {
     }
 
     private void fillActiveParties(Set<Integer[]> parties) {
+        allPartiesPane.getChildren().clear();
         // [0]: partyId, [1]: trackId, [2]: ownerId
         for (Integer[] party : parties) {
             var partyId = party[0];
@@ -97,12 +97,14 @@ public class PartiesTab extends CustomComponent {
         var msg = messageTxtField.getText();
         PartyManager.sendPartyChat(msg);
         messageTxtField.setText("");
-        receiveMessage(msg);
+        receiveMessage(AccountManager.getUser().getId(), msg);
     }
 
-    private void receiveMessage(String msg) {
-        var lbl = new Label(msg);
+    private void receiveMessage(int userId, String msg) {
+        var user = ItemProvider.getItem(userId, User.class);
+        var lbl = new Label("%s: %s".formatted(user.getUsername(), msg));
         messagesListView.getItems().add(lbl);
+        messagesListView.scrollTo(lbl);
     }
 
     @Override

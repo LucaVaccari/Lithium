@@ -88,7 +88,6 @@ public class PlayingNowTab extends CustomComponent {
             queueListView.getItems().add(hbox);
             if (track.equals(currentTrack)) {
                 queueListView.getSelectionModel().select(i);
-                queueListView.scrollTo(i);
                 currentReached = true;
                 currentSelectedTrackIndex = i;
             }

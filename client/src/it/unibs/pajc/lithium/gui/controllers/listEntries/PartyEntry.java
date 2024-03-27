@@ -32,7 +32,7 @@ public class PartyEntry extends CustomComponent {
             albumCoverImg.setImage(
                     ItemProvider.getImage(ItemProvider.getItem(track.getAlbumId(), Album.class).getImgPath()));
         }
-        joinBtn.setOnAction(e -> PartyManager.joinParty(partyId));
+        joinBtn.setOnAction(e -> PartyManager.sendJoin(partyId));
     }
 
     @Override

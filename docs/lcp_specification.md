@@ -30,7 +30,7 @@ Body: `timestamp` (double)
 
 Received when another user sends a chat message.
 
-Body: `message` (string)
+Body: `userId::message` (string)
 
 #### partyTrack
 
