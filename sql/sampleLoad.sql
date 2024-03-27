@@ -150,8 +150,9 @@ VALUES (1, 1),
        (24, 1),
        (25, 1);
 
-insert into user (user_id, username, pwd_hash)
-values (1, 'lucavaccari03', '6cd6e51ad74b5a0ad4f6689e62fcfd621573d4df579762168e04a47cf654b5e5');
+insert into user (user_id, username, pwd_hash, profile_pic_path)
+values (1, 'lucavaccari03', '6cd6e51ad74b5a0ad4f6689e62fcfd621573d4df579762168e04a47cf654b5e5',
+        'img/user_pro_pic/default_user_pro_pic.jpg');
 
 insert into playlist(playlist_id, playlist_title, playlist_description, user_id, cover_img_path)
 VALUES (0, 'Saved tracks', 'The favourite tracks of lucavaccari03', 1,

@@ -24,16 +24,19 @@ public class PartyEntry extends CustomComponent {
     private Button joinBtn;
 
     public PartyEntry(User user, Track track, int partyId) {
+        super();
         userProPicImg.setImage(ItemProvider.getImage(user.getProfilePicPath()));
         usernameLbl.setText(user.getUsername());
-        trackLbl.setText(ItemProvider.getArtistTrackFormatted(track));
-        albumCoverImg.setImage(
-                ItemProvider.getImage(ItemProvider.getItem(track.getAlbumId(), Album.class).getImgPath()));
+        if (track != null) {
+            trackLbl.setText(ItemProvider.getArtistTrackFormatted(track));
+            albumCoverImg.setImage(
+                    ItemProvider.getImage(ItemProvider.getItem(track.getAlbumId(), Album.class).getImgPath()));
+        }
         joinBtn.setOnAction(e -> PartyManager.joinParty(partyId));
     }
 
     @Override
     protected String fxmlPath() {
-        return "FXMLs/listComponents/partyEntry.fxml";
+        return "/FXMLs/listComponents/partyEntry.fxml";
     }
 }

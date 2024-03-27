@@ -79,6 +79,7 @@ public final class ItemProvider {
     }
 
     public static Image getImage(String path) {
+        if (path == null) return null;
         Image cached = imgCache.getIfPresent(path);
         Image image = new Image(HttpHandler.buildUrl(path), true);
         if (cached == null) {

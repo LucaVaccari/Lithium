@@ -5,6 +5,7 @@ import it.unibs.pajc.lithium.db.om.User;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -33,6 +34,10 @@ public class LcpServer implements Runnable {
             connections.remove(connection);
             e.printStackTrace();
         }
+    }
+
+    public static Set<LcpConnection> getConnections() {
+        return Collections.unmodifiableSet(connections);
     }
 
     public static void remove(LcpConnection connection) {

@@ -41,8 +41,7 @@ public class LcpManager implements Runnable {
         });
         commands.put("userUpdate", PartyManager::userUpdate);
         commands.put("allParties", PartyManager::partiesUpdate);
-        // todo hostUpdated
-        commands.put("hostUpdated", body -> PartyManager.updateHost(Integer.parseInt(body)));
+        commands.put("host", body -> PartyManager.updateHost(Integer.parseInt(body)));
         commands.put("error", m -> Platform.runLater(() -> AlertUtil.showErrorAlert("Error", "LCP error", m)));
 
         // todo block playback when in party

@@ -47,6 +47,10 @@ public class User implements Item, Serializable {
         return profilePicPath;
     }
 
+    public void setProfilePicPath(String profilePicPath) {
+        this.profilePicPath = profilePicPath;
+    }
+
     public Integer[] getSavedAlbumIds() {
         return savedAlbumIds;
     }

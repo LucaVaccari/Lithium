@@ -24,6 +24,10 @@ public class LcpConnection {
     static {
         commands.put("hello", (body, connection) -> connection.writeMessage("world"));
         commands.put("auth", (body, connection) -> {
+            if (body.equals("logout")) {
+                connection.user = null;
+                return;
+            }
             if (connection.user != null) {
                 connection.writeMessage("error;;The user is already authenticated");
                 return;

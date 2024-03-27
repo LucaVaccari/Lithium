@@ -18,7 +18,8 @@ import static it.unibs.pajc.lithium.ClientMain.getConnectionManager;
  */
 public class PartyManager {
     private static int id = -1;
-    private static boolean host = false;
+    private static int hostId = -1;
+    private static boolean isHost = false;
     private static final Set<User> participants = new HashSet<>();
 
     /**
@@ -63,7 +64,7 @@ public class PartyManager {
      */
     public static void createParty() {
         if (anyPartyJoined()) leaveParty();
-        host = true;
+        isHost = true;
         getConnectionManager().writeMessage("joinParty;;new");
     }
 
@@ -74,7 +75,7 @@ public class PartyManager {
      */
     public static void joinParty(int id) {
         if (anyPartyJoined()) leaveParty();
-        PartyManager.id = id;
+        setId(id);
         getConnectionManager().writeMessage("joinParty;;" + id);
     }
 
@@ -95,7 +96,7 @@ public class PartyManager {
      */
     public static void syncParty(double timestamp) {
         if (!anyPartyJoined()) return;
-        if (host) getConnectionManager().writeMessage("syncParty;;%d::%f".formatted(id, timestamp));
+        if (isHost) getConnectionManager().writeMessage("syncParty;;%d::%f".formatted(id, timestamp));
         else PlaybackManager.seek(timestamp);
     }
 
@@ -106,7 +107,7 @@ public class PartyManager {
      */
     public static void setCurrentTrack(Track track) {
         if (!anyPartyJoined()) return;
-        if (host) getConnectionManager().writeMessage("partyTrack;;%d::%d".formatted(id, track.getId()));
+        if (isHost) getConnectionManager().writeMessage("partyTrack;;%d::%d".formatted(id, track.getId()));
         else PlaybackManager.playImmediately(track);
     }
 
@@ -117,7 +118,7 @@ public class PartyManager {
      */
     public static void pause(boolean pause) {
         if (!anyPartyJoined()) return;
-        if (host) getConnectionManager().writeMessage("pause;;" + (pause ? "pause" : "unpause"));
+        if (isHost) getConnectionManager().writeMessage("pause;;" + (pause ? "pause" : "unpause"));
         else if (pause) PlaybackManager.pause();
         else PlaybackManager.play();
     }
@@ -154,7 +155,8 @@ public class PartyManager {
     }
 
     public static void updateHost(int hostId) {
-        host = AccountManager.getUser().getId() == hostId;
+        isHost = AccountManager.getUser().getId() == hostId;
+        PartyManager.hostId = hostId;
         hostUpdate.invoke(hostId);
     }
 
@@ -172,6 +174,10 @@ public class PartyManager {
     }
 
     public static boolean isHost() {
-        return host;
+        return isHost;
+    }
+
+    public static int getHostId() {
+        return hostId;
     }
 }

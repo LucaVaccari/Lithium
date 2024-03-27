@@ -5,6 +5,7 @@ import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.db.om.User;
 import it.unibs.pajc.lithium.gui.CustomComponent;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.PartyEntry;
+import it.unibs.pajc.lithium.gui.controllers.listEntries.UserEntry;
 import it.unibs.pajc.lithium.managers.PartyManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -17,7 +18,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
 import java.util.Set;
-
 
 public class PartiesTab extends CustomComponent {
     @FXML
@@ -53,16 +53,17 @@ public class PartiesTab extends CustomComponent {
         sendBtn.setOnAction(this::sendMsg);
 
         PartyManager.partyJoined.addListener(id -> {
-            if (id == -1) reset();
-            else {
-                inPartyView.setVisible(true);
-                outOfPartyView.setVisible(false);
-            }
+            Platform.runLater(() -> {
+                if (id == -1) reset();
+                else {
+                    inPartyView.setVisible(true);
+                    outOfPartyView.setVisible(false);
+                }
+            });
         });
-        PartyManager.messageReceived.addListener(this::receiveMessage);
-        PartyManager.partiesUpdate.addListener(this::fillActiveParties);
-        // todo join party btn
-        // todo show users in party
+        PartyManager.messageReceived.addListener(msg -> Platform.runLater(() -> receiveMessage(msg)));
+        PartyManager.partiesUpdate.addListener(parties -> Platform.runLater(() -> fillActiveParties(parties)));
+        PartyManager.participantsUpdate.addListener(users -> Platform.runLater(() -> fillParticipants(users)));
     }
 
     private void reset() {
@@ -79,7 +80,16 @@ public class PartiesTab extends CustomComponent {
             var partyId = party[0];
             var track = ItemProvider.getItem(party[1], Track.class);
             var owner = ItemProvider.getItem(party[2], User.class);
-            Platform.runLater(() -> allPartiesPane.getChildren().add(new PartyEntry(owner, track, partyId)));
+            allPartiesPane.getChildren().add(new PartyEntry(owner, track, partyId));
+        }
+    }
+
+    private void fillParticipants(Set<User> users) {
+        usersPane.getChildren().clear();
+        for (var user : users) {
+            var entry = new UserEntry(user);
+            Platform.runLater(() -> entry.update(PartyManager.getHostId()));
+            usersPane.getChildren().add(entry);
         }
     }
 

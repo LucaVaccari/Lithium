@@ -21,7 +21,7 @@ public class ServerPartyManager {
         var id = unusedIds.isEmpty() ? lastId++ : unusedIds.pop();
         var party = new ListeningParty(ownerConnection);
         parties.put(id, party);
-        sendAllPartiesUpdate(id);
+        sendAllPartiesUpdate();
         ownerConnection.writeMessage("partyId;;" + id);
         Logger.log("Party created: " + id);
     }
@@ -54,12 +54,7 @@ public class ServerPartyManager {
         var partyId = Integer.parseInt(body);
         if (partyNotExists(partyId, connection)) return;
         parties.get(partyId).leave(connection);
-        if (parties.get(partyId).isEmpty()) {
-            parties.remove(partyId);
-            unusedIds.add(partyId);
-            sendAllPartiesUpdate(partyId);
-            Logger.log("Party removed: " + partyId);
-        }
+        deletePartyIfEmpty(partyId);
     }
 
     /**
@@ -147,6 +142,7 @@ public class ServerPartyManager {
     public static void userDisconnected(LcpConnection connection) {
         for (var id : parties.keySet()) {
             parties.get(id).leave(connection);
+            deletePartyIfEmpty(id);
         }
     }
 
@@ -163,14 +159,10 @@ public class ServerPartyManager {
     }
 
     /**
-     * Send an allParties update to all parties but the specified
-     *
-     * @param id The id of the party not to send the message to
+     * Send an allParties update to all parties
      */
-    private static void sendAllPartiesUpdate(int id) {
-        for (var partyId : parties.keySet().stream().filter(i -> i != id).toList()) {
-            parties.get(partyId).getParticipants().forEach(c -> allParties("", c));
-        }
+    private static void sendAllPartiesUpdate() {
+        LcpServer.getConnections().forEach(c -> allParties("", c));
     }
 
     /**
@@ -200,5 +192,14 @@ public class ServerPartyManager {
             return true;
         }
         return false;
+    }
+
+    private static void deletePartyIfEmpty(int partyId) {
+        if (parties.get(partyId).isEmpty()) {
+            parties.remove(partyId);
+            unusedIds.add(partyId);
+            sendAllPartiesUpdate();
+            Logger.log("Party removed: " + partyId);
+        }
     }
 }

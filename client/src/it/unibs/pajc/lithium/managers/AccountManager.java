@@ -73,6 +73,7 @@ public class AccountManager {
     public static void deleteLoginInfo() {
         try {
             Files.deleteIfExists(Path.of(LOGIN_INFO_PATH));
+            ClientMain.getConnectionManager().writeMessage("auth;;logout");
         } catch (IOException e) {
             AlertUtil.showErrorAlert(e);
         }

@@ -1,5 +1,6 @@
 package it.unibs.pajc.lithium.connection;
 
+import it.unibs.pajc.lithium.Logger;
 import it.unibs.pajc.lithium.db.om.Track;
 import it.unibs.pajc.lithium.db.om.User;
 
@@ -10,20 +11,23 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ListeningParty {
     private final Set<LcpConnection> participants = ConcurrentHashMap.newKeySet();
-    private LcpConnection ownerConnection;
+    private LcpConnection hostConnection;
     private Track currentTrack;
     private double currentTime;
 
-    public ListeningParty(LcpConnection ownerConnection) {
-        this.ownerConnection = ownerConnection;
-        participants.add(ownerConnection);
+    public ListeningParty(LcpConnection hostConnection) {
+        this.hostConnection = hostConnection;
+        participants.add(hostConnection);
+        sendUserUpdate();
+        hostConnection.writeMessage("host;;" + hostConnection.getUser().getId());
     }
 
     public void join(LcpConnection connection) {
         participants.add(connection);
-        connection.writeMessage("partyTrack;;" + currentTrack.getId());
+        if (currentTrack != null) connection.writeMessage("partyTrack;;" + currentTrack.getId());
         connection.writeMessage("partySync;;" + currentTime);
         sendUserUpdate();
+        connection.writeMessage("host;;" + hostConnection.getUser().getId());
     }
 
     public void leave(LcpConnection connection) {
@@ -31,22 +35,26 @@ public class ListeningParty {
             participants.remove(connection);
             sendUserUpdate();
         }
-        if (connection.equals(ownerConnection)) {
+        if (connection.equals(hostConnection)) {
             Optional<LcpConnection> ownerCandidate = participants.stream().findFirst();
             ownerCandidate.ifPresent(value -> {
-                ownerConnection = value;
-                broadcast("hostUpdated;;" + ownerConnection.getUser().getId(), connection);
+                hostConnection = value;
+                broadcast("host;;" + hostConnection.getUser().getId(), connection);
             });
         }
     }
 
     public void sync(double timestamp, LcpConnection connection) {
+        if (currentTrack == null) {
+            Logger.log("Track is null, ignoring the sync request");
+            return;
+        }
         if (timestamp > currentTrack.getDuration() + 2 || timestamp < 0) {
             connection.writeMessage(
                     "error;;The timestamp must be greater than 0 and smaller than the duration of the" + " " + "track");
             return;
         }
-        if (!connection.equals(ownerConnection)) {
+        if (!connection.equals(hostConnection)) {
             connection.writeMessage("error;;Only the owner of the party can change the timestamp");
             return;
         }
@@ -55,7 +63,7 @@ public class ListeningParty {
     }
 
     public void updateTrack(Track track, LcpConnection connection) {
-        if (!connection.equals(ownerConnection)) {
+        if (!connection.equals(hostConnection)) {
             connection.writeMessage("error;;Only the owner of the party can change the track");
             return;
         }
@@ -94,6 +102,6 @@ public class ListeningParty {
     }
 
     public User getOwner() {
-        return ownerConnection.getUser();
+        return hostConnection.getUser();
     }
 }

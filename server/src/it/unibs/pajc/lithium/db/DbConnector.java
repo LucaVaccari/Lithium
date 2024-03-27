@@ -40,7 +40,8 @@ public class DbConnector implements Closeable {
         if (getUserByName(name) != null) throw new IllegalArgumentException(
                 "The user %s already exists, you cannot register it again".formatted(name));
 
-        User user = new User(name, pswHash);
+        var user = new User(name, pswHash);
+        user.setProfilePicPath("img/user_pro_pic/default_user_pro_pic.jpg");
         dbInf.createObject(user, User.class, true);
     }
 
@@ -100,7 +101,7 @@ public class DbConnector implements Closeable {
      *
      * @param id      The id of the object to search
      * @param objType The type class of the object to search for. It must have the {@link Table} annotation and at least
-     *                one field with the {@link Id} annotation (only the first annotated field is considered}
+     *                one field with the {@link Id} annotation (only the first annotated field is considered)
      * @param <T>     The type of the object to search
      * @return The object found or null if it is not found
      */

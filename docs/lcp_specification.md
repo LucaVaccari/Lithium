@@ -44,9 +44,9 @@ Received when the host paused/unpaused the playback.
 
 Body: `pause` `|` `unpause`
 
-#### hostUpdated
+#### host
 
-Received when the host of the party has changed.
+It communicates the host of the party.
 
 Body: `userId` (int)
 
@@ -54,7 +54,7 @@ Body: `userId` (int)
 
 #### userUpdate
 
-Contains a list of all users in a specific party.
+Contains a list of all users in a specific party. The message is sent only to the members of a party.
 
 Body: `userId1::userId2::userid3...` (list of int)
 
@@ -86,10 +86,13 @@ Body: `ignored` (but it must not be empty)
 
 Used to authenticate the user (independent of HTTP).
 
-Body: `username::passwordHash`
+Body: `username::passwordHash|"logout"`
 
 `username` is the name of the user
+
 `passwordHash` is the Sha256 codification of the user password.
+
+`"logout"` is used to log out.
 
 ### Party commands
 
@@ -97,7 +100,9 @@ Body: `username::passwordHash`
 
 #### joinParty
 
-Ask to join a party. If there's no party with the id in the body, a new one is created
+Ask to join a party.
+If there's no party with the id in the body, a new one is created.
+A userUpdate is sent when a user joins.
 
 Body: `partyId` `|` `"new"`
 
@@ -105,8 +110,10 @@ Body: `partyId` `|` `"new"`
 
 #### leaveParty
 
-Asks to leave a party. If the connection is the last one of the party, the party is then deleted. If the connection was
-the host, a new host is chosen arbitrarily.
+Asks to leave a party.
+If the connection is the last one of the party, the party is then deleted.
+If the connection was the host, a new host is chosen arbitrarily.
+A userUpdate is sent when a user leaves.
 
 Body: `partyId`
 

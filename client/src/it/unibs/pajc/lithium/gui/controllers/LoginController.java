@@ -15,6 +15,7 @@ import javafx.scene.layout.HBox;
 import java.nio.charset.StandardCharsets;
 
 public class LoginController {
+    // todo: username max 20 characters
     @FXML
     private HBox pswContainer;
     @FXML
