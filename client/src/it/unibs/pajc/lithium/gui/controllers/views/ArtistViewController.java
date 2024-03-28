@@ -63,9 +63,9 @@ public class ArtistViewController {
     }
 
     private void updateHost(boolean inPartyAndNotHost) {
-        playNowBtn.setDisable(inPartyAndNotHost);
+        /*playNowBtn.setDisable(inPartyAndNotHost);
         playNextBtn.setDisable(inPartyAndNotHost);
-        addToQueueBtn.setDisable(inPartyAndNotHost);
+        addToQueueBtn.setDisable(inPartyAndNotHost);*/
     }
 
     public void onPlayNowBtn(ActionEvent ignored) {

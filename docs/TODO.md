@@ -7,7 +7,6 @@ QUICK:
 BUGS:
 
 - Parties aren't displayed if they are created when a user is logging in
-- Tracks aren't updated when adding/deleting them through playlist management view
 - Playback next needs to be called twice to stop
 
 ## Client

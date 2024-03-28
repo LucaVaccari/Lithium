@@ -54,9 +54,16 @@ VALUES ('1', 'Fragile', '2022-07-20', 'img/album_cover/lit_silver_fragile.jpg'),
        ('4', 'Butterfly', '2023-12-07', 'img/album_cover/lit_silver_butterfly.jpg'),
        ('5', 'Lament', '2024-03-08', 'img/album_cover/lit_silver_lament.jpg');
 
-insert into artist(artist_id, artist_name, artist_pic_path)
-VALUES (1, 'Lit Silver', 'img/artist_pic/lit_silver.jpg'),
-       (2, 'Zēfiro', 'img/artist_pic/zefiro.jpg');
+insert into artist(artist_id, artist_name, artist_pic_path, artist_bio)
+VALUES (1, 'Lit Silver', 'img/artist_pic/lit_silver.jpg',
+        'Luca Vaccari, a.k.a. Lit Silver, is a young Italian DIY artist with a very intimate connection with his music, crafted completely by himself from start to finish. He takes inspiration from a wide variety of genres, including progressive rock and pop, soft rock, post rock, ambient, metal and acoustic music. His eclectic influences serve the goal of expressing his innermost thoughts and emotions. He is also a member of the band Zēfiro.' ||
+        'Quick discography summary:
+        Fragile (2022): Italian prog-rock album, his first release ever.
+        Lambda (2023): art rock/post rock/metal concept album, highly emotive.
+        Butterfly (2023): acoustic/soft rock ep, intimate sound.
+        '),
+       (2, 'Zēfiro', 'img/artist_pic/zefiro.jpg', 'An Italian rock band founded in 2020 by Luca Vaccari, Daniele Tregambe, Geremia Magri, and Andrea Giordano in Brescia. The four musicians were later joined by the singer Giulia Bottani, and together they wrote songs that merged their different personalities and tastes, drawing on influences from indie pop to alternative rock. Their songs were played live locally until 2022, when the band left the live scene, but the interruption didn''t stop the creative flow. The following year "Eternative", their first (but not last) self-produced EP, was released.
+');
 
 insert into album_by_artist(album_id, artist_id)
 VALUES (1, 1),
