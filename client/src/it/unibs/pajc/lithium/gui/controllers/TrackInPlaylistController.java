@@ -21,10 +21,8 @@ import java.util.Objects;
 import java.util.Set;
 
 public class TrackInPlaylistController {
-
     @FXML
     private ListView<HBox> playlistListView;
-
     private final Set<Playlist> selectedPlaylists = new HashSet<>();
     private Playlist[] playlists;
     private Track track;
@@ -32,8 +30,10 @@ public class TrackInPlaylistController {
     @FXML
     private void initialize() {
         track = (Track) MainSceneController.getSelectedItem();
-        var playlistIds = AccountManager.getUser().getSavedPlaylistIds();
-        playlists = ItemProvider.getItems(playlistIds, Playlist.class);
+        var user = AccountManager.getUser();
+        var playlistIds = user.getSavedPlaylistIds();
+        playlists = Arrays.stream(ItemProvider.getItems(playlistIds, Playlist.class))
+                .filter(p -> p.getOwnerId().equals(user.getId())).toArray(Playlist[]::new);
 
         Arrays.stream(playlists).filter(Objects::nonNull).forEach(playlist -> {
             var checkBox = new CheckBox();

@@ -20,7 +20,7 @@
             <Tab fx:id="playingNowTab" text="Playing now">
                 <PlayingNowTab/>
             </Tab>
-            <Tab fx:id="partiesTab" text="Parties">
+            <Tab text="Parties">
                 <PartiesTab/>
             </Tab>
             <Tab text="Settings">

@@ -43,8 +43,7 @@ public class PartiesTab extends CustomComponent {
     @FXML
     private void initialize() {
         reset();
-        PartyManager.requestAllParties();
-
+        
         createPartyBtn.setOnAction(e -> PartyManager.sendCreateParty());
         leavePartyBtn.setOnAction(e -> {
             PartyManager.sendLeave();
@@ -60,8 +59,8 @@ public class PartiesTab extends CustomComponent {
                 outOfPartyView.setVisible(false);
             }
         }));
-        PartyManager.messageReceived.addListener((userId, msg) -> Platform.runLater(() -> receiveMessage(userId, msg)));
         PartyManager.partiesUpdate.addListener(parties -> Platform.runLater(() -> fillActiveParties(parties)));
+        PartyManager.messageReceived.addListener((userId, msg) -> Platform.runLater(() -> receiveMessage(userId, msg)));
         PartyManager.participantsUpdate.addListener(users -> Platform.runLater(() -> fillParticipants(users)));
     }
 
@@ -71,6 +70,7 @@ public class PartiesTab extends CustomComponent {
         messagesListView.getItems().clear();
         messageTxtField.setText("");
         usersPane.getChildren().clear();
+        PartyManager.requestAllParties();
     }
 
     private void fillActiveParties(Set<Integer[]> parties) {

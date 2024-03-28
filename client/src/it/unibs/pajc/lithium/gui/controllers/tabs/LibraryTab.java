@@ -1,7 +1,6 @@
 package it.unibs.pajc.lithium.gui.controllers.tabs;
 
 import com.google.gson.JsonSyntaxException;
-import it.unibs.pajc.lithium.managers.AccountManager;
 import it.unibs.pajc.lithium.ItemProvider;
 import it.unibs.pajc.lithium.db.om.Album;
 import it.unibs.pajc.lithium.db.om.Artist;
@@ -15,6 +14,7 @@ import it.unibs.pajc.lithium.gui.controllers.listEntries.AlbumEntry;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.ArtistEntry;
 import it.unibs.pajc.lithium.gui.controllers.listEntries.PlaylistEntry;
 import it.unibs.pajc.lithium.gui.controllers.views.ManagePlaylistController;
+import it.unibs.pajc.lithium.managers.AccountManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,6 +61,7 @@ public class LibraryTab extends CustomComponent {
     }
 
     private void updateAlbumList() throws UnirestException, JsonSyntaxException {
+        albumContainer.getItems().clear();
         var albums = ItemProvider.getItems(AccountManager.getUser().getSavedAlbumIds(), Album.class);
         if (albums == null) {
             System.err.println("Null albums in search tab");
@@ -73,6 +74,7 @@ public class LibraryTab extends CustomComponent {
     }
 
     private void updateArtistList() throws UnirestException, JsonSyntaxException {
+        artistContainer.getItems().clear();
         var artists = ItemProvider.getItems(AccountManager.getUser().getFollowedArtistIds(), Artist.class);
         if (artists == null) {
             System.err.println("Null items in search tab");
@@ -85,6 +87,7 @@ public class LibraryTab extends CustomComponent {
     }
 
     private void updatePlaylistList() throws UnirestException, JsonSyntaxException {
+        playlistContainer.getItems().clear();
         var playlists = ItemProvider.getItems(AccountManager.getUser().getSavedPlaylistIds(), Playlist.class);
         if (playlists == null) {
             System.err.println("Null items in search tab");

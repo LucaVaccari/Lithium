@@ -2,36 +2,67 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<fx:root maxHeight="Infinity" maxWidth="Infinity"
-         type="AnchorPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.text.*?>
+<fx:root maxHeight="Infinity" maxWidth="Infinity" prefHeight="600.0" prefWidth="900.0" type="AnchorPane"
+         xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0"
           AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+        <Label contentDisplay="CENTER" maxWidth="Infinity" text="Search in the Lithium catalogue">
+            <font>
+                <Font size="24.0"/>
+            </font>
+        </Label>
         <TextField fx:id="searchTxtField" promptText="Search for tracks, albums, artists and playlists..."/>
         <HBox VBox.vgrow="ALWAYS">
-            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0"
-                        maxHeight="Infinity" maxWidth="Infinity" prefHeight="200.0"
-                        prefWidth="200.0" HBox.hgrow="ALWAYS">
-                <ListView fx:id="trackContainer" maxHeight="Infinity" maxWidth="Infinity"
-                          minHeight="0.0" minWidth="0.0"/>
-            </ScrollPane>
-            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0"
-                        maxHeight="Infinity" maxWidth="Infinity" prefHeight="200.0"
-                        prefWidth="200.0" HBox.hgrow="ALWAYS">
-                <ListView fx:id="albumContainer" maxHeight="Infinity" maxWidth="Infinity"
-                          minHeight="0.0" minWidth="0.0"/>
-            </ScrollPane>
-            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0"
-                        maxHeight="Infinity" maxWidth="Infinity" prefHeight="200.0"
-                        prefWidth="200.0" HBox.hgrow="ALWAYS">
-                <ListView fx:id="artistContainer" maxHeight="Infinity" maxWidth="Infinity"
-                          minHeight="0.0" minWidth="0.0"/>
-            </ScrollPane>
-            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0"
-                        maxHeight="Infinity" maxWidth="Infinity" prefHeight="200.0"
-                        prefWidth="200.0" HBox.hgrow="ALWAYS">
-                <ListView fx:id="playlistContainer" maxHeight="Infinity" maxWidth="Infinity"
-                          minHeight="0.0" minWidth="0.0"/>
-            </ScrollPane>
+            <VBox maxHeight="Infinity" maxWidth="Infinity" HBox.hgrow="ALWAYS">
+                <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" text="TRACKS">
+                    <font>
+                        <Font name="System Bold" size="18.0"/>
+                    </font>
+                </Label>
+                <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" maxHeight="Infinity"
+                            maxWidth="Infinity" VBox.vgrow="ALWAYS">
+                    <ListView fx:id="trackContainer" maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0"
+                              minWidth="0.0"/>
+                </ScrollPane>
+            </VBox>
+            <VBox maxHeight="Infinity" maxWidth="Infinity" HBox.hgrow="ALWAYS">
+                <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" text="ALBUMS">
+                    <font>
+                        <Font name="System Bold" size="18.0"/>
+                    </font>
+                </Label>
+                <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" maxHeight="Infinity"
+                            maxWidth="Infinity" VBox.vgrow="ALWAYS">
+                    <ListView fx:id="albumContainer" maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0"
+                              minWidth="0.0"/>
+                </ScrollPane>
+            </VBox>
+            <VBox maxHeight="Infinity" maxWidth="Infinity" HBox.hgrow="ALWAYS">
+                <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" text="ARTISTS">
+                    <font>
+                        <Font name="System Bold" size="18.0"/>
+                    </font>
+                </Label>
+                <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" maxHeight="Infinity"
+                            maxWidth="Infinity" VBox.vgrow="ALWAYS">
+                    <ListView fx:id="artistContainer" maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0"
+                              minWidth="0.0"/>
+                </ScrollPane>
+            </VBox>
+            <VBox maxHeight="Infinity" maxWidth="Infinity" HBox.hgrow="ALWAYS">
+                <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity"
+                       text="PLAYLISTS">
+                    <font>
+                        <Font name="System Bold" size="18.0"/>
+                    </font>
+                </Label>
+                <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" maxHeight="Infinity"
+                            maxWidth="Infinity" VBox.vgrow="ALWAYS">
+                    <ListView fx:id="playlistContainer" maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0"
+                              minWidth="0.0"/>
+                </ScrollPane>
+            </VBox>
         </HBox>
     </VBox>
 </fx:root>

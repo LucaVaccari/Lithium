@@ -29,6 +29,8 @@ public class Playlist implements Item, Serializable {
 
     @ForeignKey(otherTableName = "track_in_playlist", otherTableColumnName = "track_id")
     private Integer[] trackIds;
+    @ForeignKey(otherTableName = "user_saved_playlist", otherTableColumnName = "user_id")
+    private Integer[] userWhoSavedIds;
 
     public Playlist() {
     }
@@ -74,6 +76,10 @@ public class Playlist implements Item, Serializable {
 
     public Integer[] getTrackIds() {
         return trackIds;
+    }
+
+    public Integer[] getUserWhoSavedIds() {
+        return userWhoSavedIds;
     }
 
     @Override

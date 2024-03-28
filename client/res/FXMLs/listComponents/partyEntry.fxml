@@ -5,7 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<fx:root prefHeight="60.0" prefWidth="220.0" type="AnchorPane" xmlns="http://javafx.com/javafx/21"
+<fx:root prefHeight="60.0" prefWidth="270.0" type="AnchorPane" xmlns="http://javafx.com/javafx/21"
          xmlns:fx="http://javafx.com/fxml/1">
     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" AnchorPane.bottomAnchor="0.0"
           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -16,11 +16,12 @@
                    HBox.hgrow="ALWAYS"/>
         <VBox alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" HBox.hgrow="ALWAYS">
             <Label fx:id="usernameLbl" text="Username"/>
-            <Label fx:id="trackLbl" text="Track"/>
+            <Label fx:id="artistLbl" text="Track" wrapText="true" maxWidth="Infinity"/>
+            <Label fx:id="trackLbl" text="Track" wrapText="true" maxWidth="Infinity"/>
         </VBox>
         <ImageView fx:id="albumCoverImg" fitHeight="40.0" fitWidth="40.0" layoutX="15.0" layoutY="20.0"
                    pickOnBounds="true" preserveRatio="true"/>
-        <Button fx:id="joinBtn" maxHeight="1.7976931348623157E308" mnemonicParsing="false" text="Join"
-                HBox.hgrow="ALWAYS"/>
+        <Button fx:id="joinBtn" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" text="Join"
+                HBox.hgrow="ALWAYS" wrapText="true" minWidth="45"/>
     </HBox>
 </fx:root>

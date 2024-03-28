@@ -12,8 +12,7 @@
           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
           AnchorPane.topAnchor="0.0">
         <ViewNavbar/>
-        <SplitPane dividerPositions="0.5" maxHeight="Infinity" maxWidth="Infinity"
-                   prefHeight="600.0" prefWidth="900.0" VBox.vgrow="ALWAYS">
+        <SplitPane dividerPositions="0.5" maxHeight="Infinity" maxWidth="Infinity" VBox.vgrow="ALWAYS">
             <AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0"
                         minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                 <SplitPane prefHeight="200.0" prefWidth="100.0" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0"
@@ -38,13 +37,15 @@
                                   GridPane.rowIndex="1" wrapText="true"/>
                         <Button fx:id="descriptionSetBtn" mnemonicParsing="false" onAction="#onDescriptionSet"
                                 text="Set" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-                        <Label text="Image file" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                        <Label visible="false" text="Image file" GridPane.columnIndex="0" GridPane.rowIndex="2">
                             <font>
                                 <Font size="18.0"/>
                             </font>
                         </Label>
-                        <Label fx:id="imgPathLbl" text="path" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                        <Button mnemonicParsing="false" onAction="#onSelectImg" text="Select" GridPane.columnIndex="2"
+                        <Label visible="false" fx:id="imgPathLbl" text="path" GridPane.columnIndex="1"
+                               GridPane.rowIndex="2"/>
+                        <Button visible="false" mnemonicParsing="false" onAction="#onSelectImg" text="Select"
+                                GridPane.columnIndex="2"
                                 GridPane.rowIndex="2"/>
                         <Button GridPane.rowIndex="3" GridPane.columnSpan="3" text="DELETE"
                                 onAction="#onDeletePlaylist" maxWidth="Infinity" prefWidth="Infinity"/>
@@ -54,8 +55,7 @@
                               prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS"/>
                 </SplitPane>
             </AnchorPane>
-            <AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0"
-                        minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+            <AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0" minWidth="0.0">
                 <VBox alignment="CENTER" maxHeight="Infinity"
                       maxWidth="Infinity" prefHeight="200.0" prefWidth="100.0" spacing="5.0"
                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
@@ -68,9 +68,8 @@
                             <Font size="14.0"/>
                         </font>
                     </TextField>
-                    <ListView fx:id="searchTrackView" focusTraversable="false"
-                              maxHeight="Infinity" maxWidth="Infinity"
-                              prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS"/>
+                    <ListView fx:id="searchTrackView" focusTraversable="false" maxHeight="Infinity" maxWidth="Infinity"
+                              VBox.vgrow="ALWAYS"/>
                 </VBox>
             </AnchorPane>
         </SplitPane>

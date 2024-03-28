@@ -9,9 +9,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.Stream;
 
 public final class PlaybackManager {
@@ -23,7 +21,10 @@ public final class PlaybackManager {
 
     private static void playQueue() {
         if (mediaPlayer != null) mediaPlayer.stop();
-        if (trackQueue.isEmpty()) return;
+        if (trackQueue.isEmpty()) {
+            stopPlayback();
+            return;
+        }
         var track = trackQueue.pollFirst();
         String url = HttpHandler.buildUrl("audio/" + track.getAudioPath());
         mediaPlayer = new MediaPlayer(new Media(url));
@@ -62,7 +63,7 @@ public final class PlaybackManager {
     }
 
     public static void playNext(Track track) {
-        if (trackQueue.isEmpty()) playImmediately(track);
+        if (trackQueue.isEmpty()) addToQueue(track);
         else trackQueue.addFirst(track);
         update.invoke(getCurentTrack());
     }
@@ -80,7 +81,9 @@ public final class PlaybackManager {
     }
 
     public static void addToQueue(Track[] tracks) {
-        trackQueue.addAll(List.of(tracks));
+        trackQueue.addAll(Stream.of(tracks).filter(Objects::nonNull).toList());
+        if (mediaPlayer == null || !mediaPlayer.getStatus().equals(MediaPlayer.Status.PAUSED)) playQueue();
+        update.invoke(getCurentTrack());
     }
 
     public static void togglePlay() {
@@ -106,6 +109,7 @@ public final class PlaybackManager {
     public static void previousTrack() {
         if (previouslyPlayedTracks.isEmpty()) return;
         playNext(previouslyPlayedTracks.pop());
+        if (previouslyPlayedTracks.isEmpty()) return;
         playImmediately(previouslyPlayedTracks.pop());
     }
 
@@ -128,8 +132,9 @@ public final class PlaybackManager {
     public static void stopPlayback() {
         pause();
         trackQueue.clear();
-        update.invoke(getCurentTrack());
         currentTrack = null;
+        update.invoke(null);
+        System.out.println("STop playback");
     }
 
     /**
@@ -157,15 +162,24 @@ public final class PlaybackManager {
         return currentTrack;
     }
 
-    public static List<Track> getTrackQueue() {
-        return Stream.concat(previouslyPlayedTracks.stream(), trackQueue.stream()).toList();
+    public static Set<Track> getTrackQueue() {
+        var trackList = new LinkedHashSet<>(previouslyPlayedTracks);
+        trackList.add(currentTrack);
+        trackList.addAll(trackQueue);
+        return trackList;
     }
 
-    private PlaybackManager() {
+    public static void clearQueue() {
+        previouslyPlayedTracks.clear();
+        trackQueue.clear();
+        update.invoke(currentTrack);
     }
 
     public static void setVolume(double value) {
         if (mediaPlayer == null) return;
         mediaPlayer.setVolume(value);
+    }
+
+    private PlaybackManager() {
     }
 }

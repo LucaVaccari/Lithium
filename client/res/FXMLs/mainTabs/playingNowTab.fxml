@@ -6,29 +6,27 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<fx:root maxHeight="Infinity" maxWidth="Infinity"
-         type="AnchorPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-    <SplitPane dividerPositions="0.5" maxHeight="Infinity" maxWidth="Infinity"
-               prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0" minWidth="0.0"
-                    prefHeight="160.0" prefWidth="100.0">
+<fx:root maxHeight="Infinity" maxWidth="Infinity" type="AnchorPane" xmlns="http://javafx.com/javafx/21"
+         xmlns:fx="http://javafx.com/fxml/1">
+    <SplitPane dividerPositions="0.5" maxHeight="Infinity" maxWidth="Infinity" prefHeight="600.0" prefWidth="900.0"
+               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+               AnchorPane.topAnchor="0.0">
+        <AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0" minWidth="0.0" prefHeight="160.0"
+                    prefWidth="100.0">
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="10.0"
                   AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                 <padding>
                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                 </padding>
-                <Label maxHeight="Infinity" maxWidth="Infinity" text="Currently playing"
-                       VBox.vgrow="ALWAYS">
+                <Label maxHeight="Infinity" maxWidth="Infinity" text="Currently playing" VBox.vgrow="ALWAYS">
                     <font>
                         <Font size="18.0"/>
                     </font>
                 </Label>
                 <ImageView fx:id="currentTrackImgCover" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true"
                            preserveRatio="true" VBox.vgrow="ALWAYS"/>
-                <Label fx:id="currentTrackTitleLbl" alignment="CENTER" maxHeight="Infinity"
-                       maxWidth="Infinity" text="Track title" textAlignment="CENTER" wrapText="true"
-                       VBox.vgrow="ALWAYS">
+                <Label fx:id="currentTrackTitleLbl" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity"
+                       text="Track title" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
                     <font>
                         <Font size="24.0"/>
                     </font>
@@ -36,9 +34,8 @@
                         <Cursor fx:constant="HAND"/>
                     </cursor>
                 </Label>
-                <Label fx:id="currentTrackArtistLbl" alignment="CENTER" contentDisplay="CENTER"
-                       maxHeight="Infinity" maxWidth="Infinity" text="By artist"
-                       textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
+                <Label fx:id="currentTrackArtistLbl" alignment="CENTER" contentDisplay="CENTER" maxHeight="Infinity"
+                       maxWidth="Infinity" text="By artist" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
                     <cursor>
                         <Cursor fx:constant="HAND"/>
                     </cursor>
@@ -46,9 +43,8 @@
                         <Font size="18.0"/>
                     </font>
                 </Label>
-                <Label fx:id="currentTrackAlbumLbl" alignment="CENTER" contentDisplay="CENTER"
-                       maxHeight="Infinity" maxWidth="Infinity" text="From album"
-                       textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
+                <Label fx:id="currentTrackAlbumLbl" alignment="CENTER" contentDisplay="CENTER" maxHeight="Infinity"
+                       maxWidth="Infinity" text="From album" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
                     <cursor>
                         <Cursor fx:constant="HAND"/>
                     </cursor>
@@ -58,17 +54,23 @@
                 </Label>
             </VBox>
         </AnchorPane>
-        <AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0" minWidth="0.0"
-                    prefHeight="160.0" prefWidth="100.0">
+        <AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0" minWidth="0.0" prefHeight="160.0"
+                    prefWidth="100.0">
             <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
                   AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-                <Label maxHeight="Infinity" maxWidth="Infinity" text="Queue"
-                       VBox.vgrow="ALWAYS">
+                <Label maxHeight="Infinity" maxWidth="Infinity" text="Queue" VBox.vgrow="ALWAYS">
                     <font>
                         <Font size="18.0"/>
                     </font>
                 </Label>
                 <ListView fx:id="queueListView" prefHeight="501.0" prefWidth="426.0"/>
+                <Button fx:id="clearQueueBtn" alignment="CENTER" contentDisplay="CENTER"
+                        maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                        text="Clear queue" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </Button>
             </VBox>
         </AnchorPane>
     </SplitPane>

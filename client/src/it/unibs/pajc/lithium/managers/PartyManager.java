@@ -70,6 +70,7 @@ public class PartyManager {
     }
 
     public static void partiesUpdate(String body) {
+        System.out.println(body);
         if (body.equals("null")) {
             partiesUpdate.invoke(new HashSet<>());
             return;
@@ -103,6 +104,7 @@ public class PartyManager {
         if (anyPartyJoined()) sendLeave();
         setId(id);
         getConnectionManager().writeMessage("joinParty;;" + id);
+        PlaybackManager.pause();
     }
 
     /**
@@ -132,7 +134,7 @@ public class PartyManager {
      */
     public static void receiveSync(double timestamp) {
         if (!anyPartyJoined()) return;
-        if (!isHost && Math.abs(timestamp - PlaybackManager.getCurrentTime()) > 1) PlaybackManager.seek(timestamp);
+        if (!isHost && Math.abs(timestamp - PlaybackManager.getCurrentTime()) > 3) PlaybackManager.seek(timestamp);
     }
 
     /**
@@ -172,7 +174,6 @@ public class PartyManager {
      */
     public static void receivePause(boolean pause) {
         if (!anyPartyJoined() || isHost) return;
-        System.out.println("Pause received");
         if (pause) PlaybackManager.pause();
         else PlaybackManager.play();
     }

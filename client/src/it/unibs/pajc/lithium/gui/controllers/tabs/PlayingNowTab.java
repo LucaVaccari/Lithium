@@ -17,10 +17,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
-import java.util.List;
-
 public class PlayingNowTab extends CustomComponent {
-    // todo disable queue when in party
     @FXML
     private ImageView currentTrackImgCover;
     @FXML
@@ -31,6 +28,8 @@ public class PlayingNowTab extends CustomComponent {
     private Label currentTrackAlbumLbl;
     @FXML
     private ListView<HBox> queueListView;
+    @FXML
+    private Button clearQueueBtn;
 
     private int currentSelectedTrackIndex;
 
@@ -65,6 +64,8 @@ public class PlayingNowTab extends CustomComponent {
             MainSceneController.setSelectedItem(artist);
             SceneManager.loadScene("/FXMLs/itemViews/artistView.fxml", this);
         });
+
+        clearQueueBtn.setOnAction(e -> PlaybackManager.clearQueue());
     }
 
     public void update(Track currentTrack) {
@@ -73,20 +74,23 @@ public class PlayingNowTab extends CustomComponent {
             currentTrackTitleLbl.setText("");
             currentTrackArtistLbl.setText("");
             currentTrackAlbumLbl.setText("");
-            return;
+        } else {
+            var album = ItemProvider.getItem(currentTrack.getAlbumId(), Album.class);
+            currentTrackImgCover.setImage(ItemProvider.getImage(album.getImgPath()));
+            currentTrackTitleLbl.setText(currentTrack.getTitle());
+            currentTrackArtistLbl.setText("By " + ItemProvider.getArtistNamesFormatted(currentTrack.getArtistIds()));
+            currentTrackAlbumLbl.setText(album.getTitle());
         }
 
-        var album = ItemProvider.getItem(currentTrack.getAlbumId(), Album.class);
-        currentTrackImgCover.setImage(ItemProvider.getImage(album.getImgPath()));
-        currentTrackTitleLbl.setText(currentTrack.getTitle());
-        currentTrackArtistLbl.setText("By " + ItemProvider.getArtistNamesFormatted(currentTrack.getArtistIds()));
-        currentTrackAlbumLbl.setText(album.getTitle());
-
         queueListView.getItems().clear();
-        List<Track> trackQueue = PlaybackManager.getTrackQueue();
+        var trackQueue = PlaybackManager.getTrackQueue();
         boolean currentReached = false;
-        for (int i = 0; i < trackQueue.size(); i++) {
-            Track track = trackQueue.get(i);
+        int i = 0;
+        for (var track : trackQueue) {
+            if (track == null) {
+                i++;
+                continue;
+            }
             var entry = new TrackEntry(track);
             var btn = new Button("Remove");
             btn.setOnAction(e -> PlaybackManager.removeFromQueue(track));
@@ -99,6 +103,7 @@ public class PlayingNowTab extends CustomComponent {
                 currentReached = true;
                 currentSelectedTrackIndex = i;
             }
+            i++;
         }
     }
 

@@ -16,14 +16,11 @@ public class MainSceneController {
     @FXML
     private void initialize() {
         disableTabs(true);
-        PlaybackManager.getUpdate().addListener(track -> {
-            disableTabs(track == null);
-        });
+        PlaybackManager.getUpdate().addListener(track -> disableTabs(track == null));
     }
 
     private void disableTabs(boolean disable) {
         playingNowTab.setDisable(disable);
-        partiesTab.setDisable(disable);
     }
 
     public static Item getSelectedItem() {

@@ -152,8 +152,8 @@ public class ServerPartyManager {
     public static void allParties(String ignored, LcpConnection connection) {
         var elements = parties.keySet().stream().map(partyId -> {
             var party = parties.get(partyId);
-            var currentTrack = party.getCurrentTrack();
-            return "%d,,%d,,%d".formatted(partyId, currentTrack != null ? currentTrack.getId() : -1,
+            var partyTrack = party.getCurrentTrack();
+            return "%d,,%d,,%d".formatted(partyId, partyTrack != null ? partyTrack.getId() : -1,
                     party.getOwner().getId());
         }).toList();
         var body = String.join("::", elements);

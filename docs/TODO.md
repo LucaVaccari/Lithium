@@ -3,22 +3,13 @@
 QUICK:
 
 - [ ] settings
-- [ ] upload image
 - [ ] http routes
 
 BUGS:
 
-- Parties tab deactived, but shouldn't be
-- Join button too small in parties
-- Exception when saving track through "ADD TO PLAYLIST" btn
-- Shared tracks between "saved tracks" playlists
-- Add labels (library and search tab)
-- Reset queue
-- Error when back track
-- Add next should check the current track too
-- Removing tracks from other playlists should't be possible (ADD TO TRACK)
-- Default pause in party join
-- Mystycal error when joining the same party you left as a host
+- Parties aren't displayed if they are created when a user is logging in
+- Tracks aren't updated when adding/deleting them through playlist management view
+- Playback next needs to be called twice to stop
 
 ## Client
 

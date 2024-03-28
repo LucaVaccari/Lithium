@@ -17,6 +17,8 @@ public class PartyEntry extends CustomComponent {
     @FXML
     private Label usernameLbl;
     @FXML
+    private Label artistLbl;
+    @FXML
     private Label trackLbl;
     @FXML
     private ImageView albumCoverImg;
@@ -28,7 +30,8 @@ public class PartyEntry extends CustomComponent {
         userProPicImg.setImage(ItemProvider.getImage(user.getProfilePicPath()));
         usernameLbl.setText(user.getUsername());
         if (track != null) {
-            trackLbl.setText(ItemProvider.getArtistTrackFormatted(track));
+            artistLbl.setText(ItemProvider.getArtistNamesFormatted(track.getArtistIds()));
+            trackLbl.setText(track.getTitle());
             albumCoverImg.setImage(
                     ItemProvider.getImage(ItemProvider.getItem(track.getAlbumId(), Album.class).getImgPath()));
         }

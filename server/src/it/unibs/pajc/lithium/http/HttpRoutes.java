@@ -250,8 +250,9 @@ public class HttpRoutes {
     public static void deletePlaylist(HttpExchange exchange) throws IOException {
         var playlistId = Integer.parseInt(queryParam(exchange, "id"));
         var playlist = getDbConnector().getObjectById(playlistId, Playlist.class);
-        getDbConnector().deleteObject(new UserSavedPlaylist(playlist.getOwnerId(), playlistId),
-                UserSavedPlaylist.class);
+        for (Integer userId : playlist.getUserWhoSavedIds()) {
+            getDbConnector().deleteObject(new UserSavedPlaylist(userId, playlistId), UserSavedPlaylist.class);
+        }
         getDbConnector().deleteObject(new Playlist(playlistId), Playlist.class);
         sendStringResponse(exchange, 200, "Playlist %d removed successfully".formatted(playlistId));
     }

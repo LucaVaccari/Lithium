@@ -5,20 +5,19 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<fx:root prefHeight="40.0" prefWidth="170.0" type="AnchorPane" xmlns="http://javafx.com/javafx/21"
+<fx:root prefHeight="60.0" prefWidth="250.0" type="AnchorPane" xmlns="http://javafx.com/javafx/21"
          xmlns:fx="http://javafx.com/fxml/1">
     <HBox alignment="CENTER" prefHeight="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0"
           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
         </padding>
-        <ImageView fx:id="userProPicImg" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true"
-                   HBox.hgrow="ALWAYS"/>
+        <ImageView fx:id="userProPicImg" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true"/>
         <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
-            <Label fx:id="usernameLbl" maxHeight="Infinity" maxWidth="Infinity"
-                   text="Username" VBox.vgrow="ALWAYS"/>
-            <Label fx:id="roleLbl" layoutX="10.0" layoutY="10.0" maxHeight="Infinity"
-                   maxWidth="Infinity" text="Role" VBox.vgrow="ALWAYS">
+            <Label fx:id="usernameLbl" maxHeight="Infinity" maxWidth="Infinity" text="Username" VBox.vgrow="ALWAYS"
+                   wrapText="true"/>
+            <Label fx:id="roleLbl" layoutX="10.0" layoutY="10.0" maxHeight="Infinity" maxWidth="Infinity" text="Role"
+                   VBox.vgrow="ALWAYS" wrapText="true">
                 <font>
                     <Font name="System Italic" size="11.0"/>
                 </font>
