@@ -2,23 +2,51 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.*?>
-<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-    <VBox prefHeight="200.0" prefWidth="100.0" spacing="15.0" AnchorPane.bottomAnchor="15.0"
-          AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
-        <HBox maxHeight="Infinity" maxWidth="Infinity" prefHeight="100.0" prefWidth="200.0"
-              spacing="150.0" VBox.vgrow="ALWAYS"/>
-        <HBox layoutX="10.0" layoutY="10.0" maxHeight="Infinity" maxWidth="Infinity"
-              prefHeight="100.0" prefWidth="200.0" spacing="150.0" VBox.vgrow="ALWAYS"/>
-        <HBox layoutX="10.0" layoutY="110.0" maxHeight="Infinity" maxWidth="Infinity"
-              prefHeight="100.0" prefWidth="200.0" spacing="150.0" VBox.vgrow="ALWAYS"/>
-        <HBox layoutX="10.0" layoutY="210.0" maxHeight="Infinity" maxWidth="Infinity"
-              prefHeight="100.0" prefWidth="200.0" spacing="150.0" VBox.vgrow="ALWAYS">
-            <Label fx:id="loggedInAsLbl" alignment="CENTER" maxHeight="Infinity"
-                   maxWidth="Infinity" text="Logged in as" textAlignment="CENTER" wrapText="true"
-                   HBox.hgrow="ALWAYS"/>
-            <Button fx:id="logOutBtn" maxHeight="Infinity" maxWidth="Infinity"
-                    mnemonicParsing="false" text="LOG OUT" HBox.hgrow="ALWAYS"/>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root prefHeight="600.0" prefWidth="900.0" type="AnchorPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <VBox prefHeight="200.0" prefWidth="100.0" spacing="15.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+        <HBox maxHeight="Infinity" maxWidth="Infinity" prefHeight="100.0" prefWidth="200.0" spacing="150.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Label fx:id="loggedInAsLbl1" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" text="HTTP host" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
+               <graphic>
+                  <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Host address..." />
+               </graphic>
+            </Label>
+         </children></HBox>
+        <HBox layoutX="10.0" layoutY="10.0" maxHeight="Infinity" maxWidth="Infinity" prefHeight="100.0" prefWidth="200.0" spacing="150.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Label fx:id="loggedInAsLbl11" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" text="HTTP port" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
+               <graphic>
+                  <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Port..." />
+               </graphic>
+            </Label>
+         </children></HBox>
+        <HBox layoutX="10.0" layoutY="110.0" maxHeight="Infinity" maxWidth="Infinity" prefHeight="100.0" prefWidth="200.0" spacing="150.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Label fx:id="loggedInAsLbl12" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" text="LCP host" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
+               <graphic>
+                  <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Host address..." />
+               </graphic>
+            </Label>
+         </children></HBox>
+      <HBox maxHeight="Infinity" maxWidth="Infinity" prefHeight="100.0" prefWidth="200.0" spacing="150.0">
+         <children>
+            <Label fx:id="loggedInAsLbl121" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" text="LCP port" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
+               <graphic>
+                  <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Host address..." />
+               </graphic>
+            </Label>
+         </children>
+      </HBox>
+        <HBox layoutX="10.0" layoutY="210.0" maxHeight="Infinity" maxWidth="Infinity" prefHeight="100.0" prefWidth="200.0" spacing="150.0" VBox.vgrow="ALWAYS">
+            <Label fx:id="loggedInAsLbl" alignment="CENTER" maxHeight="Infinity" maxWidth="Infinity" text="Logged in as" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
+            <graphic>
+                  <Button fx:id="logOutBtn" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" text="LOG OUT" />
+            </graphic></Label>
         </HBox>
     </VBox>
 </fx:root>
