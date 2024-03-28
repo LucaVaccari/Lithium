@@ -50,3 +50,5 @@ database/
 ### APP DATA ###
 .lit
 login.lit
+lithium.properties
+*.properties

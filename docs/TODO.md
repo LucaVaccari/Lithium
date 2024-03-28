@@ -2,7 +2,6 @@
 
 QUICK:
 
-- [ ] settings
 - [ ] http routes
 
 BUGS:
@@ -24,10 +23,10 @@ BUGS:
         - [x] Search query
         - [ ] Right click context menus
     - [ ] Settings tab
-        - [ ] Server address (HTTP and LCP hosts and ports)
+        - [x] Server address (HTTP and LCP hosts and ports)
         - [ ] ProPic img upload
         - [x] Log out
-        - [ ] Save settings in file
+        - [x] Save settings in file
     - [ ] detail views
         - [x] track details
             -  [x] add to playlist btn

@@ -22,7 +22,7 @@
                 </Label>
                 <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" maxHeight="Infinity"
                             maxWidth="Infinity" VBox.vgrow="ALWAYS">
-                    <ListView fx:id="trackContainer" maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0"
+                    <ListView fx:id="trackContainer" maxHeight="Infinity" minHeight="0.0"
                               minWidth="0.0"/>
                 </ScrollPane>
             </VBox>
@@ -34,7 +34,7 @@
                 </Label>
                 <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" maxHeight="Infinity"
                             maxWidth="Infinity" VBox.vgrow="ALWAYS">
-                    <ListView fx:id="albumContainer" maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0"
+                    <ListView fx:id="albumContainer" maxHeight="Infinity" minHeight="0.0"
                               minWidth="0.0"/>
                 </ScrollPane>
             </VBox>
@@ -46,7 +46,7 @@
                 </Label>
                 <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" maxHeight="Infinity"
                             maxWidth="Infinity" VBox.vgrow="ALWAYS">
-                    <ListView fx:id="artistContainer" maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0"
+                    <ListView fx:id="artistContainer" maxHeight="Infinity" minHeight="0.0"
                               minWidth="0.0"/>
                 </ScrollPane>
             </VBox>
@@ -59,7 +59,7 @@
                 </Label>
                 <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" maxHeight="Infinity"
                             maxWidth="Infinity" VBox.vgrow="ALWAYS">
-                    <ListView fx:id="playlistContainer" maxHeight="Infinity" maxWidth="Infinity" minHeight="0.0"
+                    <ListView fx:id="playlistContainer" maxHeight="Infinity" minHeight="0.0"
                               minWidth="0.0"/>
                 </ScrollPane>
             </VBox>

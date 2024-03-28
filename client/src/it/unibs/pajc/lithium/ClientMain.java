@@ -2,6 +2,7 @@ package it.unibs.pajc.lithium;
 
 import atlantafx.base.theme.NordDark;
 import it.unibs.pajc.lithium.gui.SceneManager;
+import it.unibs.pajc.lithium.managers.AccountManager;
 import it.unibs.pajc.lithium.managers.LcpManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -21,13 +22,13 @@ public class ClientMain extends Application {
 
     @Override
     public void start(Stage stage) {
+        Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
         SceneManager.init(stage);
-//        if (AccountManager.authenticateUserFromSavedInfo()) {
-//            SceneManager.loadMainScene(this);
-//            return;
-//        }
+        if (AccountManager.authenticateUserFromSavedInfo()) {
+            SceneManager.loadMainScene(this);
+            return;
+        }
         SceneManager.loadScene("/FXMLs/login.fxml", this);
 
-        Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
     }
 }

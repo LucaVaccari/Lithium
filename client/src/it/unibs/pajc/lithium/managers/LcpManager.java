@@ -47,7 +47,7 @@ public class LcpManager implements Runnable {
 
     public LcpManager() {
         try {
-            socket = new Socket(Config.getServerUrl(), Config.getServerPort());
+            socket = new Socket(Config.getServerLcpUrl(), Config.getServerLcpPort());
             writer = new PrintWriter(socket.getOutputStream(), true);
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             System.out.println("Connected to " + socket.getInetAddress().getHostAddress());

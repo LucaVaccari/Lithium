@@ -12,7 +12,7 @@ public class HttpHandler {
     private final static String URL;
 
     static {
-        URL = Config.getServerHttpURL();
+        URL = "http://%s:%d".formatted(Config.getServerHttpUrl(), Config.getServerHttpPort());
     }
 
     /**

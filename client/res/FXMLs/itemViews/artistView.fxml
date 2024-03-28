@@ -36,14 +36,17 @@
                         <Font size="14.0"/>
                     </font>
                 </Label>
+                <!--
                 <FlowPane alignment="CENTER" maxWidth="Infinity" prefHeight="29.0" prefWidth="338.0"
                           HBox.hgrow="ALWAYS">
                     <Button fx:id="playNowBtn" maxWidth="Infinity" mnemonicParsing="false" onAction="#onPlayNowBtn"
                             prefHeight="20" text="PLAY NOW" HBox.hgrow="ALWAYS"/>
-                    <Button fx:id="playNextBtn" layoutX="145.0" layoutY="10.0" maxWidth="Infinity" mnemonicParsing="false"
+                    <Button fx:id="playNextBtn" layoutX="145.0" layoutY="10.0" maxWidth="Infinity"
+                            mnemonicParsing="false"
                             onAction="#onPlayNextBtn" prefHeight="20" text="PLAY NEXT"
                             HBox.hgrow="ALWAYS"/>
-                    <Button fx:id="addToQueueBtn" layoutX="184.0" layoutY="10.0" maxWidth="Infinity" mnemonicParsing="false"
+                    <Button fx:id="addToQueueBtn" layoutX="184.0" layoutY="10.0" maxWidth="Infinity"
+                            mnemonicParsing="false"
                             onAction="#onAddToQueueBtn" prefHeight="20" text="ADD TO QUEUE"
                             HBox.hgrow="ALWAYS"/>
                     <Button fx:id="followBtn" onAction="#onFollowBtn" maxWidth="Infinity"
@@ -56,6 +59,7 @@
                     <ListView fx:id="trackContainer" maxHeight="Infinity"
                               maxWidth="Infinity" prefHeight="200.0" prefWidth="200.0"/>
                 </ScrollPane>
+                -->
             </VBox>
             <ImageView fx:id="proPicImg" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true"
                        HBox.hgrow="ALWAYS"/>
